@@ -24,6 +24,10 @@ Maven | 项目构建管理  | [http://maven.apache.org/](http://maven.apache.org
 
 Spring+SpringMVC+Mybatis框架集成公共模块，包括公共配置、通用BaseService、工具类等。
 
+> lambo-demo
+
+示例应用
+
 > lambo-upms
 
 本系统是基于RBAC授权和基于用户授权的细粒度权限控制通用平台，并提供单点登录、会话管理和日志管理。接入的系统可自由定义组织、角色、权限、资源等。用户权限=所拥有角色权限合集+用户加权限-用户减权限，优先级：用户减权限>用户加权限>角色权限
