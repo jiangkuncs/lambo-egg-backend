@@ -71,6 +71,8 @@
         <property name="httpOnly" value="true"/>
         <!-- 设置Cookie的过期时间，秒为单位，默认-1表示关闭浏览器时过期Cookie -->
         <property name="maxAge" value="-1"/>
+        <!-- Cookie名称 -->
+        <property name="name" value="lambo-session-id"/>
     </bean>
 
     <!-- 会话监听器 -->
