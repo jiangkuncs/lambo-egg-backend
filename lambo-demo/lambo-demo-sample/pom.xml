@@ -87,10 +87,10 @@
                 <version>9.2.7.v20150116</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/demo</contextPath>
+                        <contextPath>/demo-server</contextPath>
                     </webApp>
                     <httpConnector>
-                        <port>1114</port>
+                        <port>1111</port>
                     </httpConnector>
                 </configuration>
             </plugin>

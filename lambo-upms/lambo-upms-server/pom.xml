@@ -91,7 +91,7 @@
                 <version>9.2.7.v20150116</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/upms</contextPath>
+                        <contextPath>/upms-server</contextPath>
                     </webApp>
                     <httpConnector>
                         <port>1110</port>

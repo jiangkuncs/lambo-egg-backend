@@ -27,11 +27,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
- * 单点登录管理
+ * 登录管理
  * Created by lambo on 2016/12/10.
  */
 @Controller
-@RequestMapping("/sso")
 @Api(value = "单点登录管理", description = "单点登录管理")
 public class AuthController extends BaseController {
 
