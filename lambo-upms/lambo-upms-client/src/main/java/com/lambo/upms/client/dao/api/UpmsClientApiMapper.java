@@ -10,7 +10,7 @@ import java.util.List;
  * 用户VOMapper
  * Created by lambo on 2017/01/07.
  */
-public interface UpmsApiMapper {
+public interface UpmsClientApiMapper {
 
 	// 根据用户id获取所拥有的权限
 	List<UpmsPermission> selectUpmsPermissionByUpmsUserId(Integer upmsUserId);

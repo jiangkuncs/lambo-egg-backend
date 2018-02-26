@@ -205,7 +205,6 @@ public abstract class BaseServiceImpl<Mapper, Record, Example> implements BaseSe
 	}
 
 	@Override
-	@LogAround("测试测试")
 	public List<Record> selectByExampleForOffsetPage(Example example, Integer offset, Integer limit) {
 		try {
 			DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());

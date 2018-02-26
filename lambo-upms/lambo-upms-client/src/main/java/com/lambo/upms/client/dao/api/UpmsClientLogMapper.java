@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface UpmsLogMapper {
+public interface UpmsClientLogMapper {
     long countByExample(UpmsLogExample example);
 
     int deleteByExample(UpmsLogExample example);

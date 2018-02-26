@@ -21,6 +21,6 @@
     <modules>
         <module>lambo-upms-common</module>
         <module>lambo-upms-client</module>
-
+        <module>lambo-upms-server</module>
     </modules>
 </project>

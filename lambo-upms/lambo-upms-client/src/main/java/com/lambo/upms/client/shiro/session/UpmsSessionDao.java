@@ -46,6 +46,9 @@ public class UpmsSessionDao extends CachingSessionDAO {
      */
     private final static String LAMBO_UPMS_CLIENT_SESSION_IDS = "lambo-upms-client-session-ids";
 
+
+    private static Map<String,Session> sessionMap = new HashMap<String,Session>();
+
     @Override
     protected Serializable doCreate(Session session) {
         Serializable sessionId = generateSessionId(session);

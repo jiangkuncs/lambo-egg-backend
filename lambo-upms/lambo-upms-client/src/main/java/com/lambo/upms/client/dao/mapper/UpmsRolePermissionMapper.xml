@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lambo.upms.client.dao.api.UpmsRolePermissionMapper">
+<mapper namespace="com.lambo.upms.client.dao.api.UpmsClientRolePermissionMapper">
   <resultMap id="BaseResultMap" type="com.lambo.upms.client.dao.model.UpmsRolePermission">
     <id column="role_permission_id" jdbcType="INTEGER" property="rolePermissionId" />
     <result column="role_id" jdbcType="INTEGER" property="roleId" />

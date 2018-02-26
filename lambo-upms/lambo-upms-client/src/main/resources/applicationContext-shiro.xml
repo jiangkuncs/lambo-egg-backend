@@ -63,7 +63,11 @@
     </bean>
 
     <!-- 会话DAO，可重写，持久化session -->
-    <bean id="sessionDAO" class="com.lambo.upms.client.shiro.session.UpmsSessionDao"/>
+    <!--<bean id="sessionDAO" class="com.lambo.upms.client.shiro.session.UpmsSessionDao"/>-->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
+        <!--设置Session缓存名字，默认就是shiro-activeSessionCache-->
+        <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
+    </bean>
 
     <!-- 会话Cookie模板 -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">

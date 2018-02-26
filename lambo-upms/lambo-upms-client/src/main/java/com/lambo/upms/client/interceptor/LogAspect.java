@@ -3,7 +3,7 @@ package com.lambo.upms.client.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.lambo.common.util.RequestUtil;
 import com.lambo.upms.client.dao.model.UpmsLog;
-import com.lambo.upms.client.service.api.UpmsApiService;
+import com.lambo.upms.client.service.api.UpmsClientApiService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,7 +40,7 @@ public class LogAspect {
 	private long endTime = 0L;
 
 	@Autowired
-	UpmsApiService upmsApiService;
+    UpmsClientApiService upmsClientApiService;
 
 	@Before("execution(* *..controller..*.*(..))")
 	public void doBeforeInServiceLayer(JoinPoint joinPoint) {
@@ -95,7 +95,7 @@ public class LogAspect {
 		upmsLog.setUrl(ObjectUtils.toString(request.getRequestURL()));
 		upmsLog.setUserAgent(request.getHeader("User-Agent"));
 		upmsLog.setUsername(ObjectUtils.toString(request.getUserPrincipal()));
-		upmsApiService.insertUpmsLogSelective(upmsLog);
+		upmsClientApiService.insertUpmsLogSelective(upmsLog);
 		return result;
 	}
 

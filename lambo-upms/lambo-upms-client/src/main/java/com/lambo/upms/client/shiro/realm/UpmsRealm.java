@@ -4,7 +4,7 @@ import com.lambo.common.util.MD5Util;
 import com.lambo.upms.client.dao.model.UpmsPermission;
 import com.lambo.upms.client.dao.model.UpmsRole;
 import com.lambo.upms.client.dao.model.UpmsUser;
-import com.lambo.upms.client.service.api.UpmsApiService;
+import com.lambo.upms.client.service.api.UpmsClientApiService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -28,7 +28,7 @@ public class UpmsRealm extends AuthorizingRealm {
     private static Logger logger = LoggerFactory.getLogger(UpmsRealm.class);
 
     @Autowired
-    private UpmsApiService upmsApiService;
+    private UpmsClientApiService upmsClientApiService;
 
     /**
      * 授权：验证权限时调用
@@ -38,10 +38,10 @@ public class UpmsRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String username = (String) principalCollection.getPrimaryPrincipal();
-        UpmsUser upmsUser = upmsApiService.selectUpmsUserByUsername(username);
+        UpmsUser upmsUser = upmsClientApiService.selectUpmsUserByUsername(username);
 
         // 当前用户所有角色
-        List<UpmsRole> upmsRoles = upmsApiService.selectUpmsRoleByUpmsUserId(upmsUser.getUserId());
+        List<UpmsRole> upmsRoles = upmsClientApiService.selectUpmsRoleByUpmsUserId(upmsUser.getUserId());
         Set<String> roles = new HashSet<>();
         for (UpmsRole upmsRole : upmsRoles) {
             if (StringUtils.isNotBlank(upmsRole.getName())) {
@@ -50,7 +50,7 @@ public class UpmsRealm extends AuthorizingRealm {
         }
 
         // 当前用户所有权限
-        List<UpmsPermission> upmsPermissions = upmsApiService.selectUpmsPermissionByUpmsUserId(upmsUser.getUserId());
+        List<UpmsPermission> upmsPermissions = upmsClientApiService.selectUpmsPermissionByUpmsUserId(upmsUser.getUserId());
         Set<String> permissions = new HashSet<>();
         for (UpmsPermission upmsPermission : upmsPermissions) {
             if (StringUtils.isNotBlank(upmsPermission.getPermissionValue())) {
@@ -76,7 +76,7 @@ public class UpmsRealm extends AuthorizingRealm {
         String password = new String((char[]) authenticationToken.getCredentials());
 
         // 查询用户信息
-        UpmsUser upmsUser = upmsApiService.selectUpmsUserByUsername(username);
+        UpmsUser upmsUser = upmsClientApiService.selectUpmsUserByUsername(username);
 
         if (null == upmsUser) {
             throw new UnknownAccountException();

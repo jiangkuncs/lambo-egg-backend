@@ -8,7 +8,7 @@ import com.lambo.upms.client.dao.model.UpmsUserExample;
 * UpmsUserService接口
 * Created by lambo on 2017/3/20.
 */
-public interface UpmsUserService extends BaseService<UpmsUser, UpmsUserExample> {
+public interface UpmsClientUserService extends BaseService<UpmsUser, UpmsUserExample> {
 
     UpmsUser createUser(UpmsUser upmsUser);
 

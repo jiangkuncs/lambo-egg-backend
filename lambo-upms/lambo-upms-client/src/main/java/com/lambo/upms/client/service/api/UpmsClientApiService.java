@@ -8,7 +8,7 @@ import java.util.List;
  * upms系统接口
  * Created by lambo on 2017/2/11.
  */
-public interface UpmsApiService {
+public interface UpmsClientApiService {
 
     /**
      * 根据用户id获取所拥有的权限(用户和角色权限合集)

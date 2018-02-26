@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface UpmsSystemMapper {
+public interface UpmsClientSystemMapper {
     long countByExample(UpmsSystemExample example);
 
     int deleteByExample(UpmsSystemExample example);

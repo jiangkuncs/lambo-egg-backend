@@ -1,7 +1,7 @@
 package com.lambo.upms.client.controller;
 
 import com.lambo.common.base.BaseController;
-import com.lambo.upms.client.service.api.UpmsUserService;
+import com.lambo.upms.client.service.api.UpmsClientUserService;
 import com.lambo.upms.common.constant.UpmsResult;
 import com.lambo.upms.common.constant.UpmsResultConstant;
 import io.swagger.annotations.Api;
@@ -38,7 +38,7 @@ public class AuthController extends BaseController {
     private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    UpmsUserService upmsUserService;
+    UpmsClientUserService upmsUserService;
 
 
 

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface UpmsUserPermissionMapper {
+public interface UpmsClientUserPermissionMapper {
     long countByExample(UpmsUserPermissionExample example);
 
     int deleteByExample(UpmsUserPermissionExample example);
