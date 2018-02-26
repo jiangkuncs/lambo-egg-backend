@@ -1,11 +1,10 @@
-package com.lambo.upms.client.service.impl;
+package com.lambo.upms.server.service.impl;
 
 import com.lambo.common.annotation.BaseService;
 import com.lambo.common.base.BaseServiceImpl;
-import com.lambo.upms.client.dao.api.UpmsUserMapper;
-import com.lambo.upms.client.dao.model.UpmsUser;
-import com.lambo.upms.client.dao.model.UpmsUserExample;
-import com.lambo.upms.client.service.api.UpmsUserService;
+import com.lambo.upms.server.dao.api.*;
+import com.lambo.upms.server.dao.model.*;
+import com.lambo.upms.server.service.api.UpmsUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

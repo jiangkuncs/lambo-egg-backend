@@ -1,8 +1,8 @@
-package com.lambo.upms.client.service.impl;
+package com.lambo.upms.server.service.impl;
 
-import com.lambo.upms.client.dao.api.*;
-import com.lambo.upms.client.dao.model.*;
-import com.lambo.upms.client.service.api.UpmsApiService;
+import com.lambo.upms.server.dao.api.*;
+import com.lambo.upms.server.dao.model.*;
+import com.lambo.upms.server.service.api.UpmsApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 
 /**
  * UpmsApiService实现
