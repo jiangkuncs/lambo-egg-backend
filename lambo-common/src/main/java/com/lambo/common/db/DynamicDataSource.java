@@ -17,7 +17,6 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 	@Override
 	protected Object determineCurrentLookupKey() {
 		String dataSource = getDataSource();
-		logger.info("当前操作使用的数据源：{}", dataSource);
 		return dataSource;
 	}
 
