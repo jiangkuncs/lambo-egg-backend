@@ -46,3 +46,7 @@ Spring+SpringMVC+Mybatis框架集成公共模块，包括公共配置、通用Ba
 - 在Maven Project窗口里,打开lambo-demo-sample下的Plugins,在jetty - jetty:run上右键debug lambo-upms-server
 - 访问 [http://127.0.0.1:1114/demo/swagger-ui.html]("后台Swagger接口文档地址")
 - 在sso-controller中使用/sso/login登录系统(admin 123456),然后就可以测试各个接口了
+
+### 文档
+
+- [DAO层代码生成器](https://github.com/btmagm/lambo-egg-backend/wiki/DAO%E5%B1%82%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90)
