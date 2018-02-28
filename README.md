@@ -50,3 +50,4 @@ Spring+SpringMVC+Mybatis框架集成公共模块，包括公共配置、通用Ba
 ### 文档
 
 - [DAO层代码生成器](https://github.com/btmagm/lambo-egg-backend/wiki/DAO%E5%B1%82%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90)
+- [物理分页的方法](https://github.com/btmagm/lambo-egg-backend/wiki/%E5%88%86%E9%A1%B5%E7%9A%84%E5%86%99%E6%B3%95)
