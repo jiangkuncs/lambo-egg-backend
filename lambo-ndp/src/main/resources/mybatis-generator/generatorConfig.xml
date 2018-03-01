@@ -29,15 +29,15 @@
 
 
         <!--生成Model类存放位置-->
-        <javaModelGenerator targetPackage="com.lambo.demo.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.lambo.ndp.model" targetProject="src/main/java">
              <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- MapperXML生成 -->
-        <sqlMapGenerator targetPackage="com.lambo.demo.dao.mapper" targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="com.lambo.ndp.dao.mapper" targetProject="src/main/java" />
 
         <!-- Mapper接口生成 -->
-        <javaClientGenerator targetPackage="com.lambo.demo.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
+        <javaClientGenerator targetPackage="com.lambo.ndp.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
 
         <!--生成对应表及类名-->
         <table tableName="ndp_table" domainObjectName="Table"

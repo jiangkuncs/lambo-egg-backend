@@ -1,4 +1,4 @@
-package com.lambo.demo.dao;
+package com.lambo.ndp.dao;
 
 import java.util.List;
 import java.util.Map;
