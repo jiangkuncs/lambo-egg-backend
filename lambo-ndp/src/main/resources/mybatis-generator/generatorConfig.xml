@@ -29,18 +29,18 @@
 
 
         <!--生成Model类存放位置-->
-        <javaModelGenerator targetPackage="com.lambo.test.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.lambo.demo.model" targetProject="src/main/java">
              <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- MapperXML生成 -->
-        <sqlMapGenerator targetPackage="com.lambo.test.dao.mapper" targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="com.lambo.demo.dao.mapper" targetProject="src/main/java" />
 
         <!-- Mapper接口生成 -->
-        <javaClientGenerator targetPackage="com.lambo.test.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
+        <javaClientGenerator targetPackage="com.lambo.demo.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
 
         <!--生成对应表及类名-->
-        <table tableName="sys_menu" domainObjectName="Menu"
+        <table tableName="ndp_table" domainObjectName="Table"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
@@ -51,7 +51,7 @@
             <!-- <ignoreColumn column="FRED" /> -->
 
             <!-- 指定列的java数据类型 -->
-            <!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" /> -->
+
         </table>
 
     </context>
