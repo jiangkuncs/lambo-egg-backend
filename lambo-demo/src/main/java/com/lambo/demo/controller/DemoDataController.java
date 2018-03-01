@@ -51,14 +51,19 @@ public class DemoDataController extends BaseController {
             @RequestParam(required = false, value = "order") String order) {
 
         DemoLogExample demoLogExample = new DemoLogExample();
-        if (!StringUtils.isBlank(sort) && !StringUtils.isBlank(order)) {
-            demoLogExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+        if(StringUtils.isBlank(sort)){
+            sort = "startTime";
         }
-        if (StringUtils.isNotBlank(search)) {
-            demoLogExample.or().andDescriptionLike("%" + search + "%");
+        if(StringUtils.isBlank(order)){
+            order = "desc";
+        }
+        demoLogExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+
+        if(StringUtils.isNotBlank(search)){
+            demoLogExample.createCriteria().andDescriptionLike("%" + search + "%");
         }
 
-        PageHelper.startPage(offset, limit);
+        PageHelper.offsetPage(offset, limit);
         List<DemoLog> data = demoLogService.selectByExample(demoLogExample);
         PageInfo page = new PageInfo(data);
 
