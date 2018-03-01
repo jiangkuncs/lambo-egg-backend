@@ -1,4 +1,4 @@
-package com.lambo.demo.model;
+package com.lambo.ndp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

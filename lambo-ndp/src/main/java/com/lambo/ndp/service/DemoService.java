@@ -1,4 +1,4 @@
-package com.lambo.demo.service;
+package com.lambo.ndp.service;
 
 /**
  * 测试接口

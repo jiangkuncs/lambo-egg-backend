@@ -1,10 +1,10 @@
-package com.lambo.demo.controller;
+package com.lambo.ndp.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
-import com.lambo.demo.service.DemoUserService;
+import com.lambo.ndp.service.DemoUserService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

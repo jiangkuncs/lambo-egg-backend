@@ -1,7 +1,7 @@
-package com.lambo.demo.controller;
+package com.lambo.ndp.controller;
 
 import com.lambo.common.base.BaseController;
-import com.lambo.demo.service.DemoService;
+import com.lambo.ndp.service.DemoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
