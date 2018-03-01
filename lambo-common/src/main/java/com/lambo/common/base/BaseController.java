@@ -6,6 +6,7 @@ import org.apache.shiro.session.InvalidSessionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,33 +26,23 @@ public abstract class BaseController {
 	 * @param exception
 	 */
 	@ExceptionHandler
-	public String exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception exception) {
+	@ResponseBody
+	public Object exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception exception) {
 		logger.error("统一异常处理：", exception);
-		request.setAttribute("ex", exception);
-		if (null != request.getHeader("X-Requested-With") && "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
-			request.setAttribute("requestHeader", "ajax");
-		}
+
 		// shiro没有权限异常
 		if (exception instanceof UnauthorizedException) {
 			logger.error("403错误");
-			return "/403.jsp";
+			return new BaseResult(0,"没有权限访问此资源",exception);
 		}
 		// shiro会话已过期异常
 		if (exception instanceof InvalidSessionException) {
 			logger.error("会话已过期异常");
-			return "/error.jsp";
+			return new BaseResult(0,"会话已过期",exception);
 		}
-		logger.error("未捕获的异常");
-		return "/error.jsp";
+
+		return new BaseResult(0,"未捕获的异常",exception);
 	}
 
-	/**
-	 * 返回jsp视图
-	 * @param path
-	 * @return
-	 */
-	public static String jsp(String path) {
-		return path.concat(".jsp");
-	}
 
 }

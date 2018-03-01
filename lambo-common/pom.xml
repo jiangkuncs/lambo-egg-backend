@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>lambo-common</name>
-    <url>http://www.zhanglambo.cn</url>
+    <url>http://stomz.top</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

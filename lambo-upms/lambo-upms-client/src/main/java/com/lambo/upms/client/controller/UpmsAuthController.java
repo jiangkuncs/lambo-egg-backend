@@ -31,17 +31,17 @@ import javax.servlet.http.HttpServletResponse;
  * Created by lambo on 2016/12/10.
  */
 @Controller
-@Api(value = "单点登录管理", description = "单点登录管理")
-public class AuthController extends BaseController {
+@Api(value = "登录管理", description = "登录管理")
+public class UpmsAuthController extends BaseController {
 
-    private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UpmsAuthController.class);
 
     @Autowired
     UpmsClientUserService upmsUserService;
 
 
 
-    @ApiOperation(value = "登录" ,notes = "验证登录信息,返回结果,如果当前已有用户登录,在执行注销操作前,会一直返回成功结果")
+    @ApiOperation(value = "登录" ,notes = "执行登录操作")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public Object login(

@@ -17,12 +17,6 @@ public interface UpmsClientApiService {
      */
     List<UpmsPermission> selectUpmsPermissionByUpmsUserId(Integer upmsUserId);
 
-    /**
-     * 根据用户id获取所拥有的权限(用户和角色权限合集)
-     * @param upmsUserId
-     * @return
-     */
-    List<UpmsPermission> selectUpmsPermissionByUpmsUserIdByCache(Integer upmsUserId);
 
     /**
      * 根据用户id获取所属的角色

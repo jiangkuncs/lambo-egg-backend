@@ -22,6 +22,7 @@ public abstract class BaseServiceImpl<Mapper, Record, Example> implements BaseSe
 	public Mapper mapper;
 
 	@Override
+	@LogAround("countByExample")
 	public int countByExample(Example example) {
 		try {
 			DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());
@@ -205,6 +206,7 @@ public abstract class BaseServiceImpl<Mapper, Record, Example> implements BaseSe
 	}
 
 	@Override
+	@LogAround("selectByExampleForOffsetPage")
 	public List<Record> selectByExampleForOffsetPage(Example example, Integer offset, Integer limit) {
 		try {
 			DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());

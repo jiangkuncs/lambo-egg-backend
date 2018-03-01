@@ -1,6 +1,7 @@
 package com.lambo.upms.client.shiro.realm;
 
 import com.lambo.common.util.MD5Util;
+import com.lambo.common.util.PropertiesFileUtil;
 import com.lambo.upms.client.dao.model.UpmsPermission;
 import com.lambo.upms.client.dao.model.UpmsRole;
 import com.lambo.upms.client.dao.model.UpmsUser;

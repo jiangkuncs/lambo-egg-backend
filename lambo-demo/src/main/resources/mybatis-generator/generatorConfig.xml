@@ -23,28 +23,28 @@
 
         <!-- 数据库连接 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/lambo"
+                        connectionURL="jdbc:mysql://10.10.10.136:3306/lambo"
                         userId="root"
-                        password="123456" />
+                        password="root" />
 
 
         <!--生成Model类存放位置-->
-        <javaModelGenerator targetPackage="com.lambo.test.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.lambo.demo.model" targetProject="src/main/java">
              <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- MapperXML生成 -->
-        <sqlMapGenerator targetPackage="com.lambo.test.dao.mapper" targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="com.lambo.demo.dao.mapper" targetProject="src/main/java" />
 
         <!-- Mapper接口生成 -->
-        <javaClientGenerator targetPackage="com.lambo.test.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
+        <javaClientGenerator targetPackage="com.lambo.demo.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
 
         <!--生成对应表及类名-->
-        <table tableName="sys_menu" domainObjectName="Menu"
+        <table tableName="upms_log" domainObjectName="DemoLog"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
-               enableSelectByExample="false"
+               enableSelectByExample="true"
                selectByExampleQueryId="false">
 
             <!-- 忽略列，不生成bean 字段 -->

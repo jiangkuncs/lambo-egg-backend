@@ -3,6 +3,8 @@ package com.lambo.upms.server.controller.manage;
 import com.baidu.unbiz.fluentvalidator.ComplexResult;
 import com.baidu.unbiz.fluentvalidator.FluentValidator;
 import com.baidu.unbiz.fluentvalidator.ResultCollectors;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
@@ -60,11 +62,14 @@ public class UpmsSystemController extends BaseController {
 		if (StringUtils.isNotBlank(search)) {
 			upmsSystemExample.or().andTitleLike("%" + search + "%");
 		}
-		List<UpmsSystem> rows = upmsSystemService.selectByExampleForOffsetPage(upmsSystemExample, offset, limit);
-		long total = upmsSystemService.countByExample(upmsSystemExample);
+
+		PageHelper.startPage(offset, limit);
+		List<UpmsSystem> data = upmsSystemService.selectByExample(upmsSystemExample);
+		PageInfo page = new PageInfo(data);
+
 		Map<String, Object> result = new HashMap<>();
-		result.put("rows", rows);
-		result.put("total", total);
+		result.put("rows", page.getList());
+		result.put("total", page.getTotal());
 		return result;
 	}
 

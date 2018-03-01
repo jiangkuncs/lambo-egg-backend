@@ -1,5 +1,6 @@
 package com.lambo.upms.client.service.impl;
 
+import com.lambo.common.util.PropertiesFileUtil;
 import com.lambo.upms.client.dao.api.*;
 import com.lambo.upms.client.dao.model.*;
 import com.lambo.upms.client.service.api.UpmsClientApiService;
@@ -22,6 +23,8 @@ import java.util.List;
 public class UpmsClientApiServiceImpl implements UpmsClientApiService {
 
     private static Logger logger = LoggerFactory.getLogger(UpmsClientApiServiceImpl.class);
+
+    private static String SYSTEM_ID = PropertiesFileUtil.getInstance("config").get("upms.system.id");
 
     @Autowired
     UpmsClientUserMapper upmsUserMapper;
@@ -57,19 +60,8 @@ public class UpmsClientApiServiceImpl implements UpmsClientApiService {
             logger.info("selectUpmsPermissionByUpmsUserId : upmsUserId={}", upmsUserId);
             return null;
         }
-        List<UpmsPermission> upmsPermissions = upmsApiMapper.selectUpmsPermissionByUpmsUserId(upmsUserId);
+        List<UpmsPermission> upmsPermissions = upmsApiMapper.selectUpmsPermissionByUpmsUserId(upmsUserId,Integer.parseInt(SYSTEM_ID));
         return upmsPermissions;
-    }
-
-    /**
-     * 根据用户id获取所拥有的权限
-     * @param upmsUserId
-     * @return
-     */
-    @Override
-    @Cacheable(value = "lambo-upms-rpc-service-ehcache", key = "'selectUpmsPermissionByUpmsUserId_' + #upmsUserId")
-    public List<UpmsPermission> selectUpmsPermissionByUpmsUserIdByCache(Integer upmsUserId) {
-        return selectUpmsPermissionByUpmsUserId(upmsUserId);
     }
 
     /**
