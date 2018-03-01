@@ -63,6 +63,7 @@ public class DemoDataController extends BaseController {
             demoLogExample.createCriteria().andDescriptionLike("%" + search + "%");
         }
 
+        //物理分页
         PageHelper.offsetPage(offset, limit);
         List<DemoLog> data = demoLogService.selectByExample(demoLogExample);
         PageInfo page = new PageInfo(data);
