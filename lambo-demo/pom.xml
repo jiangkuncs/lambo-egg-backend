@@ -102,6 +102,9 @@
                     <httpConnector>
                         <port>1111</port>
                     </httpConnector>
+                    <!-- 自动重启 -->
+                    <scanIntervalSeconds>3</scanIntervalSeconds>
+                    <reload>automatic</reload>
                 </configuration>
             </plugin>
             <plugin>

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
+import com.lambo.common.base.BaseResult;
 import com.lambo.common.util.StringUtil;
 import com.lambo.demo.constant.DemoResult;
 import com.lambo.demo.constant.DemoResultConstant;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import com.lambo.common.util.excel.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,6 @@ public class DemoDataController extends BaseController {
     @ApiOperation(value = "列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
-    @EnableExportTable
     @LogAround("请求列表数据")
     public Object list(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
@@ -69,9 +70,25 @@ public class DemoDataController extends BaseController {
         PageInfo page = new PageInfo(data);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("rows", page.getList());
-        result.put("total", page.getTotal());
+        result.put(RESULT_ROWS, page.getList());
+        result.put(RESULT_TOTLAL, page.getTotal());
         return new DemoResult(DemoResultConstant.SUCCESS,result);
+    }
+
+    @ApiOperation(value = "列表数据导出")
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    @ResponseBody
+    @EnableExportTable
+    @LogAround("列表数据导出")
+    public Map exportList(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @RequestParam(required = false, defaultValue = "", value = "search") String search,
+            @RequestParam(required = false, value = "sort") String sort,
+            @RequestParam(required = false, value = "order") String order) {
+
+        DemoResult result = (DemoResult)list(offset,limit,search,sort,order);
+        return (Map)result.data;
     }
 
     @ApiOperation(value = "删除数据")
