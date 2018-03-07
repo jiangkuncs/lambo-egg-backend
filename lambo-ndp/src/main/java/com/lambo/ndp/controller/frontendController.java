@@ -95,6 +95,8 @@ public class frontendController {
             @ApiParam(name="params", value = "参数")
             @RequestParam(required = false, defaultValue = "", value = "params") String params)  {
         Map param = new HashMap();
+        param.put("offset",offset);
+        param.put("limit",limit);
         if(!subjectId.isEmpty()){
             param.put("subjectId",subjectId);
         }else{

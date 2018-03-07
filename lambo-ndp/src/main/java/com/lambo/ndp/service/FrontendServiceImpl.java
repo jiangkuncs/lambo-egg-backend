@@ -1,5 +1,6 @@
 package com.lambo.ndp.service;
 
+import com.github.pagehelper.PageHelper;
 import com.lambo.ndp.dao.DemoUserOldMapper;
 import com.lambo.ndp.dao.FrontendMapper;
 import io.swagger.models.auth.In;
@@ -90,6 +91,15 @@ public class FrontendServiceImpl implements FrontendService {
         }
         Map finalParam = new HashMap();
         finalParam.put("sql",sql);
+        int offset = 0;
+        if(param.get("offset") != null && !param.get("offset").equals("")){
+            offset = Integer.parseInt(param.get("offset")+"");
+        }
+        int limit = 0;
+        if(param.get("limit") != null && !param.get("limit").equals("")){
+            limit = Integer.parseInt(param.get("limit")+"");
+        }
+        PageHelper.offsetPage(offset,limit);
         List list = frontendMapper.getTableData(finalParam);
         finalParam.put("sqlCount",sqlCount);
         Integer total = frontendMapper.getTableDataCount(finalParam);
