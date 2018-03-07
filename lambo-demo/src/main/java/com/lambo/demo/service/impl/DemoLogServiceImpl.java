@@ -21,9 +21,4 @@ import org.springframework.transaction.annotation.Transactional;
 @BaseService
 public class DemoLogServiceImpl extends BaseServiceImpl<DemoLogMapper, DemoLog, DemoLogExample> implements DemoLogService {
 
-    private static Logger logger = LoggerFactory.getLogger(DemoLogServiceImpl.class);
-
-    @Autowired
-    DemoLogMapper upmsLogMapper;
-
 }

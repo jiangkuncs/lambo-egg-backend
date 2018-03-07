@@ -6,5 +6,4 @@ package com.lambo.common.base;
  */
 public class BaseConstants {
 
-
 }

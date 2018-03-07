@@ -19,6 +19,10 @@ public abstract class BaseController {
 
 	private final static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
+	public static final String RESULT_ROWS = "rows";
+
+	public static final String RESULT_TOTLAL = "total";
+
 	/**
 	 * 统一异常处理
 	 * @param request

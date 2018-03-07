@@ -64,6 +64,7 @@ public class UpmsMenuController extends BaseController {
             JSONObject rootNode = new JSONObject();
             rootNode.put("id", upmsSystem.getSystemId());
             rootNode.put("name", upmsSystem.getName());
+            rootNode.put("path", "");
             jsonArr.add(menuTreeFactory(rootNode,upmsPermissions, true));
         }
 
@@ -89,7 +90,7 @@ public class UpmsMenuController extends BaseController {
                 node.put("title",upmsPermission.getName());
                 node.put("icon",upmsPermission.getIcon());
                 node.put("order",upmsPermission.getOrders());
-                node.put("path",upmsPermission.getUri());
+                node.put("path",treeNode.getString("path") + "#" +upmsPermission.getName());
                 node.put("pid",upmsPermission.getPid());
                 childrenNodes.add(node);
                 menuTreeFactory(node,permissionList, false);
