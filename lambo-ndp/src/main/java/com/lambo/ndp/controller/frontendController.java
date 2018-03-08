@@ -73,7 +73,9 @@ public class frontendController {
             @RequestParam(required = false, defaultValue = "", value = "subjectId") String subjectId)  {
         Map param = new HashMap();
         if(!subjectId.isEmpty()){
-            param.put("subjectId",subjectId);
+            param.put("subject_id",subjectId);
+        }else{
+            return new ArrayList();
         }
         return frontendService.getSubjectInfo(param);
     }
@@ -82,7 +84,7 @@ public class frontendController {
      * @return
      */
     @ApiOperation(value = "查询数据")
-    @RequestMapping(value = "/dataSubject/getTableData")
+    @RequestMapping(value = "/dataSubject/getTableData",method = RequestMethod.GET)
     @ResponseBody
     @LogAround(value="查询数据")
     public Map getTableData(
@@ -111,6 +113,24 @@ public class frontendController {
         Map result = frontendService.getTableData(param);
         return result;
     }
+
+    @ApiOperation(value = "列表数据导出")
+    @RequestMapping(value = "/dataSubject/getTableData",method = RequestMethod.POST)
+    @ResponseBody
+    @EnableExportTable
+    @LogAround("列表数据导出")
+    public Map exportList(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(required = true, name="subjectId", value = "专题ID")
+            @RequestParam(required = true, defaultValue = "", value = "subjectId") String subjectId,
+            @ApiParam(name="params", value = "参数")
+            @RequestParam(required = false, defaultValue = "", value = "params") String params){
+
+        Map result = getTableData(offset,limit,subjectId,params);
+        return result;
+    }
+
     /**
      * 查询纬度
      * @return
