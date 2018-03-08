@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class FrontendServiceImpl implements FrontendService {
     public Map getTableData(Map param){
         String sql = " select";
         String sqlCount = " select";
-        if(param.containsKey("subjectId")){
+        if(param.containsKey("subject_id")){
             List columnList = getSubjectInfo(param);
             if(columnList!=null && columnList.size()>0){
                 String table = "";
@@ -69,6 +70,11 @@ public class FrontendServiceImpl implements FrontendService {
                 }
                 sql += " from " + table;
                 sqlCount += " from " + table;
+            }else{
+                Map result = new HashMap();
+                result.put("rows",new ArrayList());
+                result.put("total",0);
+                return result;
             }
         }
         sql += " where 1=1";

@@ -100,7 +100,7 @@ public class frontendController {
         param.put("offset",offset);
         param.put("limit",limit);
         if(!subjectId.isEmpty()){
-            param.put("subjectId",subjectId);
+            param.put("subject_id",subjectId);
         }else{
             Map result = new HashMap();
             result.put("rows",new ArrayList());
