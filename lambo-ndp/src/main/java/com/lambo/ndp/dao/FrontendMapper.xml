@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.ndp.dao.FrontendMapper">
+
+  <select id="getCategoryList" parameterType="map" resultType="map">
+    select category_id,category_name,category_desc,create_user,create_time
+    from ndp_category
+    where 1=1
+    <if test="category_id != null">
+      and category_id = #{category_id}
+    </if>
+    <if test="category_name != null">
+      and category_name like concat(concat('%',#{category_name}),'%')
+    </if>
+    <if test="create_user != null">
+      and create_user = #{create_user}
+    </if>
+    <if test="startTime != null">
+      and create_time &gt; #{startTime}
+    </if>
+    <if test="endTime != null">
+      and create_time &lt; #{endTime}
+    </if>
+  </select>
+  <select id="getSubjectList" parameterType="map" resultType="map">
+    select subject_id,category_id,subject_name,subject_desc,table_id,table_code
+    from ndp_subject
+    where 1=1
+    <if test="subject_id != null">
+      and subject_id = #{subject_id}
+    </if>
+    <if test="category_id != null">
+      and category_id = #{category_id}
+    </if>
+    <if test="subject_name != null">
+      and subject_name like concat(concat('%',#{subject_name}),'%')
+    </if>
+    <if test="table_id != null">
+      and table_id = #{table_id}
+    </if>
+    <if test="table_code != null">
+      and table_code = #{table_code}
+    </if>
+  </select>
+  <select id="getSubjectInfo" parameterType="map" resultType="map">
+    select a.column_id,a.subject_id,a.column_name,a.cell_id,a.search_condition,
+      a.search_setting,a.column_order,a.is_show,b.table_id,b.cell_code,b.cell_name,
+      b.dict_id,b.data_unit,b.data_desc,c.dict_name,d.dimension_id,d.dimension_name,
+      d.ref_table,d.key_field,d.name_field,e.subject_name,e.category_id,
+      e.subject_name,e.subject_desc,e.table_code
+    from ndp_subject_column a
+    left join ndp_table_cell b
+    on a.cell_id = b.cell_id
+    left join (
+      select distinct dict_id,dict_name from ndp_dict
+    ) c
+    on b.dict_id = c.dict_id
+    left join ndp_dimension d
+    on a.search_condition = d.dimension_id
+    left join ndp_subject e
+    on a.subject_id = e.subject_id
+    where 1=1
+    <if test="is_show != null">
+      and a.is_show = #{is_show}
+    </if>
+    <if test="subject_id != null">
+      and a.subject_id = #{subject_id}
+    </if>
+    order by a.column_order asc
+  </select>
+  <select id="getTableData" parameterType="map" resultType="map">
+    ${sql}
+  </select>
+  <select id="getTableDataCount" parameterType="map" resultType="Integer">
+    ${sqlCount}
+  </select>
+  <select id="getDimensionInfo" parameterType="Integer" resultType="map">
+    select dimension_id,dimension_name,ref_table,key_field,name_field,show_field
+    from ndp_dimension
+    where dimension_id = #{dimension_id}
+  </select>
+  <select id="getDimensionData" parameterType="map" resultType="map">
+    ${sql}
+  </select>
+</mapper>
