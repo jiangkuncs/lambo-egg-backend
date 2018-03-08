@@ -3,19 +3,11 @@ package com.lambo.upms.client.controller;
 import com.lambo.common.base.BaseController;
 import com.lambo.upms.client.dao.model.UpmsUser;
 import com.lambo.upms.client.service.api.UpmsClientApiService;
-import com.lambo.upms.client.service.api.UpmsClientUserService;
 import com.lambo.upms.common.constant.UpmsResult;
 import com.lambo.upms.common.constant.UpmsResultConstant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,9 +27,9 @@ import java.util.Map;
 @Controller
 @Api(value = "用户相关", description = "用户相关")
 @RequestMapping("/manage/user")
-public class UpmsUserController extends BaseController {
+public class UpmsApiController extends BaseController {
 
-    private final static Logger logger = LoggerFactory.getLogger(UpmsUserController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UpmsApiController.class);
 
     @Autowired
     UpmsClientApiService upmsClientApiService;
