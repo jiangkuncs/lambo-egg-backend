@@ -17,5 +17,5 @@ public interface FrontendService {
 
     Map getTableData(Map param);
 
-    List getDimensionData(Map param);
+    Map getDimensionData(Map param);
 }

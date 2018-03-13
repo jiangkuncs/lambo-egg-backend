@@ -139,14 +139,22 @@ public class frontendController {
     @RequestMapping(value = "/dataSubject/getDimensionData")
     @ResponseBody
     @LogAround(value="查询纬度")
-    public List getDimensionData(
+    public Map getDimensionData(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
             @ApiParam(name="dimensionId", value = "纬度ID")
-            @RequestParam(required = false, defaultValue = "", value = "dimensionId") String dimensionId)  {
+            @RequestParam(required = true, defaultValue = "", value = "dimensionId") String dimensionId,
+            @ApiParam(name="search", value = "查询关键字")
+            @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
         Map param = new HashMap();
         if(!dimensionId.isEmpty()){
             param.put("dimensionId",dimensionId);
         }
-        List list = frontendService.getDimensionData(param);
-        return list;
+        param.put("offset",offset);
+        param.put("limit",limit);
+        if(!search.isEmpty()){
+            param.put("search",search);
+        }
+        return frontendService.getDimensionData(param);
     }
 }

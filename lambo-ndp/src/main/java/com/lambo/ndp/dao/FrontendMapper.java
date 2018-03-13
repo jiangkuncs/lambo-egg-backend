@@ -11,11 +11,9 @@ public interface FrontendMapper {
 
     List getSubjectInfo(Map param);
 
-    List getTableData(Map param);
+    List getSqlData(Map param);
 
-    Integer getTableDataCount(Map param);
+    Integer getSqlDataCount(Map param);
 
     Map getDimensionInfo(Integer dimension_id);
-
-    List getDimensionData(Map param);
 }

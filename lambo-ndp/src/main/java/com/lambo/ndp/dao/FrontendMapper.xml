@@ -68,18 +68,15 @@
     </if>
     order by a.column_order asc
   </select>
-  <select id="getTableData" parameterType="map" resultType="map">
+  <select id="getSqlData" parameterType="map" resultType="map">
     ${sql}
   </select>
-  <select id="getTableDataCount" parameterType="map" resultType="Integer">
+  <select id="getSqlDataCount" parameterType="map" resultType="Integer">
     ${sqlCount}
   </select>
   <select id="getDimensionInfo" parameterType="Integer" resultType="map">
     select dimension_id,dimension_name,ref_table,key_field,name_field,show_field
     from ndp_dimension
     where dimension_id = #{dimension_id}
-  </select>
-  <select id="getDimensionData" parameterType="map" resultType="map">
-    ${sql}
   </select>
 </mapper>

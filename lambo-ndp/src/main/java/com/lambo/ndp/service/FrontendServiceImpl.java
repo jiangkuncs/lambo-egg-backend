@@ -101,14 +101,14 @@ public class FrontendServiceImpl implements FrontendService {
         if(param.get("offset") != null && !param.get("offset").equals("")){
             offset = Integer.parseInt(param.get("offset")+"");
         }
-        int limit = 0;
+        int limit = 10;
         if(param.get("limit") != null && !param.get("limit").equals("")){
             limit = Integer.parseInt(param.get("limit")+"");
         }
         PageHelper.offsetPage(offset,limit);
-        List list = frontendMapper.getTableData(finalParam);
+        List list = frontendMapper.getSqlData(finalParam);
         finalParam.put("sqlCount",sqlCount);
-        Integer total = frontendMapper.getTableDataCount(finalParam);
+        Integer total = frontendMapper.getSqlDataCount(finalParam);
         Map result = new HashMap();
         result.put("rows",list);
         result.put("total",total);
@@ -116,24 +116,45 @@ public class FrontendServiceImpl implements FrontendService {
     }
 
     @Override
-    public List getDimensionData(Map param){
+    public Map getDimensionData(Map param){
+        Map result = new HashMap();
+        result.put("rows",new ArrayList());
+        result.put("total",0);
         if (param.get("dimensionId")!=null) {
             String dimensionId = (String)param.get("dimensionId");
             Map dimension = frontendMapper.getDimensionInfo(Integer.parseInt(dimensionId));
             String sql = "";
+            String sqlCount = "";
             if(dimension!=null){
                 sql += " select " + dimension.get("key_field") + " key_field,";
                 sql += " " + dimension.get("name_field") + " name_field,";
                 sql += " " + dimension.get("show_field");
                 sql += " from "+dimension.get("ref_table");
+                sqlCount += " select count("+dimension.get("key_field")+") sum";
+                sqlCount += " from "+dimension.get("ref_table");
+                if(param.containsKey("search")){
+                    sql += " where "+dimension.get("name_field")+ " like '%"+param.get("search")+"%'";
+                    sqlCount += " where "+dimension.get("name_field")+ " like '%"+param.get("search")+"%'";
+                }
+
                 Map finalParam = new HashMap();
                 finalParam.put("sql",sql);
-                return frontendMapper.getDimensionData(finalParam);
-            }else{
-                return null;
+                int offset = 0;
+                if(param.get("offset") != null && !param.get("offset").equals("")){
+                    offset = Integer.parseInt(param.get("offset")+"");
+                }
+                int limit = 10;
+                if(param.get("limit") != null && !param.get("limit").equals("")){
+                    limit = Integer.parseInt(param.get("limit")+"");
+                }
+                PageHelper.offsetPage(offset,limit);
+                List rows =  frontendMapper.getSqlData(finalParam);
+                finalParam.put("sqlCount",sqlCount);
+                Integer total = frontendMapper.getSqlDataCount(finalParam);
+                result.put("rows",rows);
+                result.put("total",total);
             }
-        }else{
-            return null;
         }
+        return result;
     }
 }
