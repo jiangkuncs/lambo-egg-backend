@@ -25,6 +25,7 @@ import java.util.Map;
  * Created by wangjie on 2017/11/14.
  */
 @Controller()
+@RequestMapping("/manage")
 public class frontendController {
     private static Logger logger = LoggerFactory.getLogger(frontendController.class);
 
