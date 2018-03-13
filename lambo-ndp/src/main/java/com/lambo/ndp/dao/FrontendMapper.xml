@@ -46,7 +46,7 @@
     select a.column_id,a.subject_id,a.column_name,a.cell_id,a.search_condition,
       a.search_setting,a.column_order,a.is_show,b.table_id,b.cell_code,b.cell_name,
       b.dict_id,b.data_unit,b.data_desc,c.dict_name,d.dimension_id,d.dimension_name,
-      d.ref_table,d.key_field,d.name_field,e.subject_name,e.category_id,
+      d.ref_table,d.key_field,d.name_field,d.show_field,d.dimension_type,e.subject_name,e.category_id,
       e.subject_name,e.subject_desc,e.table_code
     from ndp_subject_column a
     left join ndp_table_cell b
@@ -71,11 +71,8 @@
   <select id="getSqlData" parameterType="map" resultType="map">
     ${sql}
   </select>
-  <select id="getSqlDataCount" parameterType="map" resultType="Integer">
-    ${sqlCount}
-  </select>
   <select id="getDimensionInfo" parameterType="Integer" resultType="map">
-    select dimension_id,dimension_name,ref_table,key_field,name_field,show_field
+    select dimension_id,dimension_name,ref_table,key_field,name_field,show_field,dimension_type
     from ndp_dimension
     where dimension_id = #{dimension_id}
   </select>

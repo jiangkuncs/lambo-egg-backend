@@ -13,7 +13,5 @@ public interface FrontendMapper {
 
     List getSqlData(Map param);
 
-    Integer getSqlDataCount(Map param);
-
     Map getDimensionInfo(Integer dimension_id);
 }

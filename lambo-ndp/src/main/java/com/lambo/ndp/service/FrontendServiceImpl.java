@@ -1,6 +1,7 @@
 package com.lambo.ndp.service;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lambo.ndp.dao.DemoUserOldMapper;
 import com.lambo.ndp.dao.FrontendMapper;
 import io.swagger.models.auth.In;
@@ -47,7 +48,6 @@ public class FrontendServiceImpl implements FrontendService {
     @Override
     public Map getTableData(Map param){
         String sql = " select";
-        String sqlCount = " select";
         if(param.containsKey("subject_id")){
             List columnList = getSubjectInfo(param);
             if(columnList!=null && columnList.size()>0){
@@ -56,7 +56,6 @@ public class FrontendServiceImpl implements FrontendService {
                     Map column = (Map)columnList.get(i);
                     sql += " a0."+column.get("cell_code")+",";
                     if(i==0){
-                        sqlCount += " count(a0."+column.get("cell_code")+")";
                         table = " " + column.get("table_code") + " a0";
                     }
                     if(column.get("search_condition") != null && column.get("ref_table")!=null){
@@ -69,7 +68,6 @@ public class FrontendServiceImpl implements FrontendService {
                     sql = sql.substring(0,sql.length()-1);
                 }
                 sql += " from " + table;
-                sqlCount += " from " + table;
             }else{
                 Map result = new HashMap();
                 result.put("rows",new ArrayList());
@@ -78,7 +76,6 @@ public class FrontendServiceImpl implements FrontendService {
             }
         }
         sql += " where 1=1";
-        sqlCount += " where 1=1";
         if(param.containsKey("params")){
             String params = (String)param.get("params");
             if(params.endsWith(",")){
@@ -92,7 +89,6 @@ public class FrontendServiceImpl implements FrontendService {
             }
             for(int i=0;i<wheres.length;i++){
                 sql += " and a0."+wheres[i];
-                sqlCount += " and a0."+wheres[i];
             }
         }
         Map finalParam = new HashMap();
@@ -107,11 +103,10 @@ public class FrontendServiceImpl implements FrontendService {
         }
         PageHelper.offsetPage(offset,limit);
         List list = frontendMapper.getSqlData(finalParam);
-        finalParam.put("sqlCount",sqlCount);
-        Integer total = frontendMapper.getSqlDataCount(finalParam);
+        PageInfo page = new PageInfo(list);
         Map result = new HashMap();
-        result.put("rows",list);
-        result.put("total",total);
+        result.put("rows",page.getList());
+        result.put("total",page.getTotal());
         return result;
     }
 
@@ -124,17 +119,13 @@ public class FrontendServiceImpl implements FrontendService {
             String dimensionId = (String)param.get("dimensionId");
             Map dimension = frontendMapper.getDimensionInfo(Integer.parseInt(dimensionId));
             String sql = "";
-            String sqlCount = "";
             if(dimension!=null){
                 sql += " select " + dimension.get("key_field") + " key_field,";
                 sql += " " + dimension.get("name_field") + " name_field,";
                 sql += " " + dimension.get("show_field");
                 sql += " from "+dimension.get("ref_table");
-                sqlCount += " select count("+dimension.get("key_field")+") sum";
-                sqlCount += " from "+dimension.get("ref_table");
                 if(param.containsKey("search")){
                     sql += " where "+dimension.get("name_field")+ " like '%"+param.get("search")+"%'";
-                    sqlCount += " where "+dimension.get("name_field")+ " like '%"+param.get("search")+"%'";
                 }
 
                 Map finalParam = new HashMap();
@@ -149,10 +140,9 @@ public class FrontendServiceImpl implements FrontendService {
                 }
                 PageHelper.offsetPage(offset,limit);
                 List rows =  frontendMapper.getSqlData(finalParam);
-                finalParam.put("sqlCount",sqlCount);
-                Integer total = frontendMapper.getSqlDataCount(finalParam);
-                result.put("rows",rows);
-                result.put("total",total);
+                PageInfo page = new PageInfo(rows);
+                result.put("rows",page.getList());
+                result.put("total",page.getTotal());
             }
         }
         return result;

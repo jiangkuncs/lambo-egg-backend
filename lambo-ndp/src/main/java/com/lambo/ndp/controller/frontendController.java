@@ -36,7 +36,7 @@ public class frontendController {
      * @return
      */
     @ApiOperation(value = "分类列表")
-    @RequestMapping(value = "/dataCategory/getCategoryList")
+    @RequestMapping(value = "/dataCategory/getCategoryList",method = RequestMethod.POST)
     @ResponseBody
     @LogAround(value="分类列表")
     public List getCategoryList()  {
@@ -48,7 +48,7 @@ public class frontendController {
      * @return
      */
     @ApiOperation(value = "专题列表")
-    @RequestMapping(value = "/dataSubject/getSubjectList")
+    @RequestMapping(value = "/dataSubject/getSubjectList",method = RequestMethod.POST)
     @ResponseBody
     @LogAround(value="专题列表")
     public List getSubjectList(
@@ -66,7 +66,7 @@ public class frontendController {
      * @return
      */
     @ApiOperation(value = "专题详情")
-    @RequestMapping(value = "/dataSubject/getSubjectInfo")
+    @RequestMapping(value = "/dataSubject/getSubjectInfo",method = RequestMethod.POST)
     @ResponseBody
     @LogAround(value="专题详情")
     public List getSubjectInfo(
@@ -128,8 +128,7 @@ public class frontendController {
             @ApiParam(name="params", value = "参数")
             @RequestParam(required = false, defaultValue = "", value = "params") String params){
 
-        Map result = getTableData(offset,limit,subjectId,params);
-        return result;
+        return getTableData(offset,limit,subjectId,params);
     }
 
     /**
@@ -137,7 +136,7 @@ public class frontendController {
      * @return
      */
     @ApiOperation(value = "查询纬度")
-    @RequestMapping(value = "/dataSubject/getDimensionData")
+    @RequestMapping(value = "/dataSubject/getDimensionData",method = RequestMethod.GET)
     @ResponseBody
     @LogAround(value="查询纬度")
     public Map getDimensionData(
@@ -157,5 +156,24 @@ public class frontendController {
             param.put("search",search);
         }
         return frontendService.getDimensionData(param);
+    }
+
+    /**
+     * 导出纬度
+     * @return
+     */
+    @ApiOperation(value = "导出纬度")
+    @RequestMapping(value = "/dataSubject/getDimensionData",method = RequestMethod.POST)
+    @ResponseBody
+    @LogAround(value="导出纬度")
+    public Map exportDimensionList(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="dimensionId", value = "纬度ID")
+            @RequestParam(required = true, defaultValue = "", value = "dimensionId") String dimensionId,
+            @ApiParam(name="search", value = "查询关键字")
+            @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
+
+        return getDimensionData(offset,limit,dimensionId,search);
     }
 }
