@@ -15,7 +15,7 @@
   <result column="CREATE_USER" jdbcType="INTEGER" property="createUser" />
   <result column="CREATE_TIME" jdbcType="CHAR" property="createTime" />
  </resultMap>
-  <resultMap id="BaseResultTableCellMap" type="com.lambo.ndp.model.TableCell">
+  <resultMap id="BaseResultTableCellMap" type="com.lambo.ndp.model.TableCellDict">
     <id column="CELL_ID" jdbcType="INTEGER" property="cellId" />
     <id column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
     <result column="CELL_CODE" jdbcType="VARCHAR" property="cellCode" />
@@ -23,6 +23,7 @@
     <result column="DICT_ID" jdbcType="VARCHAR" property="dictId" />
     <result column="DATA_UNIT" jdbcType="INTEGER" property="dataUnit" />
     <result column="DATA_DESC" jdbcType="CHAR" property="dataDesc" />
+      <result column="DICT_Name" jdbcType="CHAR" property="dictName" />
   </resultMap>
   <select id="selectByPrimaryKey" parameterType="Integer" resultMap="BaseResultTableMap">
     select TABLE_ID,TABLE_CODE,TABLE_NAME,TABLE_DESC,CREATE_USER,CREATE_TIME
@@ -51,8 +52,8 @@
     </if>
   </select>
   <select id="queryTableCell" parameterType="Integer" resultMap="BaseResultTableCellMap">
-    select CELL_ID,TABLE_ID,CELL_CODE,CELL_NAME,DICT_ID,DATA_UNIT,DATA_DESC
-    from NDP_TABLE_CELL
+    select DISTINCT CELL_ID,TABLE_ID,CELL_CODE,CELL_NAME,NDP_TABLE_CELL.DICT_ID,DATA_UNIT,DATA_DESC,NDP_DICT.DICT_NAME
+    from NDP_TABLE_CELL left join NDP_DICT ON NDP_TABLE_CELL.DICT_ID=NDP_DICT.DICT_ID
     where TABLE_ID =#{tableId}
 
   </select>

@@ -13,6 +13,7 @@ import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.CateGory;
+import com.lambo.ndp.model.Dict;
 import com.lambo.ndp.model.Table;
 import com.lambo.ndp.model.TableCell;
 import com.lambo.ndp.service.api.TableService;
@@ -20,17 +21,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 //import net.sf.json.JSONArray;
 //import net.sf.json.JSONObject;
+import org.apache.poi.ss.formula.functions.Columns;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import com.lambo.ndp.service.api.DictService;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.Character.getType;
 
@@ -47,6 +46,8 @@ public class TableController extends BaseController {
 
     @Autowired
     private TableService tableService;
+    @Autowired
+    private DictService DictService;
 
     @ApiOperation(value = "库表列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -84,10 +85,30 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "tableId") int tableId) {
 
         Map<String,Object> param = new HashMap<String, Object>();
-        //System.out.println("tableId:"+tableId);
         //物理分页
         PageHelper.offsetPage(offset, limit);
         List data = tableService.queryTableCell(tableId);
+//        JSONArray json = JSONArray.parseArray(data.toString());
+//        String dictId="";
+//        if(json.size()>0){
+//            for(int i=0;i<json.size();i++){
+//                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+//                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
+//                dictId=(String)job.get("dictId");
+//                if(dictId==null || "".equals(dictId)){
+//
+//                }else{
+//                    List<Dict> Dict = DictService.selectByDictId(dictId);
+//
+//                }
+//
+//            }
+//        }
+//        for(int i=0;i<data.size();i++){
+          // System.out.println("data[]"+data.toString());
+//            String dictId="1";
+//            List<Dict> Dict = DictService.selectByDictId(dictId);
+//        }
         PageInfo page = new PageInfo(data);
 
         Map<String, Object> result = new HashMap<>();
@@ -127,16 +148,47 @@ public class TableController extends BaseController {
     public Object listDbTableColumns(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
-            @RequestParam(required = true, value = "tableName") String tableName) {
+            @RequestParam(required = true, value = "tableName") String tableName,
+            @RequestParam(required = false, value = "selectColumns") String selectColumns) {
+        System.out.println("selectColumns="+selectColumns);
 
         Map<String,Object> param = new HashMap<String, Object>();
         param.put("tableName",tableName);
-
         List data = tableService.queryDbTableColumns(param);
-        System.out.println("data="+data);
-        PageHelper.offsetPage(offset, limit);
-        PageInfo page = new PageInfo(data);
+        String Columns="";
+        if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
 
+        }else{
+            Columns=selectColumns.replace("[","").replace("\"","").replace("]","");
+        }
+
+        //System.out.println("Columns="+Columns);
+
+        //System.out.println("data="+data);
+        String[] columnsArry= Columns.split(",");
+        List<Map<String,String>> dataNew=new ArrayList<Map<String,String>>();
+        String columnName="";
+        Boolean is=true;
+        for(int j=0;j<data.size();j++){
+            Map parm=new HashMap();
+            parm=(Map)data.get(j);
+            columnName=(String)parm.get("COLUMN_NAME");
+           // System.out.println("columnName="+columnName);
+            for(int i=0;i<columnsArry.length;i++){
+                if(columnsArry[i].equals(columnName)){
+                    is=false;
+                    break;
+                }
+
+            }
+            if(is){
+                dataNew.add(parm);
+            }
+            is=true;
+        }
+        //System.out.println("dataNew="+dataNew);
+        PageHelper.offsetPage(offset, limit);
+        PageInfo page = new PageInfo(dataNew);
         Map<String, Object> result = new HashMap<>();
         result.put("rows", page.getList());
         result.put("total", page.getTotal());
@@ -268,7 +320,7 @@ public class TableController extends BaseController {
     public int deleteTable(
             @PathVariable("tableId") int tableId
     ){
-        System.out.println("tableId="+tableId+",,,"+getType(tableId));
+        //System.out.println("tableId="+tableId+",,,"+getType(tableId));
         int count = 0;
         count = tableService.deleteTableCellByTableId(tableId);
         tableService.deleteTableByTableId(tableId);
