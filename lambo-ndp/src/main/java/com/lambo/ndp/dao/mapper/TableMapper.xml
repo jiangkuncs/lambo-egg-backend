@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.ndp.dao.api.TableMapper">
+  <select id="queryDbTable" parameterType="map" resultType="map">
+    select table_name from information_schema.tables where table_schema='lambo'
+</select>
+    <select id="queryDbTableColumns" parameterType="map" resultType="map">
+        select COLUMN_NAME from information_schema.COLUMNS where table_name =  #{tableName,jdbcType=VARCHAR}
+    </select>
+  <resultMap id="BaseResultTableMap" type="com.lambo.ndp.model.Table">
+  <id column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
+  <result column="TABLE_CODE" jdbcType="VARCHAR" property="tableCode" />
+  <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+  <result column="TABLE_DESC" jdbcType="VARCHAR" property="tableDesc" />
+  <result column="CREATE_USER" jdbcType="INTEGER" property="createUser" />
+  <result column="CREATE_TIME" jdbcType="CHAR" property="createTime" />
+ </resultMap>
+  <resultMap id="BaseResultTableCellMap" type="com.lambo.ndp.model.TableCell">
+    <id column="CELL_ID" jdbcType="INTEGER" property="cellId" />
+    <id column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
+    <result column="CELL_CODE" jdbcType="VARCHAR" property="cellCode" />
+    <result column="CELL_NAME" jdbcType="VARCHAR" property="cellName" />
+    <result column="DICT_ID" jdbcType="VARCHAR" property="dictId" />
+    <result column="DATA_UNIT" jdbcType="INTEGER" property="dataUnit" />
+    <result column="DATA_DESC" jdbcType="CHAR" property="dataDesc" />
+  </resultMap>
+  <select id="selectByPrimaryKey" parameterType="Integer" resultMap="BaseResultTableMap">
+    select TABLE_ID,TABLE_CODE,TABLE_NAME,TABLE_DESC,CREATE_USER,CREATE_TIME
+    from NDP_TABLE
+    where TABLE_ID=#{tableId}
+  </select>
+    <update id="updateTable" parameterType="map">
+        update NDP_TABLE
+      set TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      TABLE_DESC = #{tableDesc,jdbcType=VARCHAR},
+      CREATE_USER = #{createUser,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=CHAR}
+    where TABLE_ID = #{tableId,jdbcType=INTEGER}
+    </update>
+  <select id="queryTable" parameterType="map" resultMap="BaseResultTableMap">
+    select TABLE_ID,TABLE_CODE,TABLE_NAME,TABLE_DESC,CREATE_USER,CREATE_TIME
+    from NDP_TABLE
+    where 1=1
+    <if test="tableCode != null and tableCode != ''">
+     <!-- and TABLE_CODE = like concat(concat('%',#{tableCode}),'%')-->
+      and TABLE_CODE =#{tableCode}
+    </if>
+    <if test="tableName != null and tableName != ''">
+      and table_name =#{tableName}
+    </if>
+  </select>
+  <select id="queryTableCell" parameterType="Integer" resultMap="BaseResultTableCellMap">
+    select CELL_ID,TABLE_ID,CELL_CODE,CELL_NAME,DICT_ID,DATA_UNIT,DATA_DESC
+    from NDP_TABLE_CELL
+    where TABLE_ID =#{tableId}
+
+  </select>
+  <select id="selectTableById" parameterType="Integer" resultMap="BaseResultTableMap">
+    select TABLE_ID,TABLE_CODE,TABLE_NAME,TABLE_DESC,CREATE_USER,CREATE_TIME
+    from NDP_TABLE
+    where TABLE_ID = #{tableId}
+  </select>
+  <!-- <insert id="insertTable" useGeneratedKeys="true" keyProperty="table_id" parameterType="map">
+     insert into NDP_TABLE ( TABLE_CODE, TABLE_NAME,
+     TABLE_DESC,CREATE_USER, CREATE_TIME)
+     values (#{tableCode,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR},#{tableDesc,jdbcType=VARCHAR},
+     #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR})
+   </insert>-->
+  <insert id="insertTable" useGeneratedKeys="true" keyProperty="tableId" parameterType="com.lambo.ndp.model.Table">
+    insert into NDP_TABLE ( TABLE_CODE, TABLE_NAME,
+    TABLE_DESC,CREATE_USER, CREATE_TIME)
+    values (#{tableCode,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR},#{tableDesc,jdbcType=VARCHAR},
+    #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR})
+  </insert>
+  <insert id="insertTableCell"  parameterType="com.lambo.ndp.model.TableCell">
+    insert into NDP_TABLE_CELL ( TABLE_ID, CELL_CODE,
+    CELL_NAME,DICT_ID, DATA_UNIT,DATA_DESC)
+    values (#{tableId,jdbcType=INTEGER}, #{cellCode,jdbcType=VARCHAR},#{cellName,jdbcType=VARCHAR},
+    #{dictId,jdbcType=VARCHAR}, #{dataUnit,jdbcType=VARCHAR},#{dataDesc,jdbcType=VARCHAR})
+  </insert>
+  <delete id="deleteTableCellByPrimaryKey" parameterType="Integer">
+    delete from NDP_TABLE_CELL
+    where CELL_ID = #{cellId}
+  </delete>
+  <delete id="deleteTableCellByTableId" parameterType="Integer">
+    delete from NDP_TABLE_CELL
+    where TABLE_ID = #{tableId}
+  </delete>
+  <delete id="deleteTableByTableId" parameterType="Integer">
+    delete from NDP_TABLE
+    where TABLE_ID = #{tableId}
+  </delete>
+ </mapper>
