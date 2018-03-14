@@ -8,6 +8,7 @@ import com.lambo.ndp.service.DemoUserService;
 import com.lambo.ndp.service.FrontendService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class frontendController {
             @ApiParam(name="categoryId", value = "分类ID")
             @RequestParam(required = false, defaultValue = "", value = "categoryId") String categoryId)  {
         Map param = new HashMap();
-        if(!categoryId.isEmpty()){
+        if(StringUtils.isNotBlank(categoryId)){
             param.put("category_id",categoryId);
         }
         List list = frontendService.getSubjectList(param);
@@ -73,7 +74,7 @@ public class frontendController {
             @ApiParam(name="subjectId", value = "专题ID")
             @RequestParam(required = false, defaultValue = "", value = "subjectId") String subjectId)  {
         Map param = new HashMap();
-        if(!subjectId.isEmpty()){
+        if(StringUtils.isNotBlank(subjectId)){
             param.put("subject_id",subjectId);
         }else{
             return new ArrayList();
@@ -93,6 +94,10 @@ public class frontendController {
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @ApiParam(name="limit", value = "条数")
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @ApiParam(required = true, name="subjectId", value = "专题ID")
             @RequestParam(required = true, defaultValue = "", value = "subjectId") String subjectId,
             @ApiParam(name="params", value = "参数")
@@ -100,7 +105,13 @@ public class frontendController {
         Map param = new HashMap();
         param.put("offset",offset);
         param.put("limit",limit);
-        if(!subjectId.isEmpty()){
+        if(StringUtils.isNotBlank(sort)){
+            param.put("sort",sort);
+        }
+        if(StringUtils.isNotBlank(order)){
+            param.put("order",order);
+        }
+        if(StringUtils.isNotBlank(subjectId)){
             param.put("subject_id",subjectId);
         }else{
             Map result = new HashMap();
@@ -108,27 +119,31 @@ public class frontendController {
             result.put("total",0);
             return result;
         }
-        if(!params.isEmpty()){
+        if(StringUtils.isNotBlank(params)){
             param.put("params",params);
         }
         Map result = frontendService.getTableData(param);
         return result;
     }
 
-    @ApiOperation(value = "列表数据导出")
+    @ApiOperation(value = "导出数据")
     @RequestMapping(value = "/dataSubject/getTableData",method = RequestMethod.POST)
     @ResponseBody
     @EnableExportTable
-    @LogAround("列表数据导出")
+    @LogAround("导出数据")
     public Map exportList(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @ApiParam(required = true, name="subjectId", value = "专题ID")
             @RequestParam(required = true, defaultValue = "", value = "subjectId") String subjectId,
             @ApiParam(name="params", value = "参数")
             @RequestParam(required = false, defaultValue = "", value = "params") String params){
 
-        return getTableData(offset,limit,subjectId,params);
+        return getTableData(offset,limit,sort,order,subjectId,params);
     }
 
     /**
@@ -142,17 +157,27 @@ public class frontendController {
     public Map getDimensionData(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @ApiParam(name="dimensionId", value = "纬度ID")
             @RequestParam(required = true, defaultValue = "", value = "dimensionId") String dimensionId,
             @ApiParam(name="search", value = "查询关键字")
             @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
         Map param = new HashMap();
-        if(!dimensionId.isEmpty()){
-            param.put("dimensionId",dimensionId);
-        }
         param.put("offset",offset);
         param.put("limit",limit);
-        if(!search.isEmpty()){
+        if(StringUtils.isNotBlank(sort)){
+            param.put("sort",sort);
+        }
+        if(StringUtils.isNotBlank(order)){
+            param.put("order",order);
+        }
+        if(StringUtils.isNotBlank(dimensionId)){
+            param.put("dimensionId",dimensionId);
+        }
+        if(StringUtils.isNotBlank(search)){
             param.put("search",search);
         }
         return frontendService.getDimensionData(param);
@@ -169,11 +194,15 @@ public class frontendController {
     public Map exportDimensionList(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @ApiParam(name="dimensionId", value = "纬度ID")
             @RequestParam(required = true, defaultValue = "", value = "dimensionId") String dimensionId,
             @ApiParam(name="search", value = "查询关键字")
             @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
 
-        return getDimensionData(offset,limit,dimensionId,search);
+        return getDimensionData(offset,limit,sort,order,dimensionId,search);
     }
 }
