@@ -6,6 +6,7 @@ import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.ndp.service.DemoUserService;
 import com.lambo.ndp.service.FrontendService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,7 @@ import java.util.Map;
  * Created by wangjie on 2017/11/14.
  */
 @Controller()
+@Api(value = "前端展示服务", description = "前端展示服务")
 @RequestMapping("/manage")
 public class frontendController {
     private static Logger logger = LoggerFactory.getLogger(frontendController.class);
