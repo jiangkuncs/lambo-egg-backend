@@ -3,6 +3,7 @@ package com.lambo.ndp.dao.api;
 import com.lambo.ndp.model.Subject;
 import com.lambo.ndp.model.SubjectExample;
 import java.util.List;
+import java.util.Map;
 
 public interface SubjectMapper {
     int deleteByPrimaryKey(Integer subjectId);
@@ -18,4 +19,5 @@ public interface SubjectMapper {
     int updateByPrimaryKeySelective(Subject record);
 
     int updateByPrimaryKey(Subject record);
+    List<Map<String,Object>> querySubject(Map<String, Object> param);
 }
