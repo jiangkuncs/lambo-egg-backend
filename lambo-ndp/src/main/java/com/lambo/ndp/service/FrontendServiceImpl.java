@@ -154,9 +154,7 @@ public class FrontendServiceImpl implements FrontendService {
             if(dimension!=null){
                 sql += " select " + dimension.get("key_field") + " key_field,";
                 sql += " " + dimension.get("name_field") + " name_field,";
-                if(StringUtils.isNotBlank((String)dimension.get("show_field"))){
-                    sql += " " + dimension.get("show_field");
-                }
+                sql += " " + dimension.get("show_field");
                 sql += " from "+dimension.get("ref_table");
                 if(param.containsKey("search")){
                     sql += " where "+dimension.get("name_field")+ " like '%"+param.get("search")+"%'";
