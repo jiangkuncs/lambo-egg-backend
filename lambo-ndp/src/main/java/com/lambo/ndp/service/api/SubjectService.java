@@ -16,4 +16,7 @@ import java.util.Map;
 */
 public interface SubjectService extends BaseService<Subject, SubjectExample> {
     public List<Map<String,Object>> querySubject(Map<String, Object> param);
+    public Map<String,Object> getSubject(int subjectId);
+    public List<Map<String,Object>> querySubjectColumn(int subjectId);
+    Object insertSubject(String categoryId,String tableCode,String tableId,String subjectDesc,String subjectName,String subjectColumns);
 }

@@ -20,4 +20,7 @@ public interface SubjectMapper {
 
     int updateByPrimaryKey(Subject record);
     List<Map<String,Object>> querySubject(Map<String, Object> param);
+    public Map<String,Object> getSubject(int subjectId);
+    public List<Map<String,Object>> querySubjectColumn(int subjectId);
+    int insertSubject(Map<String,Object> param);
 }

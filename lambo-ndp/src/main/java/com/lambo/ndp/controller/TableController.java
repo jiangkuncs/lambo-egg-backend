@@ -26,11 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import com.lambo.ndp.service.api.DictService;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+import org.springframework.transaction.annotation.Transactional;
 import static java.lang.Character.getType;
 
 /**
@@ -143,7 +144,6 @@ public class TableController extends BaseController {
     @ApiOperation(value = "库表字段列表数据")
     @RequestMapping(value = "/listDbTableColumns",method = RequestMethod.GET)
     @ResponseBody
-    @EnableExportTable
     @LogAround("列表数据")
     public Object listDbTableColumns(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
@@ -197,6 +197,7 @@ public class TableController extends BaseController {
     @ApiOperation(value = "新增库表数据")
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @Transactional
     public Object create(
             @RequestParam(required = true, value = "tableCode") String tableCode,
             @RequestParam(required = true, value = "tableName") String tableName,
@@ -254,6 +255,7 @@ public class TableController extends BaseController {
     @ApiOperation(value = "更新库表")
     @RequestMapping(value = "/update/{tableId}", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public Object updateUser(
             @PathVariable("tableId") int tableId,
             @RequestParam(required = true, value = "tableCode") String tableCode,
@@ -317,6 +319,7 @@ public class TableController extends BaseController {
     @ApiOperation(value = "删除库表")
     @RequestMapping(value = "/deleteTable/{tableId}", method = RequestMethod.GET)
     @ResponseBody
+    @Transactional
     public int deleteTable(
             @PathVariable("tableId") int tableId
     ){

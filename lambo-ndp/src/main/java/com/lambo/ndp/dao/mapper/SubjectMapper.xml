@@ -42,12 +42,26 @@
   <sql id="Base_Column_List">
     SUBJECT_ID, CATEGORY_ID, SUBJECT_NAME, SUBJECT_DESC, TABLE_ID, TABLE_CODE
   </sql>
+  <select id="querySubjectColumn" parameterType="java.lang.Integer" resultType="map">
+   select column_id as columnId,subject_id as subjectId,column_name as cellName,sc.cell_id as cellId,
+    search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
+    is_show as isShow,cell_code as cellCode
+    from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
+  </select>
+
   <select id="querySubject" parameterType="map" resultType="map">
-    select subject_id,subject_name,ns.category_id,table_id,table_code,nc.CATEGORY_NAME
+    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
     from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
     <if test="subjectName != null and subjectName != ''">
       and ns.subject_name =#{subjectName}
     </if>
+  </select>
+
+  <select id="getSubject" parameterType="java.lang.Integer" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
+    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
+    and ns.subject_id =#{subjectId}
+
   </select>
   <select id="selectByExample" parameterType="com.lambo.ndp.model.SubjectExample" resultMap="BaseResultMap">
     select
@@ -74,6 +88,14 @@
     delete from ndp_subject
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </delete>
+  <insert id="insertSubject" parameterType="map">
+    insert into ndp_subject (CATEGORY_ID, SUBJECT_NAME,
+    SUBJECT_DESC, TABLE_ID, TABLE_CODE
+    )
+    values (#{categoryId,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR},
+    #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}
+    )
+  </insert>
   <insert id="insert" parameterType="com.lambo.ndp.model.Subject">
     insert into ndp_subject (SUBJECT_ID, CATEGORY_ID, SUBJECT_NAME, 
       SUBJECT_DESC, TABLE_ID, TABLE_CODE

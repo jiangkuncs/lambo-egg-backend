@@ -74,5 +74,43 @@ public class SubjectController extends BaseController {
         result.put("total", page.getTotal());
         return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
+    @ApiOperation(value = "根据ID查询专题")
+    @RequestMapping(value = "/get/{subjectId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Object get(@PathVariable("subjectId") int subjectId) {
+        Map<String,Object> param = subjectService.getSubject(subjectId);
+        return new NdpResult(NdpResultConstant.SUCCESS, param);
+    }
+    @ApiOperation(value = "数据专题项列表")
+    @RequestMapping(value = "/listColumn/{subjectId}",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("请求列表数据")
+    public Object listColumn(
+            @PathVariable("subjectId") int subjectId,
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "100", value = "limit") int limit) {
+//        Map<String,Object> param = new HashMap<String, Object>();
+//        param.put("SubjectId",SubjectId);
+        //物理分页
+        PageHelper.offsetPage(offset, limit);
+        List<Map<String,Object>> data = subjectService.querySubjectColumn(subjectId);
+        PageInfo page = new PageInfo(data);
+        Map<String, Object> result = new HashMap<>();
+        result.put("rows", page.getList());
+        result.put("total", page.getTotal());
+        return new NdpResult(NdpResultConstant.SUCCESS,result);
+    }
+    @ApiOperation(value = "新增数据分类")
+    @ResponseBody
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Object create(
+            @RequestParam(required = true, value = "categoryId") String categoryId,
+            @RequestParam(required = true, value = "tableCode") String tableCode,
+            @RequestParam(required = true, value = "tableId") String tableId,
+            @RequestParam(required = false, value = "subjectDesc") String subjectDesc,
+            @RequestParam(required = false, value = "subjectName") String subjectName,
+            @RequestParam(required = false, value = "subjectColumns") String subjectColumns) {
+        return subjectService.insertSubject(categoryId,tableCode,tableId,subjectDesc,subjectName,subjectColumns);
+    }
 
 }
