@@ -15,6 +15,5 @@ import java.util.Map;
 * Created by lambo on 2017/3/20.
 */
 public interface SubjectService extends BaseService<Subject, SubjectExample> {
-//    public List<Dict> selectByDictId(String dictId);
-//    public int deleteByDictId(Map parm);
+    public List<Map<String,Object>> querySubject(Map<String, Object> param);
 }

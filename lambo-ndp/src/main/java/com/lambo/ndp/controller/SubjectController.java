@@ -13,9 +13,8 @@ import com.lambo.common.base.BaseController;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.Dict;
-import com.lambo.ndp.model.DictExample;
-import com.lambo.ndp.model.SubjectExample;
+import com.lambo.ndp.model.*;
+import com.lambo.ndp.service.api.CateGoryService;
 import com.lambo.ndp.service.api.DictService;
 import com.lambo.ndp.service.api.SubjectService;
 import io.swagger.annotations.Api;
@@ -37,152 +36,43 @@ import java.util.Map;
  */
 @Controller
 @Api(value = "数据专题查询", description = "数据专题查询")
-@RequestMapping("/manage/subjectdata")
+@RequestMapping("/manage/subjectData")
 public class SubjectController extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(SubjectController.class);
 
     @Autowired
-    private DictService DictService;
+    private SubjectService subjectService;
+    @ApiOperation(value = "数据专题列表")
+    @RequestMapping(value = "/list",method = RequestMethod.POST) //这是post方式用于导出
+    @ResponseBody
+    @EnableExportTable
+    @LogAround("请求列表数据")
+    public Object listExport(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @RequestParam(required = false, defaultValue = "", value = "search") String search) {
+        return ((NdpResult)list(offset,limit,search)).data;
 
+    }
     @ApiOperation(value = "数据专题列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
-    @EnableExportTable
     @LogAround("请求列表数据")
     public Object list(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
-            @RequestParam(required = false, defaultValue = "", value = "subjectName") String subjectName,
-            @RequestParam(required = false, defaultValue = "", value = "cateGory") String cateGory) {
-        SubjectExample subjectExample=new SubjectExample();
-//        if(StringUtils.isBlank(sort)){
-//            sort = "startTime";
-//        }
-//        if(StringUtils.isBlank(order)){
-//            order = "desc";
-//        }
-//        demoLogExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
-//
-//        if (StringUtils.isNotBlank(subjectName)) {
-//            subjectExample.or().andDictIdLike("%" + dictId + "%")
-//                    .andDictNameLike("%" + dictName + "%");
-//
-//        }
-
+            @RequestParam(required = false, defaultValue = "", value = "SubjectName") String SubjectName) {
+        Map<String,Object> param = new HashMap<String, Object>();
+        param.put("SubjectName",SubjectName);
         //物理分页
-//        PageHelper.offsetPage(offset, limit);
-//        List<Dict> data = SubjectService
-//        PageInfo page = new PageInfo(data);
-
+        PageHelper.offsetPage(offset, limit);
+        List<Map<String,Object>> data = subjectService.querySubject(param);
+        PageInfo page = new PageInfo(data);
         Map<String, Object> result = new HashMap<>();
-//        result.put("rows", page.getList());
-//        result.put("total", page.getTotal());
+        result.put("rows", page.getList());
+        result.put("total", page.getTotal());
         return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
 
-    @ApiOperation(value = "新增数据字典")
-    @ResponseBody
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public Object create(
-            @RequestParam(required = false, value = "dictName") String dictName,
-            @RequestParam(required = true, value = "dictId") String dictId,
-            @RequestParam(required = false, value = "dictDesc") String dictDesc,
-            @RequestParam(required = false, value = "dictKeyList" ) String dictKeyList) {
-//[{"dictKey":"2","dictValue":"未审核"},{"dictKey":"3","dictValue":"提交"},{"dictKey":"1","dictValue":"已审核"},{"dictKey":"0","dictValue":"新建"}]
-        ComplexResult result = FluentValidator.checkAll()
-                .on(dictId, new LengthValidator(1, 20, "名称"))
-                .doValidate()
-                .result(ResultCollectors.toComplex());
-        if (!result.isSuccess()) {
-            return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
-        }
-        JSONArray json = JSONArray.parseArray(dictKeyList);
-        System.out.println("json:"+json);
-        if(json.size()>0){
-            for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
-                Dict dict=new Dict();
-                dict.setDictId(dictId);
-                dict.setDictDesc(dictDesc);
-                dict.setDictName(dictName);
-                dict.setDictKey((String)job.get("dictKey"));
-                dict.setDictValue((String)job.get("dictValue"));
-                DictService.insert(dict);
-            }
-        }
-        return new NdpResult(NdpResultConstant.SUCCESS, json);
-    }
-
-    @ApiOperation(value = "删除数据字典")
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    @ResponseBody
-    public Object delete(@RequestParam(required = true, defaultValue = "", value = "dictId") String dictId) {
-        System.out.println("dictId:"+dictId);
-        Map parm=new HashMap();
-        parm.put("dictId",dictId);
-        int count = DictService.deleteByDictId(parm);
-        return new NdpResult(NdpResultConstant.SUCCESS, count);
-    }
-
-    @ApiOperation(value = "删除数据字典项信息")
-    @RequestMapping(value = "/deletedictkey",method = RequestMethod.GET)
-    @ResponseBody
-    public Object deleteDictKey(@RequestParam(required = true, defaultValue = "", value = "dictId") String dictId,
-                                @RequestParam(required = true, defaultValue = "", value = "dictKey") String dictKey) {
-        Map parm=new HashMap();
-        parm.put("dictId",dictId);
-        parm.put("dictKey",dictKey);
-        int count = DictService.deleteByDictId(parm);
-        return new NdpResult(NdpResultConstant.SUCCESS, count);
-    }
-
-    @ApiOperation(value = "修改数据字典")
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
-    public Object updateUser(
-            @RequestParam(required = true, value = "dictId")String dictId,
-            @RequestParam(required = false, value = "dictName") String dictName,
-            @RequestParam(required = false, value = "dictDesc") String dictDesc,
-            @RequestParam(required = false, value = "dictKeyList" ) String dictKeyList
-    ){
-        int count = 0;
-        ComplexResult result = FluentValidator.checkAll()
-                .on(dictId, new LengthValidator(1, 20, "表名"))
-                .doValidate()
-                .result(ResultCollectors.toComplex());
-        if (!result.isSuccess()) {
-            return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
-        }
-        System.out.println("dictKeyList:"+dictKeyList);
-
-        JSONArray json = JSONArray.parseArray(dictKeyList);
-        System.out.println("json:"+json);
-        if(json.size()>0){
-            Map parm=new HashMap();
-            parm.put("dictId",dictId);
-            count = DictService.deleteByDictId(parm);
-            for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
-                Dict dict=new Dict();
-                dict.setDictId(dictId);
-                dict.setDictDesc(dictDesc);
-                dict.setDictName(dictName);
-                dict.setDictKey((String)job.get("dictKey"));
-                dict.setDictValue((String)job.get("dictValue"));
-                DictService.insert(dict);
-            }
-        }
-        return count;
-    }
-
-    @ApiOperation(value = "根据ID查询分类")
-    @RequestMapping(value = "/get/{dictId}", method = RequestMethod.GET)
-    @ResponseBody
-    public Object get(@PathVariable("dictId") String dictId) {
-        List<Dict> Dict = DictService.selectByDictId(dictId);
-        return new NdpResult(NdpResultConstant.SUCCESS, Dict);
-    }
 }

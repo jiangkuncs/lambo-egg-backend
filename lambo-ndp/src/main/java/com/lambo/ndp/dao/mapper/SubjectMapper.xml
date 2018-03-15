@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.SubjectMapper">
+
   <resultMap id="BaseResultMap" type="com.lambo.ndp.model.Subject">
     <id column="SUBJECT_ID" jdbcType="INTEGER" property="subjectId" />
     <result column="CATEGORY_ID" jdbcType="INTEGER" property="categoryId" />
@@ -41,6 +42,13 @@
   <sql id="Base_Column_List">
     SUBJECT_ID, CATEGORY_ID, SUBJECT_NAME, SUBJECT_DESC, TABLE_ID, TABLE_CODE
   </sql>
+  <select id="querySubject" parameterType="map" resultType="map">
+    select subject_id,subject_name,ns.category_id,table_id,table_code,nc.CATEGORY_NAME
+    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
+    <if test="subjectName != null and subjectName != ''">
+      and ns.subject_name =#{subjectName}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.lambo.ndp.model.SubjectExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

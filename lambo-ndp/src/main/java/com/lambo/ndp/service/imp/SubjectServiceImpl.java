@@ -33,10 +33,8 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper, Subject, 
 
     @Autowired
     SubjectMapper subjectMapper;
-//    public List<Dict> selectByDictId(String dictId){
-//        return subjectMapper.selectByDictId(dictId);
-//    }
-//    public int deleteByDictId(Map parm){
-//        return subjectMapper.deleteByDictId(parm);
-//    }
+    public List<Map<String,Object>> querySubject(Map<String, Object> param)
+    {
+        return subjectMapper.querySubject(param);
+    }
 }
