@@ -15,6 +15,8 @@ public interface FrontendService {
 
     List getSubjectInfo(Map param);
 
+    Map getDimensionInfo(Map param);
+
     Map getTableData(Map param);
 
     Map getDimensionData(Map param);

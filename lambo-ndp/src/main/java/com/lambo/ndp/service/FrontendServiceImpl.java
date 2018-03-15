@@ -6,6 +6,7 @@ import com.lambo.common.util.excel.Constants;
 import com.lambo.ndp.dao.DemoUserOldMapper;
 import com.lambo.ndp.dao.FrontendMapper;
 import io.swagger.models.auth.In;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,6 +126,16 @@ public class FrontendServiceImpl implements FrontendService {
     }
 
     @Override
+    public Map getDimensionInfo(Map param){
+        Map dimension = null;
+        String dimensionId = (String)param.get("dimensionId");
+        if(StringUtils.isNotBlank(dimensionId)){
+            dimension = frontendMapper.getDimensionInfo(Integer.parseInt(dimensionId));
+        }
+        return dimension;
+    }
+
+    @Override
     public Map getDimensionData(Map param){
         Map result = new HashMap();
         result.put(Constants.rows,new ArrayList());
@@ -133,15 +144,26 @@ public class FrontendServiceImpl implements FrontendService {
             String dimensionId = (String)param.get("dimensionId");
             Map dimension = frontendMapper.getDimensionInfo(Integer.parseInt(dimensionId));
             String sql = "";
+            String sort = "";
+            String order = "";
+            if(param.get("sort") != null && !param.get("sort").equals("")
+                    && param.get("order") != null && !param.get("order").equals("")){
+                sort = (String) param.get("sort");
+                order = (String) param.get("order");
+            }
             if(dimension!=null){
                 sql += " select " + dimension.get("key_field") + " key_field,";
                 sql += " " + dimension.get("name_field") + " name_field,";
-                sql += " " + dimension.get("show_field");
+                if(StringUtils.isNotBlank((String)dimension.get("show_field"))){
+                    sql += " " + dimension.get("show_field");
+                }
                 sql += " from "+dimension.get("ref_table");
                 if(param.containsKey("search")){
                     sql += " where "+dimension.get("name_field")+ " like '%"+param.get("search")+"%'";
                 }
-
+                if (!"".equals(sort)){
+                    sql += " order by " + sort + " " + order;
+                }
                 Map finalParam = new HashMap();
                 finalParam.put("sql",sql);
                 int offset = 0;

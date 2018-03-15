@@ -149,6 +149,24 @@ public class frontendController {
     }
 
     /**
+     * 查询纬度详情
+     * @return
+     */
+    @ApiOperation(value = "查询纬度详情")
+    @RequestMapping(value = "/dataSubject/getDimensionInfo",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround(value="查询纬度")
+    public Map getDimensionInfo(
+            @ApiParam(name="dimensionId", value = "纬度ID")
+            @RequestParam(required = true, defaultValue = "", value = "dimensionId") String dimensionId)  {
+        Map param = new HashMap();
+        if(StringUtils.isNotBlank(dimensionId)){
+            param.put("dimensionId",dimensionId);
+        }
+        return frontendService.getDimensionInfo(param);
+    }
+
+    /**
      * 查询纬度
      * @return
      */
@@ -192,6 +210,7 @@ public class frontendController {
     @ApiOperation(value = "导出纬度")
     @RequestMapping(value = "/dataSubject/getDimensionData",method = RequestMethod.POST)
     @ResponseBody
+    @EnableExportTable
     @LogAround(value="导出纬度")
     public Map exportDimensionList(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
