@@ -22,5 +22,6 @@ public interface SubjectMapper {
     List<Map<String,Object>> querySubject(Map<String, Object> param);
     public Map<String,Object> getSubject(int subjectId);
     public List<Map<String,Object>> querySubjectColumn(int subjectId);
-    int insertSubject(Map<String,Object> param);
+    int insertSubject(Subject subject);
+    int insertSubjectColumn(Map<String, Object> param);
 }

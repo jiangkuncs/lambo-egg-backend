@@ -43,13 +43,16 @@
     select TABLE_ID,TABLE_CODE,TABLE_NAME,TABLE_DESC,CREATE_USER,CREATE_TIME
     from NDP_TABLE
     where 1=1
-    <if test="tableCode != null and tableCode != ''">
+    <if test="tableCode != null">
      <!-- and TABLE_CODE = like concat(concat('%',#{tableCode}),'%')-->
-      and TABLE_CODE =#{tableCode}
+      and TABLE_CODE like concat(concat('%',#{tableName}),'%')
     </if>
-    <if test="tableName != null and tableName != ''">
-      and table_name =#{tableName}
+    <if test="tableName != null">
+      and table_name like concat(concat('%',#{tableName}),'%')
     </if>
+      order by ${sort} ${order}
+
+
   </select>
   <select id="queryTableCell" parameterType="Integer" resultMap="BaseResultTableCellMap">
     select DISTINCT CELL_ID,TABLE_ID,CELL_CODE,CELL_NAME,NDP_TABLE_CELL.DICT_ID,DATA_UNIT,DATA_DESC,NDP_DICT.DICT_NAME

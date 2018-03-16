@@ -9,11 +9,10 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
+import com.lambo.common.util.StringUtil;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.CateGory;
-import com.lambo.ndp.model.Dict;
 import com.lambo.ndp.model.Table;
 import com.lambo.ndp.model.TableCell;
 import com.lambo.ndp.service.api.TableService;
@@ -21,7 +20,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 //import net.sf.json.JSONArray;
 //import net.sf.json.JSONObject;
-import org.apache.poi.ss.formula.functions.Columns;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,12 +58,30 @@ public class TableController extends BaseController {
     public Object list(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "tableCode") String tableCode,
             @RequestParam(required = false, value = "tableName") String tableName) {
 
         Map<String,Object> param = new HashMap<String, Object>();
-        param.put("tableCode",tableCode);
-        param.put("tableName",tableName);
+        if(StringUtils.isNotBlank(sort)){
+            param.put("sort", StringUtil.humpToLine(sort));
+        }else{
+            param.put("sort","table_id");
+        }
+        if(StringUtils.isNotBlank(order)){
+            param.put("order",order);
+        }else{
+            param.put("order","desc");
+        }
+        if(StringUtils.isNotBlank(tableCode)){
+            param.put("tableCode",tableCode);
+        }
+        if(StringUtils.isNotBlank(tableName)){
+            param.put("tableName",tableName);
+        }
         //物理分页
         PageHelper.offsetPage(offset, limit);
         List data = tableService.queryTable(param);

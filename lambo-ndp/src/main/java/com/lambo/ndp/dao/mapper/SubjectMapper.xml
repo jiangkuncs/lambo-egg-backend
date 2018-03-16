@@ -88,12 +88,20 @@
     delete from ndp_subject
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </delete>
-  <insert id="insertSubject" parameterType="map">
+  <insert id="insertSubject" useGeneratedKeys="true" keyProperty="subjectId" parameterType="com.lambo.ndp.model.Subject">
     insert into ndp_subject (CATEGORY_ID, SUBJECT_NAME,
     SUBJECT_DESC, TABLE_ID, TABLE_CODE
     )
     values (#{categoryId,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR},
     #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertSubjectColumn" parameterType="map">
+    insert into ndp_subject_column (SUBJECT_ID, COLUMN_NAME ,
+    CELL_ID, SEARCH_CONDITION, SEARCH_SETTING,COLUMN_ORDER,IS_SHOW
+    )
+    values (#{subjectId,jdbcType=INTEGER}, #{columnName,jdbcType=VARCHAR},
+    #{cellId,jdbcType=INTEGER}, #{searchCondition,jdbcType=VARCHAR}, #{searchSetting,jdbcType=VARCHAR},#{columnOrder,jdbcType=INTEGER},#{isShow,jdbcType=VARCHAR}
     )
   </insert>
   <insert id="insert" parameterType="com.lambo.ndp.model.Subject">

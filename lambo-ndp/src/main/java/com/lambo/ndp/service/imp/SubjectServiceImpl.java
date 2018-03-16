@@ -1,5 +1,7 @@
 package com.lambo.ndp.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.lambo.common.annotation.BaseService;
 import com.lambo.common.base.BaseServiceImpl;
 import com.lambo.ndp.dao.api.DictMapper;
@@ -35,30 +37,58 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper, Subject, 
 
     @Autowired
     SubjectMapper subjectMapper;
-    public List<Map<String,Object>> querySubject(Map<String, Object> param)
-    {
+
+    public List<Map<String, Object>> querySubject(Map<String, Object> param) {
         return subjectMapper.querySubject(param);
     }
-    public Map<String,Object> getSubject(int subjectId)
-    {
+
+    public Map<String, Object> getSubject(int subjectId) {
         return subjectMapper.getSubject(subjectId);
     }
-    public List<Map<String,Object>> querySubjectColumn(int subjectId){
+
+    public List<Map<String, Object>> querySubjectColumn(int subjectId) {
         return subjectMapper.querySubjectColumn(subjectId);
     }
-    public Object insertSubject(String categoryId,String tableCode,String tableId,String subjectDesc,String subjectName,String subjectColumns){
-        Map<String, Object> param=new HashMap();
-        System.out.println("categoryId="+categoryId+"tableCode="+tableCode+",tableId="+tableId+"subjectDesc="+subjectDesc+",subjectName="+subjectName);
-        System.out.println("subjectColumns="+subjectColumns);
 
-        param.put("categoryId",categoryId);
-        param.put("tableCode",tableCode);
-        param.put("tableId",tableId);
-        param.put("subjectDesc",subjectDesc);
-        param.put("subjectName",subjectName);
+    public Object insertSubject(String categoryId, String tableCode, String tableId, String subjectDesc, String subjectName, String subjectColumns) {
 
-        int con=subjectMapper.insertSubject(param);
+        System.out.println("categoryId=" + categoryId + "tableCode=" + tableCode + ",tableId=" + tableId + "subjectDesc=" + subjectDesc + ",subjectName=" + subjectName);
+        System.out.println("subjectColumns=" + subjectColumns);
+        Subject subject = new Subject();
+        subject.setCategoryId(Integer.valueOf(categoryId));
+        subject.setSubjectDesc(subjectDesc);
+        subject.setTableId(Integer.valueOf(tableId));
+        subject.setTableCode(tableCode);
+        subject.setSubjectName(subjectName);
+        int con = subjectMapper.insertSubject(subject);
+        int subjectId = subject.getSubjectId();
+        //列插入
+        JSONArray json = JSONArray.parseArray(subjectColumns);
+        if (json.size() > 0) {
+            for (int i = 0; i < json.size(); i++) {
+                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                System.out.println("job:" + job);  // 得到 每个对象中的属性值
+                Map<String,Object> parm = new HashMap();
+//                if (job.get("cellName") == null) {
+//                    parm.put("columnName",null);
+//                }else{
+//                    parm.put("columnName",job.get("cellName"));
+//                }
+                parm.put("columnName",job.get("cellName"));
+                parm.put("cellId",job.get("cellId"));
+                parm.put("searchCondition",job.get("searchCondition"));
+                parm.put("searchSetting",job.get("searchSetting"));
+                parm.put("columnOrder",job.get("columnOrder"));
+                parm.put("isShow","1");
+                parm.put("subjectId",subjectId);
+                System.out.println("parm:"+parm);
+                int conColumn=subjectMapper.insertSubjectColumn(parm);
+                System.out.println("conColumn:"+conColumn);
 
-        return con;
+
+            }
+        }
+            return subjectId;
+
     }
 }
