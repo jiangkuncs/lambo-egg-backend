@@ -7,7 +7,7 @@ public class CateGory {
 
     private String categoryDesc;
 
-    private Integer createUser;
+    private String createUser;
 
     private String createTime;
 
@@ -35,11 +35,11 @@ public class CateGory {
         this.categoryDesc = categoryDesc == null ? null : categoryDesc.trim();
     }
 
-    public Integer getCreateUser() {
+    public String getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(Integer createUser) {
+    public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
 

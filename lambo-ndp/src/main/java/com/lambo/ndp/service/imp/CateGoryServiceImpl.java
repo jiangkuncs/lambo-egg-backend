@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
-* UpmsLogService实现
-* Created by lambo on 2017/3/20.
+ * CateGoryService实现
+ * Created by zxc on 2018/2/28.
 */
 @Service
 @Transactional

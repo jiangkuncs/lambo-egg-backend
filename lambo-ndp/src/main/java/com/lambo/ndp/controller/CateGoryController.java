@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
+import com.lambo.common.util.StringUtil;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.CateGory;
@@ -16,6 +17,7 @@ import com.lambo.ndp.service.api.CateGoryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 
 import org.slf4j.Logger;
@@ -32,12 +34,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 日志controller
- * Created by lambo on 2017/3/14.
+ * 分类controller
+ * Created by zxc on 2018/3/14.
  */
 @Controller
 @Api(value = "数据分类", description = "数据分类")
-@RequestMapping("/manage/categorydata")
+@RequestMapping("/manage/cateGoryData")
 public class CateGoryController extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(CateGoryController.class);
@@ -52,8 +54,12 @@ public class CateGoryController extends BaseController {
     public Object listExport(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "search") String search) {
-        return ((NdpResult)list(offset,limit,search)).data;
+        return ((NdpResult)list(offset,limit,sort,order,search)).data;
 
     }
     @ApiOperation(value = "数据分类列表")
@@ -63,8 +69,19 @@ public class CateGoryController extends BaseController {
     public Object list(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "search") String search) {
         CateGoryExample cateGoryExample = new CateGoryExample();
+        if(StringUtils.isBlank(sort)){
+            sort = "create_time";
+        }
+        if(StringUtils.isBlank(order)){
+            order = "desc";
+        }
+        cateGoryExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
         if (StringUtils.isNotBlank(search)) {
             cateGoryExample.or()
                     .andCategoryNameLike("%" + search + "%");
@@ -98,7 +115,7 @@ public class CateGoryController extends BaseController {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         cateGory.setCategoryDesc(categoryDesc);
         cateGory.setCategoryName(categoryName);
-        cateGory.setCreateUser(1);
+        cateGory.setCreateUser("admin");
         cateGory.setCreateTime(df.format(day).toString());
         int count = cateGoryService.insertSelective(cateGory);
         if(count==1){
@@ -137,7 +154,7 @@ public class CateGoryController extends BaseController {
         }
         Date day=new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        cateGory.setCreateUser(1);
+        cateGory.setCreateUser("admin");
         cateGory.setCreateTime(df.format(day).toString());
         cateGory.setCategoryId(id);
         int count = cateGoryService.updateByPrimaryKeySelective(cateGory);

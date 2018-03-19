@@ -25,8 +25,8 @@
     <result column="DATA_DESC" jdbcType="CHAR" property="dataDesc" />
       <result column="DICT_Name" jdbcType="CHAR" property="dictName" />
   </resultMap>
-  <select id="selectByPrimaryKey" parameterType="Integer" resultMap="BaseResultTableMap">
-    select TABLE_ID,TABLE_CODE,TABLE_NAME,TABLE_DESC,CREATE_USER,CREATE_TIME
+  <select id="selectTableByPrimaryKey" parameterType="Integer" resultType="map">
+    select TABLE_ID as tableId,TABLE_CODE as tableCode,TABLE_NAME as tableName,TABLE_DESC as tableDesc ,CREATE_USER as createUser,CREATE_TIME as createTime
     from NDP_TABLE
     where TABLE_ID=#{tableId}
   </select>
@@ -45,7 +45,7 @@
     where 1=1
     <if test="tableCode != null">
      <!-- and TABLE_CODE = like concat(concat('%',#{tableCode}),'%')-->
-      and TABLE_CODE like concat(concat('%',#{tableName}),'%')
+      and TABLE_CODE like concat(concat('%',#{tableCode}),'%')
     </if>
     <if test="tableName != null">
       and table_name like concat(concat('%',#{tableName}),'%')
@@ -54,8 +54,8 @@
 
 
   </select>
-  <select id="queryTableCell" parameterType="Integer" resultMap="BaseResultTableCellMap">
-    select DISTINCT CELL_ID,TABLE_ID,CELL_CODE,CELL_NAME,NDP_TABLE_CELL.DICT_ID,DATA_UNIT,DATA_DESC,NDP_DICT.DICT_NAME
+  <select id="queryTableCell" parameterType="Integer" resultType="map">
+    select DISTINCT CELL_ID as cellId,TABLE_ID as tableId,CELL_CODE as cellCode,CELL_NAME as cellName ,NDP_TABLE_CELL.DICT_ID as dictId,DATA_UNIT as dataUnit,DATA_DESC as dataDesc,NDP_DICT.DICT_NAME as dictName
     from NDP_TABLE_CELL left join NDP_DICT ON NDP_TABLE_CELL.DICT_ID=NDP_DICT.DICT_ID
     where TABLE_ID =#{tableId}
 
@@ -75,7 +75,7 @@
     insert into NDP_TABLE ( TABLE_CODE, TABLE_NAME,
     TABLE_DESC,CREATE_USER, CREATE_TIME)
     values (#{tableCode,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR},#{tableDesc,jdbcType=VARCHAR},
-    #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR})
+    #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR})
   </insert>
   <insert id="insertTableCell"  parameterType="com.lambo.ndp.model.TableCell">
     insert into NDP_TABLE_CELL ( TABLE_ID, CELL_CODE,

@@ -9,7 +9,7 @@ public class Table {
 
     private String tableDesc;
 
-    private Integer createUser;
+    private String createUser;
 
     private String createTime;
 
@@ -45,11 +45,11 @@ public class Table {
         this.tableDesc = tableDesc == null ? null : tableDesc.trim();
     }
 
-    public Integer getCreateUser() {
+    public String getCreateUser() {
         return createUser;
     }
 
-    public void setCreateUser(Integer createUser) {
+    public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
 

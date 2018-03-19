@@ -15,6 +15,7 @@ import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.Table;
 import com.lambo.ndp.model.TableCell;
+import com.lambo.ndp.model.TableCellDict;
 import com.lambo.ndp.service.api.TableService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,28 +29,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import com.lambo.ndp.service.api.DictService;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
 import static java.lang.Character.getType;
 
 /**
- * 日志controller
- * Created by zxc
+ * TableController控制层
+ * Created by zxc on 2018/3/10.
  */
 @Controller
 @Api(value = "库表查询列表", description = "库表查询列表")
-@RequestMapping("/manage/tabledata")
+@RequestMapping("/manage/tableData")
 public class TableController extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(TableController.class);
 
     @Autowired
     private TableService tableService;
-    @Autowired
-    private DictService DictService;
-
+    @ApiOperation(value = "库表列表数据")
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    @ResponseBody
+    @EnableExportTable
+    @LogAround("请求列表数据")
+    public Object listExport(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
+            @RequestParam(required = false, defaultValue = "", value = "tableCode") String tableCode,
+            @RequestParam(required = false, value = "tableName") String tableName) {
+        return ((NdpResult)list(offset,limit,sort,order,tableCode,tableName)).data;
+    }
     @ApiOperation(value = "库表列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
@@ -64,7 +77,6 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "tableCode") String tableCode,
             @RequestParam(required = false, value = "tableName") String tableName) {
-
         Map<String,Object> param = new HashMap<String, Object>();
         if(StringUtils.isNotBlank(sort)){
             param.put("sort", StringUtil.humpToLine(sort));
@@ -86,54 +98,44 @@ public class TableController extends BaseController {
         PageHelper.offsetPage(offset, limit);
         List data = tableService.queryTable(param);
         PageInfo page = new PageInfo(data);
-
         Map<String, Object> result = new HashMap<>();
         result.put("rows", page.getList());
         result.put("total", page.getTotal());
         return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
+
+//    @ApiOperation(value = "数据元列表数据")
+//    @RequestMapping(value = "/listTableCell",method = RequestMethod.POST)
+//    @ResponseBody
+//    @EnableExportTable
+//    @LogAround("请求列表数据")
+//    public Object listTableCell(
+//
+//            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+//            @RequestParam(required = false, defaultValue = "100", value = "limit") int limit,
+//            @RequestParam(required = false, value = "tableId") int tableId) {
+//
+//        Map<String,Object> param = new HashMap<String, Object>();
+//        //物理分页
+//        PageHelper.offsetPage(offset, limit);
+//        List data = tableService.queryTableCell(tableId);
+//        PageInfo page = new PageInfo(data);
+//        Map<String, Object> result = new HashMap<>();
+//        result.put("rows", page.getList());
+//        result.put("total", page.getTotal());
+//        return new NdpResult(NdpResultConstant.SUCCESS,data);
+//    }
     @ApiOperation(value = "数据元列表数据")
-    @RequestMapping(value = "/listtablecell",method = RequestMethod.POST)
+    @RequestMapping(value = "/listTableCellForSubject",method = RequestMethod.POST)
     @ResponseBody
     @EnableExportTable
     @LogAround("请求列表数据")
-    public Object listTableCell(
-
-            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
-            @RequestParam(required = false, defaultValue = "100", value = "limit") int limit,
+    public Object listTableCellForSubject(
             @RequestParam(required = false, value = "tableId") int tableId) {
-
-        Map<String,Object> param = new HashMap<String, Object>();
-        //物理分页
-        PageHelper.offsetPage(offset, limit);
-        List data = tableService.queryTableCell(tableId);
-//        JSONArray json = JSONArray.parseArray(data.toString());
-//        String dictId="";
-//        if(json.size()>0){
-//            for(int i=0;i<json.size();i++){
-//                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-//                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
-//                dictId=(String)job.get("dictId");
-//                if(dictId==null || "".equals(dictId)){
-//
-//                }else{
-//                    List<Dict> Dict = DictService.selectByDictId(dictId);
-//
-//                }
-//
-//            }
-//        }
-//        for(int i=0;i<data.size();i++){
-          // System.out.println("data[]"+data.toString());
-//            String dictId="1";
-//            List<Dict> Dict = DictService.selectByDictId(dictId);
-//        }
-        PageInfo page = new PageInfo(data);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("rows", page.getList());
-        result.put("total", page.getTotal());
-        //System.out.println("result:"+page.getTotal());
+        List<Map<String,Object>> data = tableService.queryTableCell(tableId);
+        for(int i=0;i<data.size();i++){
+            data.get(i).put("isShow","1");
+        }
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
     @ApiOperation(value = "数据库列表数据")
@@ -179,10 +181,6 @@ public class TableController extends BaseController {
         }else{
             Columns=selectColumns.replace("[","").replace("\"","").replace("]","");
         }
-
-        //System.out.println("Columns="+Columns);
-
-        //System.out.println("data="+data);
         String[] columnsArry= Columns.split(",");
         List<Map<String,String>> dataNew=new ArrayList<Map<String,String>>();
         String columnName="";
@@ -218,56 +216,10 @@ public class TableController extends BaseController {
     @Transactional
     public Object create(
             @RequestParam(required = true, value = "tableCode") String tableCode,
-            @RequestParam(required = true, value = "tableName") String tableName,
+            @RequestParam(required = false, value = "tableName") String tableName,
             @RequestParam(required = false, value = "tableDesc") String tableDesc,
             @RequestParam(required = false, value = "TableCellss" ) String TableCellss) {
-        ComplexResult result = FluentValidator.checkAll()
-                .on(tableCode, new LengthValidator(1, 50, "表名"))
-                .on(tableName, new LengthValidator(0, 50, "中文名"))
-                .doValidate()
-                .result(ResultCollectors.toComplex());
-        if (!result.isSuccess()) {
-            return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
-        }
-        Map<String,Object> param = new HashMap<String, Object>();
-        Date day=new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        param.put("createUser",1);
-        param.put("createTime",df.format(day).toString());
-        param.put("tableCode",tableCode);
-        param.put("tableName",tableName);
-        param.put("tableDesc",tableDesc);
-        Table table=new Table();
-        table.setCreateTime(df.format(day).toString());
-        table.setCreateUser(1);
-        table.setTableCode(tableCode);
-        table.setTableDesc(tableDesc);
-        table.setTableName(tableName);
-        int con =tableService.insertTable(table);
-        if (con!=1) {
-            return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
-        }
-        int tableId=table.getTableId();
-        //System.out.println("tableId="+tableId);
-        //System.out.println("TableCellss:"+TableCellss);
-        JSONArray json = JSONArray.parseArray(TableCellss);
-        //System.out.println("json:"+json);
-        if(json.size()>0){
-            for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
-                TableCell tableCell=new TableCell();
-                tableCell.setTableId(tableId);
-                tableCell.setCellCode((String) job.get("cellCode"));
-                tableCell.setCellName((String) job.get("cellName"));
-                tableCell.setDictId((String) job.get("dictId"));
-                tableCell.setDataDesc((String) job.get("dataDesc"));
-                tableCell.setDataUnit((String) job.get("dataUnit"));
-                int conCell =tableService.insertTableCell(tableCell);
-
-            }
-        }
-        return new NdpResult(NdpResultConstant.SUCCESS, con);
+            return tableService.create(tableCode,tableName,tableDesc,TableCellss);
     }
 
     @ApiOperation(value = "更新库表")
@@ -281,47 +233,7 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "tableDesc") String tableDesc,
             @RequestParam(required = false, value = "TableCellss" ) String TableCellss
     ){
-        int count = 0;
-        ComplexResult result = FluentValidator.checkAll()
-                .on(tableCode, new LengthValidator(1, 50, "表名"))
-                .on(tableName, new LengthValidator(0, 50, "中文名"))
-                .doValidate()
-                .result(ResultCollectors.toComplex());
-        if (!result.isSuccess()) {
-            return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
-        }
-        if(tableId > 0){
-            Map<String,Object> param = new HashMap<String, Object>();
-            Date day=new Date();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            param.put("tableId",tableId);
-            param.put("tableCode",tableCode);
-            param.put("tableName",tableName);
-            param.put("createUser",1);
-            param.put("tableDesc",tableDesc);
-            param.put("createTime",df.format(day).toString());
-            count = tableService.updateTable(param);
-        }
-        //System.out.println("TableCellss:"+TableCellss);
-        count = tableService.deleteTableCellByTableId(tableId);
-        JSONArray json = JSONArray.parseArray(TableCellss);
-        //System.out.println("json:"+json);
-        if(json.size()>0){
-            for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
-                TableCell tableCell=new TableCell();
-                tableCell.setTableId(tableId);
-                tableCell.setCellCode((String) job.get("cellCode"));
-                tableCell.setCellName((String) job.get("cellName"));
-                tableCell.setDictId((String) job.get("dictId"));
-                tableCell.setDataDesc((String) job.get("dataDesc"));
-                tableCell.setDataUnit((String) job.get("dataUnit"));
-                int conCell =tableService.insertTableCell(tableCell);
-
-            }
-        }
-        return new NdpResult(NdpResultConstant.SUCCESS, count);
+        return tableService.update(tableId,tableCode,tableName,tableDesc,TableCellss);
     }
 
     @ApiOperation(value = "删除数据元")
@@ -332,26 +244,21 @@ public class TableController extends BaseController {
     ){
             int count = 0;
             count = tableService.deleteTableCellByPrimaryKey(cellId);
-        return count;
+            return count;
     }
     @ApiOperation(value = "删除库表")
     @RequestMapping(value = "/deleteTable/{tableId}", method = RequestMethod.GET)
     @ResponseBody
     @Transactional
-    public int deleteTable(
+    public Object deleteTable(
             @PathVariable("tableId") int tableId
     ){
-        //System.out.println("tableId="+tableId+",,,"+getType(tableId));
-        int count = 0;
-        count = tableService.deleteTableCellByTableId(tableId);
-        tableService.deleteTableByTableId(tableId);
-        return count;
+        return tableService.deleteTable(tableId);
     }
     @ApiOperation(value = "根据ID查询库表")
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Object get(@PathVariable("id") int id) {
-        Table table = tableService.selectByPrimaryKey(id);
-        return new NdpResult(NdpResultConstant.SUCCESS, table);
+     return tableService.get(id);
     }
 }

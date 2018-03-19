@@ -6,8 +6,8 @@ import com.lambo.ndp.model.CateGoryExample;
 
 
 /**
-* UpmsLogService接口
-* Created by lambo on 2017/3/20.
+* CateGoryService接口
+* Created by zxc on 2018/2/28.
 */
 public interface CateGoryService extends BaseService<CateGory, CateGoryExample> {
 

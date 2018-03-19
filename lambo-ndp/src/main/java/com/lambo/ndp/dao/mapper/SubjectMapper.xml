@@ -47,18 +47,20 @@
     search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
     is_show as isShow,cell_code as cellCode
     from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
+
   </select>
 
   <select id="querySubject" parameterType="map" resultType="map">
     select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
     from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
-    <if test="subjectName != null and subjectName != ''">
-      and ns.subject_name =#{subjectName}
+    <if test="subjectName != null">
+      and subject_name like concat(concat('%',#{subjectName}),'%')
     </if>
+    order by ${sort} ${order}
   </select>
 
   <select id="getSubject" parameterType="java.lang.Integer" resultType="map">
-    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
+    select subject_id as subjectId,subject_name as subjectName ,subject_desc as subjectDesc,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
     from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
     and ns.subject_id =#{subjectId}
 
@@ -85,6 +87,14 @@
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ndp_subject
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteSubjectColumnBySubjectId" parameterType="java.lang.Integer">
+    delete from ndp_subject_column
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteSubjectBySubjectId" parameterType="java.lang.Integer">
     delete from ndp_subject
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </delete>
@@ -155,6 +165,27 @@
       </if>
     </trim>
   </insert>
+  <update id="updateSubject" parameterType="com.lambo.ndp.model.Subject">
+    update ndp_subject
+    <set>
+      <if test="categoryId != null">
+        CATEGORY_ID = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="subjectName != null">
+        SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectDesc != null">
+        SUBJECT_DESC = #{subjectDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tableId != null">
+        TABLE_ID = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="tableCode != null">
+        TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.lambo.ndp.model.Subject">
     update ndp_subject
     <set>
