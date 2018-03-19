@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
+import com.lambo.common.util.StringUtil;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
@@ -17,6 +18,7 @@ import com.lambo.ndp.model.*;
 import com.lambo.ndp.service.api.DictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,21 +49,24 @@ public class DictController extends BaseController {
     @ApiOperation(value = "数据字典列表")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
-    @EnableExportTable
     @LogAround("请求列表数据")
     public Object list(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "dictId") String dictId,
             @RequestParam(required = false, defaultValue = "", value = "dictName") String dictName) {
         DictExample dictExample=new DictExample();
-//        if(StringUtils.isBlank(sort)){
-//            sort = "startTime";
-//        }
-//        if(StringUtils.isBlank(order)){
-//            order = "desc";
-//        }
-//        demoLogExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+        if(StringUtils.isBlank(sort)){
+            sort = "dictId";
+        }
+        if(StringUtils.isBlank(order)){
+            order = "desc";
+        }
+        dictExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
 //
         if (StringUtils.isNotBlank(dictName)) {
             dictExample.or().andDictIdLike("%" + dictId + "%")
