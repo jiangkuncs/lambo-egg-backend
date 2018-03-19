@@ -13,6 +13,8 @@ import com.lambo.ndp.dao.api.TableMapper;
 import com.lambo.ndp.model.Table;
 import com.lambo.ndp.model.TableCell;
 import com.lambo.ndp.service.api.TableService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,11 +86,13 @@ public class TableServiceImpl implements TableService {
         if (!result.isSuccess()) {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
         Date day=new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Table table=new Table();
         table.setCreateTime(df.format(day).toString());
-        table.setCreateUser("admin");
+        table.setCreateUser(username);
         table.setTableCode(tableCode);
         table.setTableDesc(tableDesc);
         table.setTableName(tableName);
@@ -128,6 +132,8 @@ public class TableServiceImpl implements TableService {
         if (!result.isSuccess()) {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
         if(tableId > 0){
             Map<String,Object> param = new HashMap<String, Object>();
             Date day=new Date();
@@ -135,7 +141,7 @@ public class TableServiceImpl implements TableService {
             param.put("tableId",tableId);
             param.put("tableCode",tableCode);
             param.put("tableName",tableName);
-            param.put("createUser","admin");
+            param.put("createUser",username);
             param.put("tableDesc",tableDesc);
             param.put("createTime",df.format(day).toString());
             count = tableMapper.updateTable(param);

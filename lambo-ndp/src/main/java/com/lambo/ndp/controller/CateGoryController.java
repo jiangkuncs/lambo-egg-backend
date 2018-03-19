@@ -20,6 +20,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,10 +114,12 @@ public class CateGoryController extends BaseController {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
         Date day=new Date();
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         cateGory.setCategoryDesc(categoryDesc);
         cateGory.setCategoryName(categoryName);
-        cateGory.setCreateUser("admin");
+        cateGory.setCreateUser(username);
         cateGory.setCreateTime(df.format(day).toString());
         int count = cateGoryService.insertSelective(cateGory);
         if(count==1){
@@ -153,8 +157,10 @@ public class CateGoryController extends BaseController {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
         Date day=new Date();
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        cateGory.setCreateUser("admin");
+        cateGory.setCreateUser(username);
         cateGory.setCreateTime(df.format(day).toString());
         cateGory.setCategoryId(id);
         int count = cateGoryService.updateByPrimaryKeySelective(cateGory);
