@@ -80,14 +80,14 @@ public class FrontendServiceImpl implements FrontendService {
                     if(sort.equalsIgnoreCase((String) column.get("cell_code"))){
                         sort = " a0." + sort;
                     }
-                    if(column.get("search_condition") != null && column.get("ref_table")!=null){
+                    /*if(column.get("search_condition") != null && column.get("ref_table")!=null){
                         sql += " b" + i +"."+column.get("name_field")+",";
                         if(sort.equalsIgnoreCase((String) column.get("name_field"))){
                             sort = " b" + i +"." + sort;
                         }
                         table += " left join " + column.get("ref_table") +
                         " b"+ i +" on a0."+column.get("cell_code") +"=b"+ i + "." + column.get("key_field");
-                    }
+                    }*/
                 }
                 if(sql.endsWith(",")){
                     sql = sql.substring(0,sql.length()-1);
