@@ -226,4 +226,65 @@ public class frontendController {
 
         return getDimensionData(offset,limit,sort,order,dimensionId,search);
     }
+
+    /**
+     * 条件列表信息
+     * @return
+     */
+    @ApiOperation(value = "条件列表信息")
+    @RequestMapping(value = "/dataSubject/getConditionData",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround(value="条件列表信息")
+    public Map getConditionData(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
+            @ApiParam(name="dimensionType", value = "纬度类型")
+            @RequestParam(required = true, defaultValue = "", value = "dimensionType") String dimensionType,
+            @ApiParam(name="search", value = "查询关键字")
+            @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
+        Map param = new HashMap();
+        param.put("offset",offset);
+        param.put("limit",limit);
+        if(StringUtils.isNotBlank(sort)){
+            param.put("sort",sort);
+        }
+        if(StringUtils.isNotBlank(order)){
+            param.put("order",order);
+        }
+        if(StringUtils.isNotBlank(dimensionType)){
+            param.put("dimensionType",dimensionType);
+        }
+        if(StringUtils.isNotBlank(search)){
+            param.put("search",search);
+        }
+        return frontendService.getConditionData(param);
+    }
+
+    /**
+     * 导出条件列表信息
+     * @return
+     */
+    @ApiOperation(value = "导出条件列表信息")
+    @RequestMapping(value = "/dataSubject/getConditionData",method = RequestMethod.POST)
+    @ResponseBody
+    @EnableExportTable
+    @LogAround(value="导出条件列表信息")
+    public Map exportConditionList(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
+            @ApiParam(name="dimensionType", value = "纬度类型")
+            @RequestParam(required = true, defaultValue = "", value = "dimensionType") String dimensionType,
+            @ApiParam(name="search", value = "查询关键字")
+            @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
+
+        return getDimensionData(offset,limit,sort,order,dimensionType,search);
+    }
 }

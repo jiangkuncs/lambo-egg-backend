@@ -3,6 +3,7 @@ package com.lambo.ndp.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lambo.common.util.excel.Constants;
+import com.lambo.ndp.constant.frontendConstants;
 import com.lambo.ndp.dao.DemoUserOldMapper;
 import com.lambo.ndp.dao.FrontendMapper;
 import io.swagger.models.auth.In;
@@ -41,9 +42,9 @@ public class FrontendServiceImpl implements FrontendService {
 
     @Override
     public List getSubjectInfo(Map param){
-        if(!param.containsKey("is_show")){
+        /*if(!param.containsKey("is_show")){
             param.put("is_show","1");
-        }
+        }*/
         return frontendMapper.getSubjectInfo(param);
     }
 
@@ -184,6 +185,39 @@ public class FrontendServiceImpl implements FrontendService {
                 result.put(Constants.rows,page.getList());
                 result.put(Constants.total,page.getTotal());
             }
+        }
+        return result;
+    }
+
+    @Override
+    public Map getConditionData(Map param){
+        String dimensionType = (String) param.get("dimensionType");
+        Map result = new HashMap();
+        result.put(Constants.rows,new ArrayList());
+        result.put(Constants.total,0);
+        if(StringUtils.isNotBlank(dimensionType)){
+            int offset = 0;
+            if(param.get("offset") != null && !param.get("offset").equals("")){
+                offset = Integer.parseInt(param.get("offset")+"");
+            }
+            int limit = 10;
+            if(param.get("limit") != null && !param.get("limit").equals("")){
+                limit = Integer.parseInt(param.get("limit")+"");
+            }
+            PageHelper.offsetPage(offset,limit);
+            List rows = null;
+            if(dimensionType.equals(frontendConstants.province)){
+                rows = frontendMapper.getProviceData(param);
+            }else if(dimensionType.equals(frontendConstants.city)){
+                rows = frontendMapper.getCityData(param);
+            }else if(dimensionType.equals(frontendConstants.item)){
+                rows = frontendMapper.getItemData(param);
+            }else if(dimensionType.equals(frontendConstants.brand)){
+                rows = frontendMapper.getBrandData(param);
+            }
+            PageInfo page = new PageInfo(rows);
+            result.put(Constants.rows,page.getList());
+            result.put(Constants.total,page.getTotal());
         }
         return result;
     }

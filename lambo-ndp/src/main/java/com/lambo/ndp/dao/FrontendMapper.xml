@@ -77,4 +77,53 @@
     from ndp_dimension
     where dimension_id = #{dimension_id}
   </select>
+
+  <select id="getProviceData" parameterType="map" resultType="map">
+    select com_id,com_name,com_test,com_test1
+    from pl_com
+    where 1=1
+    <if test="search != null">
+      and (com_id like concat(concat('%',#{search}),'%')
+        or com_name like concat(concat('%',#{search}),'%'))
+    </if>
+    <if test="sort != null and order != null">
+      order by #{sort} #{order}
+    </if>
+  </select>
+  <select id="getCityData" parameterType="map" resultType="map">
+    select com_id,com_name
+    from pl_com
+    where 1=1
+    <if test="search != null">
+      and (com_id like concat(concat('%',#{search}),'%')
+      or com_name like concat(concat('%',#{search}),'%'))
+    </if>
+    <if test="sort != null and order != null">
+      order by #{sort} #{order}
+    </if>
+  </select>
+  <select id="getItemData" parameterType="map" resultType="map">
+    select item_id,item_name
+    from pl_item
+    where 1=1
+    <if test="search != null">
+      and (item_id like concat(concat('%',#{search}),'%')
+      or item_name like concat(concat('%',#{search}),'%'))
+    </if>
+    <if test="sort != null and order != null">
+      order by #{sort} #{order}
+    </if>
+  </select>
+  <select id="getBrandData" parameterType="map" resultType="map">
+    select test_id,test_name
+    from pl_test
+    where 1=1
+    <if test="search != null">
+      and (test_id like concat(concat('%',#{search}),'%')
+      or test_name like concat(concat('%',#{search}),'%'))
+    </if>
+    <if test="sort != null and order != null">
+      order by #{sort} #{order}
+    </if>
+  </select>
 </mapper>

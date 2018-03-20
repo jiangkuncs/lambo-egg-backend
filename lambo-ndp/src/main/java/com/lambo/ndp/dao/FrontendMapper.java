@@ -14,4 +14,12 @@ public interface FrontendMapper {
     List getSqlData(Map param);
 
     Map getDimensionInfo(Integer dimension_id);
+
+    List getProviceData(Map param);
+
+    List getCityData(Map param);
+
+    List getItemData(Map param);
+
+    List getBrandData(Map param);
 }

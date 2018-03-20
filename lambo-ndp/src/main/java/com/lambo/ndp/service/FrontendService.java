@@ -20,4 +20,6 @@ public interface FrontendService {
     Map getTableData(Map param);
 
     Map getDimensionData(Map param);
+
+    Map getConditionData(Map param);
 }
