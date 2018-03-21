@@ -21,6 +21,7 @@
     <if test="endTime != null">
       and create_time &lt; #{endTime}
     </if>
+    order by create_time asc
   </select>
   <select id="getCategoryAndSubjectList" parameterType="map" resultType="map">
     select a.subject_id,b.category_id,a.subject_name,a.subject_desc,a.table_id,a.table_code,
@@ -64,6 +65,9 @@
     where 1=1
     <if test="subject_id != null">
       and subject_id = #{subject_id}
+    </if>
+    <if test="categoryIds != null">
+      and category_id in (${categoryIds})
     </if>
     <if test="category_id != null">
       and category_id = #{category_id}

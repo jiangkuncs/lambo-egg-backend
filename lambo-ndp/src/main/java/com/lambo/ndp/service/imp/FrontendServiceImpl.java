@@ -29,52 +29,41 @@ public class FrontendServiceImpl implements FrontendService {
     @Override
     public List getCategoryList(Map param) {
         boolean hasSubject = (Boolean) param.get("hasSubject");
-        List categoryList = null;
+        List resultList =  frontendMapper.getCategoryList(param);
         if(hasSubject){
-            List resultList = frontendMapper.getCategoryAndSubjectList(param);
             if(resultList != null && resultList.size()>0){
-                Map tmpSubject = new HashMap();
-                Map tmpCategory = new HashMap();
+                String categoryIds = "";
                 for(int i=0;i<resultList.size();i++){
-                    Map subject = (Map)resultList.get(i);
-                    System.out.println("subject=="+subject);
-                    if(null != subject.get("category_id") && !"".equals(subject.get("category_id"))){
-                        String categoryId = subject.get("category_id")+"";
-                        System.out.println("categoryId=="+categoryId);
-                        Map subjectClone = (Map)((HashMap)subject).clone();
-                        tmpCategory.put(categoryId,subjectClone);
-                        if(null != tmpSubject.get(categoryId)){
-                            List tmpList = (List)tmpSubject.get(categoryId);
-                            tmpList.add(subject);
-                            tmpSubject.put(categoryId,tmpList);
-                        }else{
-                            List tmpList = new ArrayList();
-                            tmpList.add(subject);
-                            tmpSubject.put(categoryId,tmpList);
-                        }
-                        System.out.println("tmpSubject="+i+"="+tmpSubject);
-                        System.out.println("tmpCategory="+i+"="+tmpCategory);
+                    Map obj = (Map)resultList.get(i);
+                    categoryIds += obj.get("category_id")+",";
+                }
+                if(categoryIds.endsWith(",")){
+                    categoryIds = categoryIds.substring(0,categoryIds.length()-1);
+                }
+                param.put("categoryIds",categoryIds);
+                List subjectList = frontendMapper.getSubjectList(param);
+                Map tmpSubject = new HashMap();
+                for(int i=0;i<subjectList.size();i++){
+                    Map subject = (Map)subjectList.get(i);
+                    String categoryId = subject.get("category_id")+"";
+                    if(null != tmpSubject.get(categoryId)){
+                        List tmpList = (List)tmpSubject.get(categoryId);
+                        tmpList.add(subject);
+                        tmpSubject.put(categoryId,tmpList);
+                    }else{
+                        List tmpList = new ArrayList();
+                        tmpList.add(subject);
+                        tmpSubject.put(categoryId,tmpList);
                     }
                 }
-                System.out.println("tmpSubject=="+tmpSubject);
-                System.out.println("tmpCategory=="+tmpCategory);
-                categoryList = new ArrayList();
-                for(Object key:tmpCategory.keySet()){
-                    Map category = (Map)tmpCategory.get(key);
-                    System.out.println("key=="+key);
-                    System.out.println("category=="+category);
-                    List children = (List)tmpSubject.get(key);
-                    category.put("children",children);
-                    System.out.println("category=1="+category);
-                    categoryList.add(category);
-                    System.out.println("categoryList=="+categoryList);
+                for(int i=0;i<resultList.size();i++){
+                    Map obj = (Map)resultList.get(i);
+                    String categoryId = obj.get("category_id")+"";
+                    obj.put("children",tmpSubject.get(categoryId));
                 }
             }
-        }else{
-            categoryList =  frontendMapper.getCategoryList(param);
         }
-        System.out.println("categoryList=="+categoryList);
-        return categoryList;
+        return resultList;
     }
 
     @Override
