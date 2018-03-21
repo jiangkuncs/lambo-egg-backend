@@ -12,6 +12,7 @@ public class Subject {
     private Integer tableId;
 
     private String tableCode;
+    private String createTime;
 
     public Integer getSubjectId() {
         return subjectId;
@@ -60,7 +61,13 @@ public class Subject {
     public void setTableCode(String tableCode) {
         this.tableCode = tableCode == null ? null : tableCode.trim();
     }
+    public String getCreateTime() {
+        return createTime;
+    }
 
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -73,6 +80,7 @@ public class Subject {
         sb.append(", subjectDesc=").append(subjectDesc);
         sb.append(", tableId=").append(tableId);
         sb.append(", tableCode=").append(tableCode);
+        sb.append(", createTime=").append(createTime);
         sb.append("]");
         return sb.toString();
     }

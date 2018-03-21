@@ -100,10 +100,10 @@
   </delete>
   <insert id="insertSubject" useGeneratedKeys="true" keyProperty="subjectId" parameterType="com.lambo.ndp.model.Subject">
     insert into ndp_subject (CATEGORY_ID, SUBJECT_NAME,
-    SUBJECT_DESC, TABLE_ID, TABLE_CODE
+    SUBJECT_DESC, TABLE_ID, TABLE_CODE,CREATE_TIME
     )
     values (#{categoryId,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR},
-    #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}
+    #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR}
     )
   </insert>
   <insert id="insertSubjectColumn" parameterType="map">
@@ -181,7 +181,10 @@
         TABLE_ID = #{tableId,jdbcType=INTEGER},
       </if>
       <if test="tableCode != null">
-        TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+      TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+    </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
       </if>
     </set>
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
