@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/manage/menu")
-@Api(value = "其他接口", description = "其他接口")
+@Api(value = "菜单接口", description = "其他接口")
 public class UpmsMenuController extends BaseController {
 
     private final static Logger logger = LoggerFactory.getLogger(UpmsAuthController.class);

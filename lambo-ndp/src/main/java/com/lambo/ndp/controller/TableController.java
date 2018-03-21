@@ -10,6 +10,7 @@ import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 import com.lambo.common.util.StringUtil;
+import com.lambo.common.util.excel.Constants;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
@@ -147,7 +148,6 @@ public class TableController extends BaseController {
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
             @RequestParam(required = false, defaultValue = "", value = "search") String search,
-
             @RequestParam(required = false, value = "sort") String sort,
             @RequestParam(required = false, value = "order") String order) {
 
@@ -182,11 +182,11 @@ public class TableController extends BaseController {
     @LogAround("列表数据")
     public Object listDbTableColumns(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
-            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @RequestParam(required = false, defaultValue = "20", value = "limit") int limit,
             @RequestParam(required = false, defaultValue = "", value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
             @RequestParam(required = false, value = "order") String order,
-            @RequestParam(required = false, defaultValue = "", value = "tableName") String tableName,
+            @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName,
             @RequestParam(required = false, value = "selectColumns") String selectColumns) {
         System.out.println("selectColumns="+selectColumns);
         System.out.println("tableName="+tableName);
@@ -194,34 +194,59 @@ public class TableController extends BaseController {
         System.out.println("sort="+sort);
         System.out.println("offset="+offset);
         System.out.println("limit="+limit);
-        Map<String,Object> param = new HashMap<String, Object>();
-        if(StringUtils.isNotBlank(tableName)){
-            param.put("tableName",tableName);
-        }
-        if(StringUtils.isNotBlank(search)){
-            param.put("columnName",search);
-        }
         if(StringUtils.isNotBlank(sort)){
-            param.put("sort", StringUtil.humpToLine(sort));
+            sort= StringUtil.humpToLine(sort);
         }else{
-            param.put("sort","table_name");
+            sort="table_name";
         }
         if(StringUtils.isNotBlank(order)){
-            param.put("order",order);
+
         }else{
-            param.put("order","desc");
+            order="desc";
         }
 
 
-        PageHelper.offsetPage(offset, limit);
+//        PageHelper.offsetPage(offset, limit);
+//        List data = tableService.queryDbTableColumns(param);
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
+        if(StringUtils.isNotBlank(tableName)){
+           sql.append(" and table_name ='").append(tableName).append("'");
+        }
+        if(StringUtils.isNotBlank(search)){
+            sql.append(" and column_name like '%").append(search).append("%'");
+        }
+        String Columns="";
+        Boolean isCon=false;
+        if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
+
+        }else{
+            Columns=selectColumns.replace("[","").replace("\"","").replace("]","");
+            isCon=true;
+        }
+        if(isCon){
+            sql.append("and COLUMN_NAME  not  in(");
+            String[] columnsArry= Columns.split(",");
+            int len = columnsArry.length;
+            for (int i = 0; i < len; i++) {
+                sql.append("'").append(columnsArry[i]).append("'");
+                if (i < len - 1)
+                    sql.append(",");
+            }
+            sql.append(")");
+        }
+        sql.append("order by ").append(sort).append(" ").append(order);
+        System.out.println("sql="+sql.toString());
+        Map param = new HashMap();
+        param.put("sql",sql.toString());
+        PageHelper.offsetPage(offset,limit);
         List data = tableService.queryDbTableColumns(param);
-//                String Columns="";
-//        if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
+        PageInfo page = new PageInfo(data);
+        Map<String, Object> result = new HashMap<>();
+        result.put("rows", page.getList());
+        result.put("total", page.getTotal());
+        return new NdpResult(NdpResultConstant.SUCCESS,result);
 //
-//        }else{
-//            Columns=selectColumns.replace("[","").replace("\"","").replace("]","");
-//        }
-//        String[] columnsArry= Columns.split(",");
 //        List<Map<String,String>> dataNew=new ArrayList<Map<String,String>>();
 //        String columnName="";
 //        Boolean is=true;
@@ -242,11 +267,11 @@ public class TableController extends BaseController {
 //            }
 //            is=true;
 //        }
-        PageInfo page = new PageInfo(data);
-        Map<String, Object> result = new HashMap<>();
-        result.put("rows", page.getList());
-        result.put("total", page.getTotal());
-        return new NdpResult(NdpResultConstant.SUCCESS,result);
+//        PageInfo page = new PageInfo(data);
+//        Map<String, Object> result = new HashMap<>();
+//        result.put("rows", page.getList());
+//        result.put("total", page.getTotal());
+//        return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
     @ApiOperation(value = "新增库表数据")
     @ResponseBody

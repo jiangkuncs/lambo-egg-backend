@@ -10,12 +10,15 @@
 
       order by ${sort} ${order}
 </select>
-    <select id="queryDbTableColumns" parameterType="map" resultType="map">
+    <select id="queryDbTableColumns1" parameterType="map" resultType="map">
         select COLUMN_NAME from information_schema.COLUMNS where table_name =  #{tableName,jdbcType=VARCHAR}
         <if test="columnName != null">
             and column_name like concat(concat('%',#{columnName}),'%')
         </if>
         order by ${sort} ${order}
+    </select>
+    <select id="queryDbTableColumns" parameterType="map" resultType="map">
+        ${sql}
     </select>
   <resultMap id="BaseResultTableMap" type="com.lambo.ndp.model.Table">
   <id column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
