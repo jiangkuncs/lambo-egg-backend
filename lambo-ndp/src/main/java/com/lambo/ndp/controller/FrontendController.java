@@ -1,11 +1,8 @@
 package com.lambo.ndp.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
-import com.lambo.ndp.service.DemoUserService;
-import com.lambo.ndp.service.FrontendService;
+import com.lambo.ndp.service.api.FrontendService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,8 +25,8 @@ import java.util.Map;
 @Controller()
 @Api(value = "前端展示服务", description = "前端展示服务")
 @RequestMapping("/manage")
-public class frontendController {
-    private static Logger logger = LoggerFactory.getLogger(frontendController.class);
+public class FrontendController {
+    private static Logger logger = LoggerFactory.getLogger(FrontendController.class);
 
     @Autowired
     private FrontendService frontendService;
@@ -42,9 +38,12 @@ public class frontendController {
     @RequestMapping(value = "/dataCategory/getCategoryList",method = RequestMethod.POST)
     @ResponseBody
     @LogAround(value="分类列表")
-    public List getCategoryList()  {
-        List list = frontendService.getCategoryList(null);
-        return list;
+    public List getCategoryList(
+            @ApiParam(name="hasSubject", value = "是否包含专题")
+            @RequestParam(required = false, defaultValue = "true", value = "hasSubject") boolean hasSubject)  {
+        Map param = new HashMap();
+        param.put("hasSubject",hasSubject);
+        return frontendService.getCategoryList(param);
     }
     /**
      * 专题列表

@@ -1,4 +1,4 @@
-package com.lambo.ndp.service;
+package com.lambo.ndp.service.api;
 
 import java.util.List;
 import java.util.Map;

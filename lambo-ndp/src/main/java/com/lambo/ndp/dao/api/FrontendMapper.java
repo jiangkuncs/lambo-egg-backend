@@ -1,4 +1,4 @@
-package com.lambo.ndp.dao;
+package com.lambo.ndp.dao.api;
 
 import java.util.List;
 import java.util.Map;
@@ -6,6 +6,8 @@ import java.util.Map;
 public interface FrontendMapper {
 
     List getCategoryList(Map param);
+
+    List getCategoryAndSubjectList(Map param);
 
     List getSubjectList(Map param);
 

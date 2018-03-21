@@ -1,22 +1,18 @@
-package com.lambo.ndp.service;
+package com.lambo.ndp.service.imp;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lambo.common.util.excel.Constants;
-import com.lambo.ndp.constant.frontendConstants;
-import com.lambo.ndp.dao.DemoUserOldMapper;
-import com.lambo.ndp.dao.FrontendMapper;
-import io.swagger.models.auth.In;
+import com.lambo.ndp.constant.FrontendConstants;
+import com.lambo.ndp.dao.api.FrontendMapper;
+import com.lambo.ndp.service.api.FrontendService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
 * DemoUserService实现
@@ -32,7 +28,53 @@ public class FrontendServiceImpl implements FrontendService {
 
     @Override
     public List getCategoryList(Map param) {
-        return frontendMapper.getCategoryList(param);
+        boolean hasSubject = (Boolean) param.get("hasSubject");
+        List categoryList = null;
+        if(hasSubject){
+            List resultList = frontendMapper.getCategoryAndSubjectList(param);
+            if(resultList != null && resultList.size()>0){
+                Map tmpSubject = new HashMap();
+                Map tmpCategory = new HashMap();
+                for(int i=0;i<resultList.size();i++){
+                    Map subject = (Map)resultList.get(i);
+                    System.out.println("subject=="+subject);
+                    if(null != subject.get("category_id") && !"".equals(subject.get("category_id"))){
+                        String categoryId = subject.get("category_id")+"";
+                        System.out.println("categoryId=="+categoryId);
+                        Map subjectClone = (Map)((HashMap)subject).clone();
+                        tmpCategory.put(categoryId,subjectClone);
+                        if(null != tmpSubject.get(categoryId)){
+                            List tmpList = (List)tmpSubject.get(categoryId);
+                            tmpList.add(subject);
+                            tmpSubject.put(categoryId,tmpList);
+                        }else{
+                            List tmpList = new ArrayList();
+                            tmpList.add(subject);
+                            tmpSubject.put(categoryId,tmpList);
+                        }
+                        System.out.println("tmpSubject="+i+"="+tmpSubject);
+                        System.out.println("tmpCategory="+i+"="+tmpCategory);
+                    }
+                }
+                System.out.println("tmpSubject=="+tmpSubject);
+                System.out.println("tmpCategory=="+tmpCategory);
+                categoryList = new ArrayList();
+                for(Object key:tmpCategory.keySet()){
+                    Map category = (Map)tmpCategory.get(key);
+                    System.out.println("key=="+key);
+                    System.out.println("category=="+category);
+                    List children = (List)tmpSubject.get(key);
+                    category.put("children",children);
+                    System.out.println("category=1="+category);
+                    categoryList.add(category);
+                    System.out.println("categoryList=="+categoryList);
+                }
+            }
+        }else{
+            categoryList =  frontendMapper.getCategoryList(param);
+        }
+        System.out.println("categoryList=="+categoryList);
+        return categoryList;
     }
 
     @Override
@@ -207,13 +249,13 @@ public class FrontendServiceImpl implements FrontendService {
             }
             PageHelper.offsetPage(offset,limit);
             List rows = null;
-            if(dimensionType.equals(frontendConstants.province)){
+            if(dimensionType.equals(FrontendConstants.province)){
                 rows = frontendMapper.getProviceData(param);
-            }else if(dimensionType.equals(frontendConstants.city)){
+            }else if(dimensionType.equals(FrontendConstants.city)){
                 rows = frontendMapper.getCityData(param);
-            }else if(dimensionType.equals(frontendConstants.item)){
+            }else if(dimensionType.equals(FrontendConstants.item)){
                 rows = frontendMapper.getItemData(param);
-            }else if(dimensionType.equals(frontendConstants.brand)){
+            }else if(dimensionType.equals(FrontendConstants.brand)){
                 rows = frontendMapper.getBrandData(param);
             }
             PageInfo page = new PageInfo(rows);

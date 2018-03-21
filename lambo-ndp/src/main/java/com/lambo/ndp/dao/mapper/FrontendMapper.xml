@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lambo.ndp.dao.FrontendMapper">
+<mapper namespace="com.lambo.ndp.dao.api.FrontendMapper">
 
   <select id="getCategoryList" parameterType="map" resultType="map">
     select category_id,category_name,category_desc,create_user,create_time
@@ -21,6 +21,42 @@
     <if test="endTime != null">
       and create_time &lt; #{endTime}
     </if>
+  </select>
+  <select id="getCategoryAndSubjectList" parameterType="map" resultType="map">
+    select a.subject_id,b.category_id,a.subject_name,a.subject_desc,a.table_id,a.table_code,
+    b.category_name,b.category_desc,b.create_user,b.create_time
+    from ndp_subject a
+    left join ndp_category b
+    on a.category_id = b.category_id
+    where 1=1
+    <if test="subject_id != null">
+      and a.subject_id = #{subject_id}
+    </if>
+    <if test="category_id != null">
+      and a.category_id = #{category_id}
+    </if>
+    <if test="subject_name != null">
+      and a.subject_name like concat(concat('%',#{subject_name}),'%')
+    </if>
+    <if test="table_id != null">
+      and a.table_id = #{table_id}
+    </if>
+    <if test="table_code != null">
+      and a.table_code = #{table_code}
+    </if>
+    <if test="category_name != null">
+      and b.category_name like concat(concat('%',#{category_name}),'%')
+    </if>
+    <if test="create_user != null">
+      and b.create_user = #{create_user}
+    </if>
+    <if test="startTime != null">
+      and b.create_time &gt; #{startTime}
+    </if>
+    <if test="endTime != null">
+      and b.create_time &lt; #{endTime}
+    </if>
+    order by b.create_time asc
   </select>
   <select id="getSubjectList" parameterType="map" resultType="map">
     select subject_id,category_id,subject_name,subject_desc,table_id,table_code

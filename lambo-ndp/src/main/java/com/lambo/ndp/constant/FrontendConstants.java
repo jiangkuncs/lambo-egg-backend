@@ -6,7 +6,7 @@ package com.lambo.ndp.constant;
  * @description 前端查询条件 注解使用常量
  *
  */
-public class frontendConstants {
+public class FrontendConstants {
     //省公司纬度
     public static final String province = "province";
     //市公司纬度
