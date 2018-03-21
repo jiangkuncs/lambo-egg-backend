@@ -70,13 +70,14 @@ public class FrontendServiceImpl implements FrontendService {
                     if(i==0){
                         table = " " + column.get("table_code") + " a0";
                     }
-                    if(null != column.get("dict_id") && !"".equals(column.get("dict_id"))){
+                    sql += " a0."+column.get("cell_code")+",";
+                    /*if(null != column.get("dict_id") && !"".equals(column.get("dict_id"))){
                         sql += " d" + i + ".dict_value "+column.get("cell_code")+",";
                         table += " left join ( select dict_id,dict_key,dict_value from ndp_dict where dict_id='" + column.get("dict_id") + "') d"
                         + i + " on a0."+column.get("cell_code")+"=d" + i + ".dict_key";
                     }else{
                         sql += " a0."+column.get("cell_code")+",";
-                    }
+                    }*/
                     if(sort.equalsIgnoreCase((String) column.get("cell_code"))){
                         sort = " a0." + sort;
                     }
