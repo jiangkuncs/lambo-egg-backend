@@ -3,9 +3,19 @@
 <mapper namespace="com.lambo.ndp.dao.api.TableMapper">
   <select id="queryDbTable" parameterType="map" resultType="map">
     select table_name from information_schema.tables where table_schema='lambo'
+
+      <if test="tableName != null">
+          and table_name like concat(concat('%',#{tableName}),'%')
+      </if>
+
+      order by ${sort} ${order}
 </select>
     <select id="queryDbTableColumns" parameterType="map" resultType="map">
         select COLUMN_NAME from information_schema.COLUMNS where table_name =  #{tableName,jdbcType=VARCHAR}
+        <if test="columnName != null">
+            and column_name like concat(concat('%',#{columnName}),'%')
+        </if>
+        order by ${sort} ${order}
     </select>
   <resultMap id="BaseResultTableMap" type="com.lambo.ndp.model.Table">
   <id column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
