@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,14 +50,17 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
 
     public Object insertSubject(int categoryId, String tableCode, int tableId, String subjectDesc, String subjectName, String subjectColumns) {
 
-        System.out.println("categoryId=" + categoryId + "tableCode=" + tableCode + ",tableId=" + tableId + "subjectDesc=" + subjectDesc + ",subjectName=" + subjectName);
-        System.out.println("subjectColumns=" + subjectColumns);
+        //System.out.println("categoryId=" + categoryId + "tableCode=" + tableCode + ",tableId=" + tableId + "subjectDesc=" + subjectDesc + ",subjectName=" + subjectName);
+        //System.out.println("subjectColumns=" + subjectColumns);
         Subject subject = new Subject();
         subject.setCategoryId(categoryId);
         subject.setSubjectDesc(subjectDesc);
         subject.setTableId(tableId);
         subject.setTableCode(tableCode);
         subject.setSubjectName(subjectName);
+        Date day=new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        subject.setCreateTime(df.format(day).toString());
         int con = subjectMapper.insertSubject(subject);
         int subjectId = subject.getSubjectId();
         //列插入
@@ -97,6 +102,9 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         subject.setTableCode(tableCode);
         subject.setSubjectName(subjectName);
         subject.setSubjectId(subjectId);
+        Date day=new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        subject.setCreateTime(df.format(day).toString());
          subjectMapper.updateSubject(subject);
          subjectMapper.deleteSubjectColumnBySubjectId(subjectId);
         //列插入

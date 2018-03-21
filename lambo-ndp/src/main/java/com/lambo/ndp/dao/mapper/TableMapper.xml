@@ -3,11 +3,14 @@
 <mapper namespace="com.lambo.ndp.dao.api.TableMapper">
   <select id="queryDbTable" parameterType="map" resultType="map">
     select table_name from information_schema.tables where table_schema='lambo'
-
       <if test="tableName != null">
           and table_name like concat(concat('%',#{tableName}),'%')
       </if>
-
+    UNION ALL
+      select table_name from INFORMATION_SCHEMA.views where table_schema='lambo'
+      <if test="tableName != null">
+          and table_name like concat(concat('%',#{tableName}),'%')
+      </if>
       order by ${sort} ${order}
 </select>
     <select id="queryDbTableColumns1" parameterType="map" resultType="map">
