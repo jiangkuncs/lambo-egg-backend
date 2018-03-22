@@ -47,7 +47,7 @@
     search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
     is_show as isShow,cell_code as cellCode
     from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
-
+  order by COLUMN_ORDER asc
   </select>
 
   <select id="querySubject" parameterType="map" resultType="map">

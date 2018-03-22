@@ -178,4 +178,8 @@ public class TableServiceImpl implements TableService {
         data.add(0,param);
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
+    public Object queryTableColumns(String id){
+        List data = tableMapper.queryTableColumns(id);
+        return new NdpResult(NdpResultConstant.SUCCESS,data);
+    }
 }
