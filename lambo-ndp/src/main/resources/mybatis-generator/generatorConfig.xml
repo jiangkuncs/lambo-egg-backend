@@ -23,7 +23,7 @@
 
         <!-- 数据库连接 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/lambo"
+                        connectionURL="jdbc:mysql://10.10.10.136:3306/lambo"
                         userId="root"
                         password="root" />
 
@@ -40,11 +40,11 @@
         <javaClientGenerator targetPackage="com.lambo.ndp.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
 
         <!--生成对应表及类名-->
-        <table tableName="ndp_table" domainObjectName="Table"
+        <table tableName="ndp_subject_record" domainObjectName="SubjectRecord"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
-               enableSelectByExample="false"
+               enableSelectByExample="true"
                selectByExampleQueryId="false">
 
             <!-- 忽略列，不生成bean 字段 -->
