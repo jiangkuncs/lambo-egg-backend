@@ -1,26 +1,14 @@
 package com.lambo.ndp.controller;
 
-import com.baidu.unbiz.fluentvalidator.ComplexResult;
-import com.baidu.unbiz.fluentvalidator.FluentValidator;
-import com.baidu.unbiz.fluentvalidator.ResultCollectors;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
-import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.CateGory;
-import com.lambo.ndp.model.CateGoryExample;
-import com.lambo.ndp.model.SubjectRecord;
-import com.lambo.ndp.service.api.CateGoryService;
 import com.lambo.ndp.service.api.SubjectRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -31,9 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 分类controller
