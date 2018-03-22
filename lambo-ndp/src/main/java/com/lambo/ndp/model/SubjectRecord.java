@@ -3,7 +3,7 @@ package com.lambo.ndp.model;
 public class SubjectRecord {
     private Integer recordId;
 
-    private Integer userId;
+    private String userName;
 
     private Integer subjectId;
 
@@ -19,12 +19,12 @@ public class SubjectRecord {
         this.recordId = recordId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     public Integer getSubjectId() {
@@ -58,7 +58,7 @@ public class SubjectRecord {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", recordId=").append(recordId);
-        sb.append(", userId=").append(userId);
+        sb.append(", userName=").append(userName);
         sb.append(", subjectId=").append(subjectId);
         sb.append(", categoryId=").append(categoryId);
         sb.append(", createTime=").append(createTime);

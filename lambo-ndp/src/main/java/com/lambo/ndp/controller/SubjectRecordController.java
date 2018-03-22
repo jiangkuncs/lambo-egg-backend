@@ -5,6 +5,7 @@ import com.lambo.common.base.BaseController;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.CateGory;
+import com.lambo.ndp.model.SubjectRecord;
 import com.lambo.ndp.service.api.SubjectRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +44,6 @@ public class SubjectRecordController extends BaseController {
             @RequestParam(required = true, defaultValue = "0", value = "subjectId") int subjectId,
             @ApiParam(name="categoryId", value = "分类ID")
             @RequestParam(required = true, defaultValue = "0", value = "categoryId") int categoryId) {
-        CateGory cateGory = new CateGory();
         SubjectRecord subjectRecord = new SubjectRecord();
         int count = 0;
         if(subjectId > 0 && categoryId > 0){
@@ -53,16 +53,8 @@ public class SubjectRecordController extends BaseController {
             subjectRecord.setCategoryId(categoryId);
             subjectRecord.setSubjectId(subjectId);
             Subject subject = SecurityUtils.getSubject();
-            String userId = (String) subject.getPrincipal();
-
-            System.out.println("userId="+userId);
-            System.out.println("userId="+subject.getPreviousPrincipals());
-            System.out.println("userId="+subject.getPrincipals());
-            System.out.println("userId="+subject.getSession().getAttributeKeys());
-            System.out.println("userId="+subject.getSession().getId());
-            System.out.println("userId="+subject.getSession().getAttribute("user_id"));
-
-            subjectRecord.setUserId(1);
+            String userName = (String) subject.getPrincipal();
+            subjectRecord.setUserName(userName);
             count = subjectRecordService.insertSelective(subjectRecord);
         }
         if(count==1){

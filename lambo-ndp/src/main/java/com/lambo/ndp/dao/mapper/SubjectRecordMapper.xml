@@ -3,7 +3,7 @@
 <mapper namespace="com.lambo.ndp.dao.api.SubjectRecordMapper">
   <resultMap id="BaseResultMap" type="com.lambo.ndp.model.SubjectRecord">
     <id column="record_id" jdbcType="INTEGER" property="recordId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
     <result column="category_id" jdbcType="INTEGER" property="categoryId" />
     <result column="create_time" jdbcType="CHAR" property="createTime" />
@@ -38,7 +38,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    record_id, user_id, subject_id, category_id, create_time
+    record_id, user_name, subject_id, category_id, create_time
   </sql>
   <select id="selectByExample" parameterType="com.lambo.ndp.model.SubjectRecordExample" resultMap="BaseResultMap">
     select
@@ -66,9 +66,9 @@
     where record_id = #{recordId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.lambo.ndp.model.SubjectRecord">
-    insert into ndp_subject_record (record_id, user_id, subject_id, 
+    insert into ndp_subject_record (record_id, user_name, subject_id, 
       category_id, create_time)
-    values (#{recordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER}, 
+    values (#{recordId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER}, 
       #{categoryId,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lambo.ndp.model.SubjectRecord">
@@ -77,8 +77,8 @@
       <if test="recordId != null">
         record_id,
       </if>
-      <if test="userId != null">
-        user_id,
+      <if test="userName != null">
+        user_name,
       </if>
       <if test="subjectId != null">
         subject_id,
@@ -94,8 +94,8 @@
       <if test="recordId != null">
         #{recordId,jdbcType=INTEGER},
       </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
       <if test="subjectId != null">
         #{subjectId,jdbcType=INTEGER},
@@ -111,8 +111,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.lambo.ndp.model.SubjectRecord">
     update ndp_subject_record
     <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="subjectId != null">
         subject_id = #{subjectId,jdbcType=INTEGER},
@@ -128,7 +128,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lambo.ndp.model.SubjectRecord">
     update ndp_subject_record
-    set user_id = #{userId,jdbcType=INTEGER},
+    set user_name = #{userName,jdbcType=VARCHAR},
       subject_id = #{subjectId,jdbcType=INTEGER},
       category_id = #{categoryId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=CHAR}
