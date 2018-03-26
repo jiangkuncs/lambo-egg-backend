@@ -136,6 +136,7 @@ public class TableController extends BaseController {
         List<Map<String,Object>> data = tableService.queryTableCell(tableId);
         for(int i=0;i<data.size();i++){
             data.get(i).put("isShow","1");
+            data.get(i).put("columnOrder",i+1);
         }
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
@@ -176,7 +177,7 @@ public class TableController extends BaseController {
         result.put("total", page.getTotal());
         return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
-    @ApiOperation(value = "库表字段列表数据")
+    @ApiOperation(value = "库表选择字段列表数据")
     @RequestMapping(value = "/listDbTableColumns",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("列表数据")
@@ -188,12 +189,7 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName,
             @RequestParam(required = false, value = "selectColumns") String selectColumns) {
-        System.out.println("selectColumns="+selectColumns);
-        System.out.println("tableName="+tableName);
-        System.out.println("search="+search);
-        System.out.println("sort="+sort);
-        System.out.println("offset="+offset);
-        System.out.println("limit="+limit);
+//
         if(StringUtils.isNotBlank(sort)){
             sort= StringUtil.humpToLine(sort);
         }else{
@@ -210,6 +206,7 @@ public class TableController extends BaseController {
 //        List data = tableService.queryDbTableColumns(param);
         StringBuffer sql = new StringBuffer();
         sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
+        sql.append(" and table_schema ='").append("lambo").append("'");
         if(StringUtils.isNotBlank(tableName)){
            sql.append(" and table_name ='").append(tableName).append("'");
         }
@@ -219,13 +216,14 @@ public class TableController extends BaseController {
         String Columns="";
         Boolean isCon=false;
         if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
+            sql.append("and COLUMN_NAME  in('").append("')");
 
         }else{
             Columns=selectColumns.replace("[","").replace("\"","").replace("]","");
             isCon=true;
         }
         if(isCon){
-            sql.append("and COLUMN_NAME  not  in(");
+            sql.append("and COLUMN_NAME  in(");
             String[] columnsArry= Columns.split(",");
             int len = columnsArry.length;
             for (int i = 0; i < len; i++) {
@@ -323,5 +321,11 @@ public class TableController extends BaseController {
     @ResponseBody
     public Object get(@PathVariable("id") int id) {
      return tableService.get(id);
+    }
+    @ApiOperation(value = "根据库表查询列")
+    @RequestMapping(value = "/getColumn/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getC(@PathVariable("id") String id) {
+        return tableService.queryTableColumns(id);
     }
 }

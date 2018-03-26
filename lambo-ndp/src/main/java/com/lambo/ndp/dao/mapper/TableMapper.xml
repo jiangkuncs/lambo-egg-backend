@@ -13,12 +13,9 @@
       </if>
       order by ${sort} ${order}
 </select>
-    <select id="queryDbTableColumns1" parameterType="map" resultType="map">
-        select COLUMN_NAME from information_schema.COLUMNS where table_name =  #{tableName,jdbcType=VARCHAR}
-        <if test="columnName != null">
-            and column_name like concat(concat('%',#{columnName}),'%')
-        </if>
-        order by ${sort} ${order}
+    <select id="queryTableColumns" parameterType="String" resultType="map">
+        select COLUMN_NAME as cellCode from information_schema.COLUMNS where table_schema='lambo'and table_name =  #{id,jdbcType=VARCHAR}
+        order by COLUMN_NAME DESC
     </select>
     <select id="queryDbTableColumns" parameterType="map" resultType="map">
         ${sql}

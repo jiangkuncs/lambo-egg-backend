@@ -113,7 +113,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         if (json.size() > 0) {
             for (int i = 0; i < json.size(); i++) {
                 JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:" + job);  // 得到 每个对象中的属性值
+                //System.out.println("job:" + job);  // 得到 每个对象中的属性值
                 Map<String,Object> parm = new HashMap();
                 parm.put("columnName",job.get("cellName"));
                 parm.put("cellId",job.get("cellId"));

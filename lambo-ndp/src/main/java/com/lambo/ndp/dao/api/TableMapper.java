@@ -16,9 +16,10 @@ public interface TableMapper {
     public int deleteTableCellByPrimaryKey(int cellId);
     public int deleteTableCellByTableId(int tableId);
     public int deleteTableByTableId(int tableId);
-    List<Map<String,Object>> queryTable(Map<String, Object> param);
-    List<Map<String,Object>> queryDbTable(Map<String, Object> param);
-    List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param);
-    List<Map<String,Object>> queryTableCell(int tableId);
+    public List<Map<String,Object>> queryTable(Map<String, Object> param);
+    public List<Map<String,Object>> queryDbTable(Map<String, Object> param);
+    public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param);
+    public List<Map<String,Object>> queryTableCell(int tableId);
+    public List<Map<String,Object>> queryTableColumns(String id);
     public  Map<String,Object> selectTableByPrimaryKey(int id);
 }
