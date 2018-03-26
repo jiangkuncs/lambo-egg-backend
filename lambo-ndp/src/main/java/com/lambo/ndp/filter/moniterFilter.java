@@ -55,7 +55,7 @@ public class moniterFilter implements Filter {
             if(null != MoniterConstants.visitMap.get(userName)){
                 count = (int)MoniterConstants.visitMap.get(userName);
             }
-            if(count > MoniterConstants.threshold){
+            if(count >= MoniterConstants.threshold){
                 result = true;
             }else{
                 count = count + 1;
