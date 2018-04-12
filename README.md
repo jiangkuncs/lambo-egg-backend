@@ -43,8 +43,8 @@ Spring+SpringMVC+Mybatis框架集成公共模块，包括公共配置、通用Ba
 ### 启动
 - 新建lambo数据库，导入project-datamodel文件夹下的lambo.sql
 - 修改lambo-demo模块的jdbc.properties数据库连接等配置信息，其中master.jdbc.password、slave.jdbc.password密码值使用了AES加密，请使用lambo-commmon项目下的com.lambo.common.util.AESUtil工具类修改这些值
-- 在Maven Project窗口里,打开lambo-demo-sample下的Plugins,在jetty - jetty:run上右键debug lambo-demo-sample
-- 访问 [http://127.0.0.1:1114/demo/swagger-ui.html]("后台Swagger接口文档地址")
+- 在Maven Project窗口里,打开lambo-demo下的Plugins,在jetty - jetty:run上右键debug lambo-demo
+- 访问 [http://127.0.0.1:1111/demo/swagger-ui.html]("后台Swagger接口文档地址")
 - 在sso-controller中使用/sso/login登录系统(admin 123456),然后就可以测试各个接口了
 
 ### 文档
