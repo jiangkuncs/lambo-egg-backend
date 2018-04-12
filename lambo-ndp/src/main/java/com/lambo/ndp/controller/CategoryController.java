@@ -11,9 +11,9 @@ import com.lambo.common.base.BaseController;
 import com.lambo.common.util.StringUtil;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.CateGory;
-import com.lambo.ndp.model.CateGoryExample;
-import com.lambo.ndp.service.api.CateGoryService;
+import com.lambo.ndp.model.Category;
+import com.lambo.ndp.model.CategoryExample;
+import com.lambo.ndp.service.api.CategoryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,13 +41,49 @@ import java.util.Map;
  */
 @Controller
 @Api(value = "数据分类", description = "数据分类")
-@RequestMapping("/manage/cateGoryData")
-public class CateGoryController extends BaseController {
+@RequestMapping("/manage/category")
+public class CategoryController extends BaseController {
 
-    private static Logger logger = LoggerFactory.getLogger(CateGoryController.class);
+    private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
-    private CateGoryService cateGoryService;
+    private CategoryService categoryService;
+
+    @ApiOperation(value = "数据分类列表")
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("请求列表数据")
+    public Object list(
+            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+            @ApiParam(name="sort", value = "排序字段")
+            @RequestParam(required = false, value = "sort") String sort,
+            @ApiParam(name="order", value = "排序方式")
+            @RequestParam(required = false, value = "order") String order,
+            @RequestParam(required = false, defaultValue = "", value = "search") String search) {
+
+        CategoryExample CategoryExample = new CategoryExample();
+        if(StringUtils.isBlank(sort)){
+            sort = "category_order";
+        }
+        if(StringUtils.isBlank(order)){
+            order = "asc";
+        }
+        CategoryExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+        if (StringUtils.isNotBlank(search)) {
+            CategoryExample.or().andCategoryNameLike("%" + search + "%");
+        }
+        //物理分页
+        PageHelper.offsetPage(offset, limit);
+        List<Category> data = categoryService.selectByExample(CategoryExample);
+        PageInfo page = new PageInfo(data);
+        Map<String, Object> result = new HashMap<>();
+        result.put("rows", page.getList());
+        result.put("total", page.getTotal());
+        return new NdpResult(NdpResultConstant.SUCCESS,result);
+
+    }
+
     @ApiOperation(value = "数据分类列表")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
@@ -61,50 +97,22 @@ public class CateGoryController extends BaseController {
             @ApiParam(name="order", value = "排序方式")
             @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "search") String search) {
+
         return ((NdpResult)list(offset,limit,sort,order,search)).data;
 
     }
-    @ApiOperation(value = "数据分类列表")
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @ResponseBody
-    @LogAround("请求列表数据")
-    public Object list(
-            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
-            @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
-            @ApiParam(name="sort", value = "排序字段")
-            @RequestParam(required = false, value = "sort") String sort,
-            @ApiParam(name="order", value = "排序方式")
-            @RequestParam(required = false, value = "order") String order,
-            @RequestParam(required = false, defaultValue = "", value = "search") String search) {
-        CateGoryExample cateGoryExample = new CateGoryExample();
-        if(StringUtils.isBlank(sort)){
-            sort = "create_time";
-        }
-        if(StringUtils.isBlank(order)){
-            order = "desc";
-        }
-        cateGoryExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
-        if (StringUtils.isNotBlank(search)) {
-            cateGoryExample.or()
-                    .andCategoryNameLike("%" + search + "%");
 
-        }
-        //物理分页
-        PageHelper.offsetPage(offset, limit);
-        List<CateGory> data = cateGoryService.selectByExample(cateGoryExample);
-        PageInfo page = new PageInfo(data);
-        Map<String, Object> result = new HashMap<>();
-        result.put("rows", page.getList());
-        result.put("total", page.getTotal());
-        return new NdpResult(NdpResultConstant.SUCCESS,result);
-    }
+
     @ApiOperation(value = "新增数据分类")
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Object create(
             @RequestParam(required = true, value = "categoryName") String categoryName,
+            @RequestParam(required = true, value = "categoryOrder") int categoryOrder,
+            @RequestParam(required = true, value = "categoryImg") String categoryImg,
             @RequestParam(required = false, value = "categoryDesc") String categoryDesc) {
-        CateGory cateGory = new CateGory();
+
+        Category category = new Category();
         ComplexResult result = FluentValidator.checkAll()
                 .on(categoryName, new LengthValidator(1, 50, "名称"))
                 .on(categoryDesc, new LengthValidator(0, 100, "描述"))
@@ -117,11 +125,13 @@ public class CateGoryController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        cateGory.setCategoryDesc(categoryDesc);
-        cateGory.setCategoryName(categoryName);
-        cateGory.setCreateUser(username);
-        cateGory.setCreateTime(df.format(day).toString());
-        int count = cateGoryService.insertSelective(cateGory);
+        category.setCategoryDesc(categoryDesc);
+        category.setCategoryName(categoryName);
+        category.setCategoryOrder(categoryOrder);
+        category.setCategoryImg(categoryImg);
+        category.setCreateUser(username);
+        category.setCreateTime(df.format(day).toString());
+        int count = categoryService.insertSelective(category);
         if(count==1){
             return new NdpResult(NdpResultConstant.SUCCESS, count);
         }else{
@@ -129,25 +139,32 @@ public class CateGoryController extends BaseController {
         }
 
     }
+
+
     @ApiOperation(value = "删除数据分类")
     @RequestMapping(value = "/delete/{ids}",method = RequestMethod.GET)
     @ResponseBody
     public Object delete(@PathVariable("ids") String ids) {
-        int count = cateGoryService.deleteByPrimaryKeys(ids);
+        int count = categoryService.deleteByPrimaryKeys(ids);
         return new NdpResult(NdpResultConstant.SUCCESS, count);
     }
+
+
     @ApiOperation(value = "修改数据分类")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Object update(
             @PathVariable("id") int id,
             @RequestParam(required = true, value = "categoryName") String categoryName,
+            @RequestParam(required = true, value = "categoryOrder") int categoryOrder,
+            @RequestParam(required = true, value = "categoryImg") String categoryImg,
             @RequestParam(required = false, value = "categoryDesc") String categoryDesc) {
-        CateGory cateGory = new CateGory();
+
+        Category category = new Category();
         if (StringUtils.isNotBlank(categoryDesc)) {
-            cateGory.setCategoryDesc(categoryDesc);
+            category.setCategoryDesc(categoryDesc);
         }
-        cateGory.setCategoryName(categoryName);
+        category.setCategoryName(categoryName);
         ComplexResult result = FluentValidator.checkAll()
                 .on(categoryName, new LengthValidator(1, 50, "名称"))
                 .on(categoryDesc, new LengthValidator(0, 100, "描述"))
@@ -160,17 +177,21 @@ public class CateGoryController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        cateGory.setCreateUser(username);
-        cateGory.setCreateTime(df.format(day).toString());
-        cateGory.setCategoryId(id);
-        int count = cateGoryService.updateByPrimaryKeySelective(cateGory);
+        category.setCreateUser(username);
+        category.setCreateTime(df.format(day).toString());
+        category.setCategoryImg(categoryImg);
+        category.setCategoryOrder(categoryOrder);
+        category.setCategoryId(id);
+        int count = categoryService.updateByPrimaryKeySelective(category);
         return new NdpResult(NdpResultConstant.SUCCESS, count);
     }
+
+
     @ApiOperation(value = "根据ID查询分类")
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Object get(@PathVariable("id") int id) {
-        CateGory cateGory = cateGoryService.selectByPrimaryKey(id);
-        return new NdpResult(NdpResultConstant.SUCCESS, cateGory);
+        Category Category = categoryService.selectByPrimaryKey(id);
+        return new NdpResult(NdpResultConstant.SUCCESS, Category);
     }
 }
