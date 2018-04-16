@@ -1,30 +1,21 @@
 package com.lambo.ndp.controller;
 
-import com.baidu.unbiz.fluentvalidator.ComplexResult;
-import com.baidu.unbiz.fluentvalidator.FluentValidator;
-import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.Category;
 import com.lambo.ndp.model.CategoryOverview;
 import com.lambo.ndp.service.api.CategoryOverviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName CategoryOverviewContoller
@@ -78,7 +69,13 @@ public class CategoryOverviewController extends BaseController {
             @RequestParam(required = true, value = "picture") String picture,
             @RequestParam(required = true, value = "article") String article) {
 
-        CategoryOverview co = new CategoryOverview();
+        CategoryOverview co =  categoryOverviewService.selectByPrimaryKey(categoryId);
+        boolean isUpdate = true;
+        if (co == null) {
+            co = new CategoryOverview();
+            co.setCreateTime(new Date());
+            isUpdate = false;
+        }
         co.setCategoryId(categoryId);
         co.setSummary(summary);
         co.setCaption(caption);
@@ -86,11 +83,26 @@ public class CategoryOverviewController extends BaseController {
         co.setArticle(article);
         co.setUpdateTime(new Date());
         co.setLastEditor((String) SecurityUtils.getSubject().getPrincipal());
-        int count = categoryOverviewService.updateByPrimaryKey(co);
-        if(count==1){
-            return new NdpResult(NdpResultConstant.SUCCESS, count);
+
+        int count = 0;
+        if(isUpdate){
+            count = categoryOverviewService.updateByPrimaryKey(co);
         }else{
-            return new NdpResult(NdpResultConstant.FAILED, count);
+            count = categoryOverviewService.insertSelective(co);
         }
+
+        if(count == 1){
+            return new NdpResult(NdpResultConstant.SUCCESS, co);
+        }else{
+            return new NdpResult(NdpResultConstant.FAILED, "数据保存失败");
+        }
+    }
+
+    @ApiOperation(value = "查询分类概览")
+    @ResponseBody
+    @RequestMapping(value = "/get/{categoryId}", method = RequestMethod.GET)
+    public Object get( @PathVariable("categoryId") int categoryId) {
+
+        return categoryOverviewService.selectByPrimaryKey(categoryId);
     }
 }
