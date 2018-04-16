@@ -8,6 +8,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -31,6 +32,7 @@ public class VelocityUtil {
 			//VelocityEngine engine = new VelocityEngine();
 			Template template = Velocity.getTemplate(getFile(inputVmFilePath), "utf-8");
 			File outputFile = new File(outputFilePath);
+			mkDir(outputFile);
 			FileWriterWithEncoding writer = new FileWriterWithEncoding(outputFile, "utf-8");
 			template.merge(context, writer);
 			writer.close();
@@ -63,6 +65,15 @@ public class VelocityUtil {
 			file = filePath.substring(filePath.lastIndexOf("/") + 1);
 		}
 		return file;
+	}
+
+	public static void mkDir(File file) {
+		if (file.getParentFile().exists()) {
+			file.mkdir();
+		} else {
+			mkDir(file.getParentFile());
+			file.mkdir();
+		}
 	}
 
 }

@@ -128,6 +128,11 @@
             <artifactId>lambo-upms-client</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.lambo</groupId>
+            <artifactId>lambo-oss-client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>

@@ -1,22 +1,13 @@
 package com.lambo.ndp.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.baidu.unbiz.fluentvalidator.ComplexResult;
-import com.baidu.unbiz.fluentvalidator.FluentValidator;
-import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 import com.lambo.common.util.StringUtil;
-import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.*;
-import com.lambo.ndp.service.api.CateGoryService;
-import com.lambo.ndp.service.api.DictService;
 import com.lambo.ndp.service.api.SubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -4,7 +4,6 @@ import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.CateGory;
 import com.lambo.ndp.model.SubjectRecord;
 import com.lambo.ndp.service.api.SubjectRecordService;
 import io.swagger.annotations.Api;
