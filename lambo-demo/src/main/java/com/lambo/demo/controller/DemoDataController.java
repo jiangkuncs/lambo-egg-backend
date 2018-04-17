@@ -43,7 +43,6 @@ public class DemoDataController extends BaseController {
     @ApiOperation(value = "列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
-    @LogAround("请求列表数据")
     public Object list(
             @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
