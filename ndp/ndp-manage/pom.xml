@@ -20,21 +20,23 @@
 <!-- $Id: pom.xml 642118 2008-03-28 08:04:16Z reinhard $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <artifactId>lambo</artifactId>
+        <artifactId>ndp</artifactId>
         <groupId>com.lambo</groupId>
         <version>1.0.0</version>
     </parent>
 
-    <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
 
     <url>http://stomz.top</url>
-    <name>lambo-ndp Maven Webapp</name>
-    <artifactId>lambo-ndp</artifactId>
+    <name>ndp-manage Maven Webapp</name>
+    <artifactId>ndp-manage</artifactId>
 
     <build>
-        <finalName>lambo-ndp-sample</finalName>
+        <finalName>ndp-manage</finalName>
         <filters>
             <filter>src/main/resources/profiles/${env}.properties</filter>
         </filters>
@@ -67,10 +69,10 @@
                 <version>9.2.7.v20150116</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/ndp-server</contextPath>
+                        <contextPath>/ndp-manage-server</contextPath>
                     </webApp>
                     <httpConnector>
-                        <port>12345</port>
+                        <port>9527</port>
                     </httpConnector>
                 </configuration>
             </plugin>
