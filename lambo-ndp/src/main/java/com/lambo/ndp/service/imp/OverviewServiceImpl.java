@@ -29,6 +29,10 @@ public class OverviewServiceImpl extends BaseServiceImpl<OverviewMapper,Map, Map
     @Autowired
     OverviewMapper overviewMapper;
 
+    public Map<String,Object> getCategoryOverview(Map<String, Object> param){
+        return overviewMapper.getCategoryOverview(param);
+    }
+
     public Map<String,Object> getMeasures(Map<String, Object> param){
         Map<String, Object> result = new HashMap<>();
 

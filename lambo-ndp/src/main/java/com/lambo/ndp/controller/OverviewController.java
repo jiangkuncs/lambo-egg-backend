@@ -4,6 +4,7 @@ import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
+import com.lambo.ndp.service.api.HomepageService;
 import com.lambo.ndp.service.api.OverviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import util.DateTool;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +32,37 @@ public class OverviewController extends BaseController {
 
     @Autowired
     private OverviewService overviewService;
+
+    @Autowired
+    private HomepageService homepageService;
+
+    @ApiOperation(value = "行业分类概览")
+    @RequestMapping(value = "/getCategoryOverview",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("行业分类概览")
+    public Object getCategoryOverview() {
+        Map<String,Object> param = new HashMap<>();
+        param.put("TODAY", DateTool.getToday());
+        param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));
+
+        Map<String,Object> result = overviewService.getCategoryOverview(param);
+
+        return new NdpResult(NdpResultConstant.SUCCESS,result);
+    }
+
+    @ApiOperation(value = "最新数据")
+    @RequestMapping(value = "/getNewSubject",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("最新数据")
+    public Object getNewSubject() {
+        Map<String,Object> param = new HashMap<>();
+        param.put("TODAY", DateTool.getToday());
+        param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));
+
+        List<Map<String,Object>> result = homepageService.getNewSubject(param);
+
+        return new NdpResult(NdpResultConstant.SUCCESS,result);
+    }
 
     @ApiOperation(value = "行业概览头数据")
     @RequestMapping(value = "/getMeasures",method = RequestMethod.GET)
