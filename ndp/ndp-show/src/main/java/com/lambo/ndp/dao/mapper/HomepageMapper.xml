@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.ndp.dao.api.HomepageMapper">
+  <select id="getHotSubject" parameterType="map" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
+    from  ndp_subject
+    where subject_id in (
+      select subject_id from ndp_subject_record
+      where create_time > date_format(date_add(now(), interval -3 month),'%Y-%m-%d %H:%i:%s')
+      group by subject_id
+      order by count(record_id) desc
+      fetch first 5 rows only
+    )
+  </select>
+  <select id="getNewSubject" parameterType="map" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
+    from  ndp_subject
+    order by create_time desc
+    fetch first 5 rows only
+  </select>
+  <select id="getAllCategory" parameterType="map" resultType="map">
+    select `CATEGORY_ID`,
+      `CATEGORY_NAME`,
+      `CATEGORY_IMG`,
+      `CATEGORY_ORDER`,
+      `CATEGORY_DESC`,
+      `CREATE_USER`,
+      `CREATE_TIME`
+    from  ndp_category
+    order by `CATEGORY_ORDER`
+  </select>
+  <select id="getSubjectNum" parameterType="map" resultType="map">
+    select count(subject_id) subject_num
+    from  ndp_subject
+  </select>
+  <select id="getFileNum" parameterType="map" resultType="map">
+    select count(subject_id) subject_num
+    from  ndp_subject
+  </select>
+  <select id="getDataNum" parameterType="map" resultType="map">
+    select count(subject_id) subject_num
+    from  ndp_subject
+  </select>
+  <select id="getRecordNum" parameterType="map" resultType="map">
+    select count(record_id) record_num
+    from  ndp_subject_record
+  </select>
+  <select id="getDownloadNum" parameterType="map" resultType="map">
+    select count(record_id) record_num
+    from  ndp_subject_record
+  </select>
+</mapper>
