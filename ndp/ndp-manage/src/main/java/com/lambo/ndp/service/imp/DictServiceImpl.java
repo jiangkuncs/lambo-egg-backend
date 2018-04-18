@@ -30,7 +30,6 @@ import java.util.Map;
 */
 @Service
 @Transactional
-@BaseService
 public class DictServiceImpl extends BaseServiceImpl<DictMapper, Dict, DictExample> implements DictService {
 
     private static Logger logger = LoggerFactory.getLogger(DictServiceImpl.class);

@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by zxc on 2018/2/28.
 */
 @Service
-@Transactional
-@BaseService
 public class CategoryServiceImpl extends BaseServiceImpl<CategoryMapper, Category, CategoryExample> implements CategoryService {
 
 }

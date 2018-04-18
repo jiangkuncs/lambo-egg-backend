@@ -31,8 +31,8 @@ import java.util.Map;
 * TableService实现
 * Created by zxc on 2018/3/10.
 */
-@Transactional
 @Service
+@Transactional
 public class TableServiceImpl implements TableService {
 
     private static Logger logger = LoggerFactory.getLogger(TableServiceImpl.class);
