@@ -28,6 +28,7 @@ import java.util.Map;
 */
 @Service
 @Transactional
+@BaseService
 public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, SubjectExample> implements SubjectService {
 
     private static Logger logger = LoggerFactory.getLogger(SubjectServiceImpl.class);

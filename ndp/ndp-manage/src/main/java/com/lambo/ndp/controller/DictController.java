@@ -7,7 +7,6 @@ import com.baidu.unbiz.fluentvalidator.FluentValidator;
 import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 import com.lambo.common.util.StringUtil;
@@ -26,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +38,9 @@ import java.util.Map;
 @RequestMapping("/manage/dictData")
 public class DictController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(DictController.class);
+
     @Autowired
-    private DictService DictService;
+    private DictService dictService;
 
     @ApiOperation(value = "数据字典列表")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
@@ -72,7 +70,7 @@ public class DictController extends BaseController {
             @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "dictId") String dictId,
             @RequestParam(required = false, defaultValue = "", value = "dictName") String dictName) {
-        DictExample dictExample=new DictExample();
+        DictExample dictExample = new DictExample();
         if(StringUtils.isBlank(sort)){
             sort = "dictId";
         }
@@ -90,7 +88,7 @@ public class DictController extends BaseController {
         }
         //物理分页
         PageHelper.offsetPage(offset, limit);
-        List<Dict> data = DictService.selectByExample(dictExample);
+        List<Dict> data = dictService.selectByExample(dictExample);
         PageInfo page = new PageInfo(data);
 
         Map<String, Object> result = new HashMap<>();
@@ -102,12 +100,14 @@ public class DictController extends BaseController {
     @ApiOperation(value = "新增数据字典")
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    /**
+     * dictKeyList样例数据：[{"dictKey":"2","dictValue":"未审核"},{"dictKey":"3","dictValue":"提交"},{"dictKey":"1","dictValue":"已审核"},{"dictKey":"0","dictValue":"新建"}]
+     */
     public Object create(
             @RequestParam(required = false, value = "dictName") String dictName,
             @RequestParam(required = true, value = "dictId") String dictId,
             @RequestParam(required = false, value = "dictDesc") String dictDesc,
             @RequestParam(required = false, value = "dictKeyList" ) String dictKeyList) {
-//[{"dictKey":"2","dictValue":"未审核"},{"dictKey":"3","dictValue":"提交"},{"dictKey":"1","dictValue":"已审核"},{"dictKey":"0","dictValue":"新建"}]
         ComplexResult result = FluentValidator.checkAll()
                 .on(dictId, new LengthValidator(1, 20, "名称"))
                 .doValidate()
@@ -116,19 +116,17 @@ public class DictController extends BaseController {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
         JSONArray json = JSONArray.parseArray(dictKeyList);
-       // System.out.println("json:"+json);
         int inset=0;
         if(json.size()>0){
             for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                //System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
+                JSONObject job = json.getJSONObject(i);
                 Dict dict=new Dict();
                 dict.setDictId(dictId);
                 dict.setDictDesc(dictDesc);
                 dict.setDictName(dictName);
                 dict.setDictKey((String)job.get("dictKey"));
                 dict.setDictValue((String)job.get("dictValue"));
-                inset=DictService.insert(dict);
+                inset=dictService.insert(dict);
             }
         }
         return new NdpResult(NdpResultConstant.SUCCESS, inset);
@@ -138,11 +136,11 @@ public class DictController extends BaseController {
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     @ResponseBody
     public Object delete(@RequestParam(required = true, defaultValue = "", value = "dictId") String dictId) {
-        System.out.println("dictId:"+dictId);
-        Map parm=new HashMap();
-        parm.put("dictId",dictId);
-        //int count = DictService.deleteByDictId(parm);
-        return new NdpResult(NdpResultConstant.SUCCESS, DictService.deleteByDictId(parm));
+
+        DictExample dictExample = new DictExample();
+        dictExample.createCriteria().andDictIdEqualTo(dictId);
+
+        return new NdpResult(NdpResultConstant.SUCCESS, dictService.countByExample(dictExample));
     }
 
     @ApiOperation(value = "删除数据字典项信息")
@@ -150,11 +148,9 @@ public class DictController extends BaseController {
     @ResponseBody
     public Object deleteDictKey(@RequestParam(required = true, defaultValue = "", value = "dictId") String dictId,
                                 @RequestParam(required = true, defaultValue = "", value = "dictKey") String dictKey) {
-        Map parm=new HashMap();
-        parm.put("dictId",dictId);
-        parm.put("dictKey",dictKey);
-        //int count = DictService.deleteByDictId(parm);
-        return new NdpResult(NdpResultConstant.SUCCESS, DictService.deleteByDictId(parm));
+        DictExample dictExample = new DictExample();
+        dictExample.createCriteria().andDictIdEqualTo(dictId).andDictKeyEqualTo(dictKey);
+        return new NdpResult(NdpResultConstant.SUCCESS, dictService.deleteByExample(dictExample));
     }
 
     @ApiOperation(value = "修改数据字典")
@@ -166,14 +162,15 @@ public class DictController extends BaseController {
             @RequestParam(required = false, value = "dictDesc") String dictDesc,
             @RequestParam(required = false, value = "dictKeyList" ) String dictKeyList
     ){
-      return new NdpResult(NdpResultConstant.SUCCESS, DictService.update(dictId,dictName,dictDesc,dictKeyList));
+      return new NdpResult(NdpResultConstant.SUCCESS, dictService.update(dictId,dictName,dictDesc,dictKeyList));
     }
 
     @ApiOperation(value = "根据ID查询分类")
     @RequestMapping(value = "/get/{dictId}", method = RequestMethod.GET)
     @ResponseBody
     public Object get(@PathVariable("dictId") String dictId) {
-        //List<Dict> Dict = DictService.selectByDictId(dictId);
-        return new NdpResult(NdpResultConstant.SUCCESS, DictService.selectByDictId(dictId));
+        DictExample dictExample = new DictExample();
+        dictExample.createCriteria().andDictIdEqualTo(dictId);
+        return new NdpResult(NdpResultConstant.SUCCESS, dictService.selectByExample(dictExample));
     }
 }

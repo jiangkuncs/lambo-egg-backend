@@ -15,5 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2018/4/13
  */
 @Service
+@BaseService
 public class CategoryOverviewServiceImpl extends BaseServiceImpl<CategoryOverviewMapper, CategoryOverview, CategoryOverviewExample> implements CategoryOverviewService {
 }

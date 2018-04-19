@@ -37,6 +37,35 @@
       </foreach>
     </where>
   </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List">
     DICT_ID, DICT_KEY, DICT_NAME, DICT_DESC, DICT_VALUE
   </sql>
@@ -51,10 +80,8 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    GROUP By DICT_ID
     <if test="orderByClause != null">
       order by ${orderByClause}
-
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
@@ -62,32 +89,18 @@
     <include refid="Base_Column_List" />
     from ndp_dict
     where DICT_ID = #{dictId,jdbcType=VARCHAR}
-
-  </select>
-  <select id="selectByDictId" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from ndp_dict
-    where DICT_ID = #{dictId,jdbcType=VARCHAR}
-
+      and DICT_KEY = #{dictKey,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="map">
     delete from ndp_dict
     where DICT_ID = #{dictId,jdbcType=VARCHAR}
       and DICT_KEY = #{dictKey,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByDictIdDictKey" parameterType="map">
+  <delete id="deleteByExample" parameterType="com.lambo.ndp.model.DictExample">
     delete from ndp_dict
-    where DICT_ID = #{dictId,jdbcType=VARCHAR}
-    and DICT_KEY = #{dictKey,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByDictId" parameterType="map">
-    delete from ndp_dict
-    where DICT_ID = #{dictId,jdbcType=VARCHAR}
-    <if test="dictKey != null" >
-      and DICT_KEY = #{dictKey,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
     </if>
-
   </delete>
   <insert id="insert" parameterType="com.lambo.ndp.model.Dict">
     insert into ndp_dict (DICT_ID, DICT_KEY, DICT_NAME, 
@@ -132,6 +145,40 @@
       </if>
     </trim>
   </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ndp_dict
+    <set>
+      <if test="record.dictId != null">
+        DICT_ID = #{record.dictId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictKey != null">
+        DICT_KEY = #{record.dictKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictName != null">
+        DICT_NAME = #{record.dictName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictDesc != null">
+        DICT_DESC = #{record.dictDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictValue != null">
+        DICT_VALUE = #{record.dictValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ndp_dict
+    set DICT_ID = #{record.dictId,jdbcType=VARCHAR},
+      DICT_KEY = #{record.dictKey,jdbcType=VARCHAR},
+      DICT_NAME = #{record.dictName,jdbcType=VARCHAR},
+      DICT_DESC = #{record.dictDesc,jdbcType=VARCHAR},
+      DICT_VALUE = #{record.dictValue,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.lambo.ndp.model.Dict">
     update ndp_dict
     <set>
