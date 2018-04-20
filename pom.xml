@@ -22,7 +22,7 @@
         <module>lambo-common</module>
         <module>lambo-upms</module>
         <module>lambo-demo</module>
-        <module>lambo-ndp</module>
+        <module>ndp</module>
         <module>lambo-oss</module>
     </modules>
 </project>

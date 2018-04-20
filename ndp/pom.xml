@@ -20,5 +20,6 @@
 
     <modules>
         <module>ndp-manage</module>
+        <module>ndp-show</module>
     </modules>
 </project>

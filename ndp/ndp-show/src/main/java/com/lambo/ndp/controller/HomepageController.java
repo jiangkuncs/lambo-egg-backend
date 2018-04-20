@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,10 +53,11 @@ public class HomepageController extends BaseController {
     @RequestMapping(value = "/getNewSubject",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("最新数据")
-    public Object getNewSubject() {
+    public Object getNewSubject(@PathVariable("categoryId") int categoryId) {
         Map<String,Object> param = new HashMap<>();
         param.put("TODAY", DateTool.getToday());
         param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));
+        param.put("category_id", categoryId);
 
         List<Map<String,Object>> result = homepageService.getNewSubject(param);
 
