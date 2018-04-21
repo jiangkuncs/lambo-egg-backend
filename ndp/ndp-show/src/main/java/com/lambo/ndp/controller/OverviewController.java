@@ -42,8 +42,8 @@ public class OverviewController extends BaseController {
     @ResponseBody
     @LogAround("行业分类概览")
     public Object getCategoryOverview(
-            @ApiParam(name="categoryId", value = "专题ID")
-            @RequestParam(required = true, defaultValue = "", value = "categoryId") String categoryId) {
+            @ApiParam(name="categoryId", value = "分类ID")
+            @RequestParam(required = true, defaultValue = "", value = "categoryId") int categoryId) {
         Map<String,Object> param = new HashMap<>();
         param.put("category_id", categoryId);
         param.put("TODAY", DateTool.getToday());

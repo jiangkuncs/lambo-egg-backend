@@ -13,13 +13,13 @@
       and ndp_subject.category_id = ndp_category.category_id
   </select>
   <select id="getNewSubject" parameterType="map" resultType="map">
-    select subject_id,subject_name,category_name,left(create_time,10) create_time
+    select ndp_subject.subject_id,ndp_subject.subject_name,ndp_category.category_name,left(ndp_subject.create_time,10) create_time,ndp_subject.subject_desc
     from  ndp_subject,ndp_category
     where ndp_subject.category_id = ndp_category.category_id
-    <if test="subjectName != null">
-      and category_id = #{category_id}
+    <if test="category_id != null">
+      and ndp_subject.category_id = #{category_id}
     </if>
-    order by create_time desc
+    order by ndp_subject.create_time desc
     limit 5
   </select>
   <select id="getAllCategory" parameterType="map" resultType="map">
