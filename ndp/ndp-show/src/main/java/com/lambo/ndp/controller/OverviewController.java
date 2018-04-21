@@ -8,6 +8,7 @@ import com.lambo.ndp.service.api.HomepageService;
 import com.lambo.ndp.service.api.OverviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,11 @@ public class OverviewController extends BaseController {
     @RequestMapping(value = "/getCategoryOverview",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("行业分类概览")
-    public Object getCategoryOverview() {
+    public Object getCategoryOverview(
+            @ApiParam(name="categoryId", value = "分类ID")
+            @RequestParam(required = true, defaultValue = "", value = "categoryId") int categoryId) {
         Map<String,Object> param = new HashMap<>();
+        param.put("category_id", categoryId);
         param.put("TODAY", DateTool.getToday());
         param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));
 

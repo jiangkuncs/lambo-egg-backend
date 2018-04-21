@@ -43,8 +43,11 @@ public class HomepageServiceImpl extends BaseServiceImpl<HomepageMapper,Map, Map
     }
 
     public Map<String,Object> getDataStatistics(Map<String, Object> param){
-        Map<String, Object> result = homepageMapper.getSubjectNum(param);
+        Map<String, Object> result = homepageMapper.getCategoryNum(param);
+        result.putAll(homepageMapper.getFileNum(param));
+        result.putAll(homepageMapper.getDataNum(param));
         result.putAll(homepageMapper.getRecordNum(param));
+        result.putAll(homepageMapper.getDownloadNum(param));
         return result;
     }
 

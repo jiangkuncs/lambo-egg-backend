@@ -7,13 +7,12 @@ import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.service.api.HomepageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import util.DateTool;
 
 import java.util.HashMap;
@@ -52,10 +51,13 @@ public class HomepageController extends BaseController {
     @RequestMapping(value = "/getNewSubject",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("最新数据")
-    public Object getNewSubject() {
+    public Object getNewSubject(
+            @ApiParam(name="categoryId", value = "分类ID")
+            @RequestParam(required = true, defaultValue = "", value = "categoryId") int categoryId) {
         Map<String,Object> param = new HashMap<>();
         param.put("TODAY", DateTool.getToday());
         param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));
+        param.put("category_id", categoryId);
 
         List<Map<String,Object>> result = homepageService.getNewSubject(param);
 
