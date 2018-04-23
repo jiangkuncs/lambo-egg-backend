@@ -53,7 +53,7 @@ public class HomepageController extends BaseController {
     @LogAround("最新数据")
     public Object getNewSubject(
             @ApiParam(name="categoryId", value = "分类ID")
-            @RequestParam(required = true, defaultValue = "", value = "categoryId") int categoryId) {
+            @RequestParam(required = false, defaultValue = "", value = "categoryId") String categoryId) {
         Map<String,Object> param = new HashMap<>();
         param.put("TODAY", DateTool.getToday());
         param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));

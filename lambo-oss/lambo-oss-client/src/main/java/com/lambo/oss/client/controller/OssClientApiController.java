@@ -33,7 +33,6 @@ import java.util.Map;
  */
 @Controller
 @Api(value = "对象存储相关", description = "对象存储相关")
-@RequestMapping("/manage")
 public class OssClientApiController extends BaseController {
 
     private final static Logger logger = LoggerFactory.getLogger(OssClientApiController.class);
@@ -43,7 +42,7 @@ public class OssClientApiController extends BaseController {
 
 
     @ApiOperation(value = "保存文件" ,notes = "保存文件")
-    @RequestMapping(value = "/file/put", method = RequestMethod.POST)
+    @RequestMapping(value = "/manage/file/put", method = RequestMethod.POST)
     @ResponseBody
     public Object put(@RequestParam("file") MultipartFile[] files) {
 

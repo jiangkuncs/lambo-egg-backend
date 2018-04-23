@@ -16,7 +16,7 @@
     select ndp_subject.subject_id,ndp_subject.subject_name,ndp_category.category_name,left(ndp_subject.create_time,10) create_time,ndp_subject.subject_desc
     from  ndp_subject,ndp_category
     where ndp_subject.category_id = ndp_category.category_id
-    <if test="category_id != null">
+    <if test="category_id != null and category_id != ''">
       and ndp_subject.category_id = #{category_id}
     </if>
     order by ndp_subject.create_time desc
