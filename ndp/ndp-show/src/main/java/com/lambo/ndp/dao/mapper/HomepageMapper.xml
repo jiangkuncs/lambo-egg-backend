@@ -2,39 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.HomepageMapper">
   <select id="getHotSubject" parameterType="map" resultType="map">
-    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
-    from  ndp_subject
-    where subject_id in (
-      select subject_id from ndp_subject_record
-      where create_time > date_format(date_add(now(), interval -3 month),'%Y-%m-%d %H:%i:%s')
+    select ndp_subject.subject_id,subject_name,category_name,record_num
+    from  ndp_subject,(
+      select subject_id,count(record_id) record_num from ndp_subject_record
       group by subject_id
       order by count(record_id) desc
-      fetch first 5 rows only
-    )
+      limit 5
+    ) ndp_subject_record,ndp_category
+    where ndp_subject.subject_id = ndp_subject_record.subject_id
+      and ndp_subject.category_id = ndp_category.category_id
   </select>
   <select id="getNewSubject" parameterType="map" resultType="map">
-    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
-    from  ndp_subject
-    order by create_time desc
-    fetch first 5 rows only
+    select ndp_subject.subject_id,ndp_subject.subject_name,ndp_category.category_name,left(ndp_subject.create_time,10) create_time,ndp_subject.subject_desc
+    from  ndp_subject,ndp_category
+    where ndp_subject.category_id = ndp_category.category_id
+    <if test="category_id != null and category_id != ''">
+      and ndp_subject.category_id = #{category_id}
+    </if>
+    order by ndp_subject.create_time desc
+    limit 5
   </select>
   <select id="getAllCategory" parameterType="map" resultType="map">
-    select `CATEGORY_ID`,
-      `CATEGORY_NAME`,
-      `CATEGORY_IMG`,
-      `CATEGORY_ORDER`,
-      `CATEGORY_DESC`,
-      `CREATE_USER`,
-      `CREATE_TIME`
+    select `category_id`,
+      `category_name`,
+      `category_img`,
+      `category_order`,
+      `category_desc`,
+      `create_user`,
+      `create_time`
     from  ndp_category
-    order by `CATEGORY_ORDER`
+    order by `category_order`
   </select>
-  <select id="getSubjectNum" parameterType="map" resultType="map">
-    select count(subject_id) subject_num
-    from  ndp_subject
+  <select id="getCategoryNum" parameterType="map" resultType="map">
+    select count(category_id) category_num
+    from  ndp_category
   </select>
   <select id="getFileNum" parameterType="map" resultType="map">
-    select count(subject_id) subject_num
+    select count(subject_id) file_num
     from  ndp_subject
   </select>
   <select id="getDataNum" parameterType="map" resultType="map">
@@ -46,7 +50,7 @@
     from  ndp_subject_record
   </select>
   <select id="getDownloadNum" parameterType="map" resultType="map">
-    select count(record_id) record_num
+    select count(record_id) download_num
     from  ndp_subject_record
   </select>
 </mapper>
