@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface OverviewMapper {
-    Map<String,Object> getCategoryOverview(Map<String, Object> param);
+    List<Map<String,Object>> queryOverview(Map<String, Object> param);
 }

@@ -10,7 +10,6 @@ import java.util.Map;
  * Created by zxc on 2018/3/15.
 */
 public interface OverviewService extends BaseService<Map, Map> {
-    public Map<String,Object> getCategoryOverview(Map<String, Object> param);
     public Map<String,Object> getMeasures(Map<String, Object> param);
     public Map<String,Object> getSaleProcess(Map<String, Object> param);
     public Map<String,Object> getSaleSameRate(Map<String, Object> param);

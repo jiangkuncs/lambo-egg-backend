@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="MysqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 由于beginningDelimiter和endingDelimiter的默认值为双引号(")，在Mysql中不能这么写，所以还要将这两个默认值改为`  -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 为生成的Java模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+
+        <!-- 注释 -->
+        <commentGenerator>
+             <property name="suppressDate" value="true"/>
+             <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.10.10.136:3306/lambo"
+                        userId="root"
+                        password="root" />
+
+
+        <!--生成Model类存放位置-->
+        <javaModelGenerator targetPackage="com.lambo.demo.model" targetProject="src/main/java">
+             <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- MapperXML生成 -->
+        <sqlMapGenerator targetPackage="com.lambo.demo.dao.mapper" targetProject="src/main/java" />
+
+        <!-- Mapper接口生成 -->
+        <javaClientGenerator targetPackage="com.lambo.demo.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
+
+        <!--生成对应表及类名-->
+        <table tableName="upms_log" domainObjectName="DemoLog"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="true"
+               selectByExampleQueryId="false">
+
+            <!-- 忽略列，不生成bean 字段 -->
+            <!-- <ignoreColumn column="FRED" /> -->
+
+            <!-- 指定列的java数据类型 -->
+            <!-- <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" /> -->
+        </table>
+
+    </context>
+</generatorConfiguration>
