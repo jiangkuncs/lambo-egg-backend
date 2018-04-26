@@ -20,12 +20,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.lambo</groupId>
             <artifactId>lambo-common</artifactId>
             <version>1.0.0</version>
@@ -45,6 +39,7 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
 
     <build>
         <finalName>lambo-upms-client</finalName>
@@ -66,8 +61,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
+                    <!--
                     <skipTests>true</skipTests>
                     <testFailureIgnore>true</testFailureIgnore>
+                    -->
                 </configuration>
             </plugin>
         </plugins>

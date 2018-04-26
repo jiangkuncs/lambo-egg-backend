@@ -12,7 +12,4 @@
     <bean class="com.lambo.upms.client.interceptor.LogAspect"/>
 
 
-    <!-- 日志记录AOP实现 -->
-    <bean class="com.lambo.common.aspect.RpcLogAspect"/>
-
 </beans>

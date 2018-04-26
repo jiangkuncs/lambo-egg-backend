@@ -1,6 +1,6 @@
 package com.lambo.upms.client.util;
 
-import com.alibaba.dubbo.common.utils.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.session.Session;
 
