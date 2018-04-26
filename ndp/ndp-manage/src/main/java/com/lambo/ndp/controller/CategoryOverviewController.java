@@ -102,6 +102,7 @@ public class CategoryOverviewController extends BaseController {
     @RequestMapping(value = "/get/{categoryId}", method = RequestMethod.GET)
     public Object get( @PathVariable("categoryId") int categoryId) {
 
-        return categoryOverviewService.selectByPrimaryKey(categoryId);
+        CategoryOverview categoryOverview = categoryOverviewService.selectByPrimaryKey(categoryId);
+        return new NdpResult(NdpResultConstant.SUCCESS, categoryOverview);
     }
 }
