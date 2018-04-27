@@ -18,6 +18,9 @@ public class UpmsRolePermissionServiceImplTest extends BaseJunit4Test {
 
 
     @Test
+    /**
+     * 测试增加权限
+     */
     public void rolePermissionAdd() throws Exception {
         //删除角色1的权限
         UpmsRolePermissionExample upmsRolePermissionExample =  new UpmsRolePermissionExample();
@@ -33,6 +36,9 @@ public class UpmsRolePermissionServiceImplTest extends BaseJunit4Test {
     }
 
     @Test
+    /**
+     * 测试删除权限
+     */
     public void rolePermissionDelete() throws Exception {
         UpmsRolePermissionExample upmsRolePermissionExample =  new UpmsRolePermissionExample();
         upmsRolePermissionExample.createCriteria().andRoleIdEqualTo(1);
