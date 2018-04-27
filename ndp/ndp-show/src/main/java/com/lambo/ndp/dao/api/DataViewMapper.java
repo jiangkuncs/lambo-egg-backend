@@ -8,4 +8,5 @@ import java.util.Map;
 public interface DataViewMapper {
 
     List<Map<String,String>> getDictListByDictId(String dictId);
+    List<Map<String,String>> getSearchResult(String sql);
 }
