@@ -6,7 +6,10 @@
     FROM NDP_DICT
     WHERE DICT_ID=#{dictId,jdbcType=VARCHAR}
   </select>
-
+    <select id="getCatogryNameByCategoryId"  resultType="map">
+        SELECT CATEGORY_ID,CATEGORY_NAME
+        FROM NDP_CATEGORY;
+    </select>
   <select id="getSearchResult" parameterType="String" resultType="map">
     ${value}
   </select>

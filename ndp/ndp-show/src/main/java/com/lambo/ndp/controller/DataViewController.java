@@ -43,9 +43,9 @@ public class DataViewController extends BaseController {
 
         Map resultMap = dataViewService.getConditionMap();
         if (resultMap.isEmpty())
-            return new NdpResult(NdpResultConstant.FAILED, null);
+        {return new NdpResult(NdpResultConstant.FAILED, null);}
         else
-            return new NdpResult(NdpResultConstant.SUCCESS, resultMap);
+        { return new NdpResult(NdpResultConstant.SUCCESS, resultMap);}
     }
 
     @ApiOperation(value = "获取查询数据")
@@ -60,6 +60,7 @@ public class DataViewController extends BaseController {
             @RequestParam(required = false, value = "organTypeId") String organTypeId,
             @RequestParam(required = false, value = "periodTypeId") String periodTypeId,
             @RequestParam(required = false, value = "pageNum") int pageNum,
+            @RequestParam(required = false, value = "searchText") String searchText,
             @RequestParam(required = false, value = "pageSize") int pageSize) {
 
         Map paramMap = new HashMap();
@@ -69,6 +70,7 @@ public class DataViewController extends BaseController {
         paramMap.put("catograyId",catograyId);
         paramMap.put("organTypeId",organTypeId);
         paramMap.put("periodTypeId",periodTypeId);
+        paramMap.put("searchText",searchText);
 
 
 

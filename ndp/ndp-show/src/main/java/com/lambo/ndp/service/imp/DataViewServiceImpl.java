@@ -46,7 +46,7 @@ public class DataViewServiceImpl extends BaseServiceImpl<DataViewMapper,Dict, Di
     @Override
     public Map<String, List<Map<String, String>>> getConditionMap() {
         //获取分类
-        List<Map<String,String>> categoryTypeList = dataViewMapper.getDictListByDictId(DictConstants.CATEGORY_DICT_ID);
+        List<Map<String,String>> categoryTypeList = dataViewMapper.getCatogryNameByCategoryId();
 
         //获取时间粒度
         List<Map<String,String>> timeTypeList = dataViewMapper.getDictListByDictId(DictConstants.TIME_DICT_ID);
@@ -69,64 +69,69 @@ public class DataViewServiceImpl extends BaseServiceImpl<DataViewMapper,Dict, Di
     public List<Map<String, String>> getSearchResult(Map condition) {
         List<String> tagList = new ArrayList();
         StringBuffer str = new StringBuffer();
-        str.append( "SELECT * FROM NDP_SUBJECT  ");
+        str.append( "SELECT" +
+                "    SUB.SUBJECT_ID," +
+                "    SUB.CATEGORY_ID," +
+                "    SUB.SUBJECT_NAME," +
+                "    SUB.SUBJECT_DESC," +
+                "    SUB.TABLE_ID," +
+                "    SUB.TABLE_CODE," +
+                "    SUB.CREATE_TIME," +
+                "    SUB.PERIOD_TYPE," +
+                "    SUB.ORGAN_TYPE," +
+                "    SUB.SUBJECT_TYPE," +
+                "    SUB.RATE_COUNT," +
+                "    SUB.VISIT_COUNT," +
+                "    ORG.DICT_VALUE AS organTypeName," +
+                "    PER.DICT_VALUE AS periodTypeName," +
+                "    CAT.CATEGORY_NAME AS catograyName " +
+                "FROM" +
+                "    NDP_SUBJECT SUB," +
+                "    NDP_DICT ORG," +
+                "    NDP_DICT PER," +
+                "    ndp_category CAT " +
+                "WHERE" +
+                "    SUB.ORGAN_TYPE=ORG.DICT_KEY" +
+                " AND ORG.DICT_ID='ORGAN_TYPE_ID'" +
+                " AND SUB.PERIOD_TYPE=PER.DICT_KEY" +
+                " AND PER.DICT_ID='PERIOD_TYPE_ID'" +
+                " AND SUB.CATEGORY_ID=CAT.CATEGORY_ID ");
         if(!condition.isEmpty()){
-            boolean whereFlag = false;
-
+            if(condition.get("searchText")!=null&&!condition.get("searchText").equals("")){
+                str.append(" AND (SUB.SUBJECT_NAME like '%"+condition.get("searchText")+"%' or SUB.SUBJECT_DESC like '%"+condition.get("searchText")+"%')  ");
+            }
             if(condition.get("catograyId")!=null&&!condition.get("catograyId").equals("")){
-                if(!whereFlag){
-                    str.append("WHERE");
-                }
-                str.append(" CATEGORY_ID ='"+condition.get("catograyId")+"' ");
-                whereFlag=true;
+                str.append(" AND SUB.CATEGORY_ID ='"+condition.get("catograyId")+"' ");
             }
             //生成标签查询SQL
             if(condition.get("activeTags")!=null){
 
-                if(!whereFlag){
-                    str.append("WHERE");
-                }else{
-                    str.append( "AND");
-                }
-
                 tagList = (List) condition.get("activeTags");
                 if(!tagList.isEmpty()){
-                    str.append( " SUBJECT_ID IN (SELECT SUBJECT_ID FROM (SELECT SUBJECT_ID,GROUP_CONCAT(TAG_KEY)  AS TAGS " +
-                            "FROM NDP_SUBJECT_TAG  " +
-                            "GROUP BY SUBJECT_ID ) WHERE");
+                    str.append( " AND SUB.SUBJECT_ID IN (SELECT SUBJECT_ID FROM (SELECT SUBJECT_ID,GROUP_CONCAT(TAG_KEY)  AS TAGS " +
+                            " FROM NDP_SUBJECT_TAG  " +
+                            " GROUP BY SUBJECT_ID ) WHERE");
                     for(String dictMap : tagList){
                         str.append(" TAGS LIKE'%"+dictMap+"%' ");
                     }
                     str.append(")");
 
                 }else{
-                    str.append("LEFT JOIN (SELECT SUBJECT_ID FROM (SELECT SUBJECT_ID,GROUP_CONCAT(TAG_KEY)  AS TAGS FROM NDP_SUBJECT_TAG  GROUP BY SUBJECT_ID ) K ON NDP_SUBJECT.SUBJECT_ID=K.SUBJECT_ID");
+                    str.append(" LEFT JOIN (SELECT SUBJECT_ID FROM (SELECT SUBJECT_ID,GROUP_CONCAT(TAG_KEY)  AS TAGS FROM NDP_SUBJECT_TAG  GROUP BY SUBJECT_ID ) K ON NDP_SUBJECT.SUBJECT_ID=K.SUBJECT_ID");
 
                 }
             }
             if(condition.get("organTypeId")!=null&&!condition.get("organTypeId").equals("")){
-                if(!whereFlag){
-                    str.append("WHERE");
-                }else{
-                    str.append( "AND");
-                }
-                str.append(" ORGAN_TYPE='" +condition.get("organTypeId")+"' ");
+
+                str.append(" AND ORGAN_TYPE='" +condition.get("organTypeId")+"' ");
             }
-            if(condition.get("activeTags")!=null&&!condition.get("activeTags").equals("")){
-                if(!whereFlag){
-                    str.append("WHERE");
-                }else{
-                    str.append( "AND");
-                }
-                str.append(" RATE_COUNT >=" +condition.get("activeTags"));
+            if(condition.get("activeStars")!=null&&!condition.get("activeStars").equals("")){
+
+                str.append(" AND RATE_COUNT >=" +condition.get("activeStars"));
             }
             if(condition.get("periodTypeId")!=null&&!condition.get("periodTypeId").equals("")){
-                if(!whereFlag){
-                    str.append("WHERE");
-                }else{
-                    str.append( "AND");
-                }
-                str.append(" PERIOD_TYPE ='" +condition.get("periodTypeId")+"' ");
+
+                str.append(" AND PERIOD_TYPE ='" +condition.get("periodTypeId")+"' ");
             }
             if(condition.get("activeOrder")!=null&&!condition.get("activeOrder").equals("")){
 
@@ -134,16 +139,16 @@ public class DataViewServiceImpl extends BaseServiceImpl<DataViewMapper,Dict, Di
                 int i = Integer.valueOf(condition.get("activeOrder").toString());
                 switch(i){
                     case 1://创建时间
-                        str.append("ORDER BY CREATE_TIME" );
+                        str.append(" ORDER BY SUB.CREATE_TIME" );
                     break;
                     case 2://数据量
-                        //str.append("ORDER BY " +oderStr);
+                        //str.append(" ORDER BY SUB.CREATE_TIME" );
                         break;
                     case 3://访问量
-                        //str.append("ORDER BY " +oderStr);
+                        str.append(" ORDER BY SUB.VISIT_COUNT" );
                         break;
                     case 4://评分
-                        str.append(" ORDER BY RATE_COUNT" );
+                        str.append(" ORDER BY SUB.RATE_COUNT" );
                         break;
                 }
 
