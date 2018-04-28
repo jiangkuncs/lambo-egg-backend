@@ -12,7 +12,16 @@ public class Subject {
     private Integer tableId;
 
     private String tableCode;
+
     private String createTime;
+
+    private String periodType;
+
+    private String organType;
+
+    private String subjectType;
+
+    private Integer rateCount;
 
     public Integer getSubjectId() {
         return subjectId;
@@ -61,6 +70,7 @@ public class Subject {
     public void setTableCode(String tableCode) {
         this.tableCode = tableCode == null ? null : tableCode.trim();
     }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -68,6 +78,39 @@ public class Subject {
     public void setCreateTime(String createTime) {
         this.createTime = createTime == null ? null : createTime.trim();
     }
+
+    public String getPeriodType() {
+        return periodType;
+    }
+
+    public void setPeriodType(String periodType) {
+        this.periodType = periodType == null ? null : periodType.trim();
+    }
+
+    public String getOrganType() {
+        return organType;
+    }
+
+    public void setOrganType(String organType) {
+        this.organType = organType == null ? null : organType.trim();
+    }
+
+    public String getSubjectType() {
+        return subjectType;
+    }
+
+    public void setSubjectType(String subjectType) {
+        this.subjectType = subjectType == null ? null : subjectType.trim();
+    }
+
+    public Integer getRateCount() {
+        return rateCount;
+    }
+
+    public void setRateCount(Integer rateCount) {
+        this.rateCount = rateCount;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -81,6 +124,10 @@ public class Subject {
         sb.append(", tableId=").append(tableId);
         sb.append(", tableCode=").append(tableCode);
         sb.append(", createTime=").append(createTime);
+        sb.append(", periodType=").append(periodType);
+        sb.append(", organType=").append(organType);
+        sb.append(", subjectType=").append(subjectType);
+        sb.append(", rateCount=").append(rateCount);
         sb.append("]");
         return sb.toString();
     }

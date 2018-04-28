@@ -493,6 +493,346 @@ public class SubjectExample {
             addCriterion("TABLE_CODE not between", value1, value2, "tableCode");
             return (Criteria) this;
         }
+
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("CREATE_TIME is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("CREATE_TIME is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(String value) {
+            addCriterion("CREATE_TIME =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(String value) {
+            addCriterion("CREATE_TIME <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(String value) {
+            addCriterion("CREATE_TIME >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(String value) {
+            addCriterion("CREATE_TIME >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(String value) {
+            addCriterion("CREATE_TIME <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(String value) {
+            addCriterion("CREATE_TIME <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLike(String value) {
+            addCriterion("CREATE_TIME like", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotLike(String value) {
+            addCriterion("CREATE_TIME not like", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<String> values) {
+            addCriterion("CREATE_TIME in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<String> values) {
+            addCriterion("CREATE_TIME not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(String value1, String value2) {
+            addCriterion("CREATE_TIME between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(String value1, String value2) {
+            addCriterion("CREATE_TIME not between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeIsNull() {
+            addCriterion("PERIOD_TYPE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeIsNotNull() {
+            addCriterion("PERIOD_TYPE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeEqualTo(String value) {
+            addCriterion("PERIOD_TYPE =", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeNotEqualTo(String value) {
+            addCriterion("PERIOD_TYPE <>", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeGreaterThan(String value) {
+            addCriterion("PERIOD_TYPE >", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("PERIOD_TYPE >=", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeLessThan(String value) {
+            addCriterion("PERIOD_TYPE <", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeLessThanOrEqualTo(String value) {
+            addCriterion("PERIOD_TYPE <=", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeLike(String value) {
+            addCriterion("PERIOD_TYPE like", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeNotLike(String value) {
+            addCriterion("PERIOD_TYPE not like", value, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeIn(List<String> values) {
+            addCriterion("PERIOD_TYPE in", values, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeNotIn(List<String> values) {
+            addCriterion("PERIOD_TYPE not in", values, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeBetween(String value1, String value2) {
+            addCriterion("PERIOD_TYPE between", value1, value2, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andPeriodTypeNotBetween(String value1, String value2) {
+            addCriterion("PERIOD_TYPE not between", value1, value2, "periodType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeIsNull() {
+            addCriterion("ORGAN_TYPE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeIsNotNull() {
+            addCriterion("ORGAN_TYPE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeEqualTo(String value) {
+            addCriterion("ORGAN_TYPE =", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeNotEqualTo(String value) {
+            addCriterion("ORGAN_TYPE <>", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeGreaterThan(String value) {
+            addCriterion("ORGAN_TYPE >", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("ORGAN_TYPE >=", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeLessThan(String value) {
+            addCriterion("ORGAN_TYPE <", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeLessThanOrEqualTo(String value) {
+            addCriterion("ORGAN_TYPE <=", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeLike(String value) {
+            addCriterion("ORGAN_TYPE like", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeNotLike(String value) {
+            addCriterion("ORGAN_TYPE not like", value, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeIn(List<String> values) {
+            addCriterion("ORGAN_TYPE in", values, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeNotIn(List<String> values) {
+            addCriterion("ORGAN_TYPE not in", values, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeBetween(String value1, String value2) {
+            addCriterion("ORGAN_TYPE between", value1, value2, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganTypeNotBetween(String value1, String value2) {
+            addCriterion("ORGAN_TYPE not between", value1, value2, "organType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeIsNull() {
+            addCriterion("SUBJECT_TYPE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeIsNotNull() {
+            addCriterion("SUBJECT_TYPE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeEqualTo(String value) {
+            addCriterion("SUBJECT_TYPE =", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeNotEqualTo(String value) {
+            addCriterion("SUBJECT_TYPE <>", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeGreaterThan(String value) {
+            addCriterion("SUBJECT_TYPE >", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("SUBJECT_TYPE >=", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeLessThan(String value) {
+            addCriterion("SUBJECT_TYPE <", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeLessThanOrEqualTo(String value) {
+            addCriterion("SUBJECT_TYPE <=", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeLike(String value) {
+            addCriterion("SUBJECT_TYPE like", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeNotLike(String value) {
+            addCriterion("SUBJECT_TYPE not like", value, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeIn(List<String> values) {
+            addCriterion("SUBJECT_TYPE in", values, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeNotIn(List<String> values) {
+            addCriterion("SUBJECT_TYPE not in", values, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeBetween(String value1, String value2) {
+            addCriterion("SUBJECT_TYPE between", value1, value2, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubjectTypeNotBetween(String value1, String value2) {
+            addCriterion("SUBJECT_TYPE not between", value1, value2, "subjectType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountIsNull() {
+            addCriterion("RATE_COUNT is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountIsNotNull() {
+            addCriterion("RATE_COUNT is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountEqualTo(Integer value) {
+            addCriterion("RATE_COUNT =", value, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountNotEqualTo(Integer value) {
+            addCriterion("RATE_COUNT <>", value, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountGreaterThan(Integer value) {
+            addCriterion("RATE_COUNT >", value, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("RATE_COUNT >=", value, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountLessThan(Integer value) {
+            addCriterion("RATE_COUNT <", value, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountLessThanOrEqualTo(Integer value) {
+            addCriterion("RATE_COUNT <=", value, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountIn(List<Integer> values) {
+            addCriterion("RATE_COUNT in", values, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountNotIn(List<Integer> values) {
+            addCriterion("RATE_COUNT not in", values, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountBetween(Integer value1, Integer value2) {
+            addCriterion("RATE_COUNT between", value1, value2, "rateCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andRateCountNotBetween(Integer value1, Integer value2) {
+            addCriterion("RATE_COUNT not between", value1, value2, "rateCount");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

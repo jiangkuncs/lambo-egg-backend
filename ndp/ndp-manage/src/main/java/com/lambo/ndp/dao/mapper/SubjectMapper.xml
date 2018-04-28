@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.SubjectMapper">
-
   <resultMap id="BaseResultMap" type="com.lambo.ndp.model.Subject">
     <id column="SUBJECT_ID" jdbcType="INTEGER" property="subjectId" />
     <result column="CATEGORY_ID" jdbcType="INTEGER" property="categoryId" />
@@ -9,6 +8,11 @@
     <result column="SUBJECT_DESC" jdbcType="VARCHAR" property="subjectDesc" />
     <result column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
     <result column="TABLE_CODE" jdbcType="VARCHAR" property="tableCode" />
+    <result column="CREATE_TIME" jdbcType="CHAR" property="createTime" />
+    <result column="PERIOD_TYPE" jdbcType="VARCHAR" property="periodType" />
+    <result column="ORGAN_TYPE" jdbcType="VARCHAR" property="organType" />
+    <result column="SUBJECT_TYPE" jdbcType="CHAR" property="subjectType" />
+    <result column="RATE_COUNT" jdbcType="INTEGER" property="rateCount" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -39,32 +43,39 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
-    SUBJECT_ID, CATEGORY_ID, SUBJECT_NAME, SUBJECT_DESC, TABLE_ID, TABLE_CODE
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
   </sql>
-  <select id="querySubjectColumn" parameterType="java.lang.Integer" resultType="map">
-   select column_id as columnId,subject_id as subjectId,column_name as cellName,sc.cell_id as cellId,
-    search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
-    is_show as isShow,cell_code as cellCode
-    from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
-  order by COLUMN_ORDER asc
-  </select>
-
-  <select id="querySubject" parameterType="map" resultType="map">
-    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
-    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
-    <if test="subjectName != null">
-      and subject_name like concat(concat('%',#{subjectName}),'%')
-    </if>
-    order by ${sort} ${order}
-  </select>
-
-  <select id="getSubject" parameterType="java.lang.Integer" resultType="map">
-    select subject_id as subjectId,subject_name as subjectName ,subject_desc as subjectDesc,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
-    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
-    and ns.subject_id =#{subjectId}
-
-  </select>
+  <sql id="Base_Column_List">
+    SUBJECT_ID, CATEGORY_ID, SUBJECT_NAME, SUBJECT_DESC, TABLE_ID, TABLE_CODE, CREATE_TIME, 
+    PERIOD_TYPE, ORGAN_TYPE, SUBJECT_TYPE, RATE_COUNT
+  </sql>
   <select id="selectByExample" parameterType="com.lambo.ndp.model.SubjectExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -90,37 +101,21 @@
     delete from ndp_subject
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteSubjectColumnBySubjectId" parameterType="java.lang.Integer">
-    delete from ndp_subject_column
-    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteSubjectBySubjectId" parameterType="java.lang.Integer">
+  <delete id="deleteByExample" parameterType="com.lambo.ndp.model.SubjectExample">
     delete from ndp_subject
-    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
   </delete>
-  <insert id="insertSubject" useGeneratedKeys="true" keyProperty="subjectId" parameterType="com.lambo.ndp.model.Subject">
-    insert into ndp_subject (CATEGORY_ID, SUBJECT_NAME,
-    SUBJECT_DESC, TABLE_ID, TABLE_CODE,CREATE_TIME
-    )
-    values (#{categoryId,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR},
-    #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR}
-    )
-  </insert>
-  <insert id="insertSubjectColumn" parameterType="map">
-    insert into ndp_subject_column (SUBJECT_ID, COLUMN_NAME ,
-    CELL_ID, SEARCH_CONDITION, SEARCH_SETTING,COLUMN_ORDER,IS_SHOW
-    )
-    values (#{subjectId,jdbcType=INTEGER}, #{columnName,jdbcType=VARCHAR},
-    #{cellId,jdbcType=INTEGER}, #{searchCondition,jdbcType=VARCHAR}, #{searchSetting,jdbcType=VARCHAR},#{columnOrder,jdbcType=INTEGER},#{isShow,jdbcType=VARCHAR}
-    )
-  </insert>
-  <insert id="insert" parameterType="com.lambo.ndp.model.Subject">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="subjectId"  parameterType="com.lambo.ndp.model.Subject">
     insert into ndp_subject (SUBJECT_ID, CATEGORY_ID, SUBJECT_NAME, 
-      SUBJECT_DESC, TABLE_ID, TABLE_CODE
-      )
+      SUBJECT_DESC, TABLE_ID, TABLE_CODE, 
+      CREATE_TIME, PERIOD_TYPE, ORGAN_TYPE, 
+      SUBJECT_TYPE, RATE_COUNT)
     values (#{subjectId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{subjectName,jdbcType=VARCHAR}, 
-      #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}
-      )
+      #{subjectDesc,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{tableCode,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=CHAR}, #{periodType,jdbcType=VARCHAR}, #{organType,jdbcType=VARCHAR}, 
+      #{subjectType,jdbcType=CHAR}, #{rateCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lambo.ndp.model.Subject">
     insert into ndp_subject
@@ -143,6 +138,21 @@
       <if test="tableCode != null">
         TABLE_CODE,
       </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="periodType != null">
+        PERIOD_TYPE,
+      </if>
+      <if test="organType != null">
+        ORGAN_TYPE,
+      </if>
+      <if test="subjectType != null">
+        SUBJECT_TYPE,
+      </if>
+      <if test="rateCount != null">
+        RATE_COUNT,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="subjectId != null">
@@ -163,31 +173,80 @@
       <if test="tableCode != null">
         #{tableCode,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="periodType != null">
+        #{periodType,jdbcType=VARCHAR},
+      </if>
+      <if test="organType != null">
+        #{organType,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectType != null">
+        #{subjectType,jdbcType=CHAR},
+      </if>
+      <if test="rateCount != null">
+        #{rateCount,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <update id="updateSubject" parameterType="com.lambo.ndp.model.Subject">
+  <update id="updateByExampleSelective" parameterType="map">
     update ndp_subject
     <set>
-      <if test="categoryId != null">
-        CATEGORY_ID = #{categoryId,jdbcType=INTEGER},
+      <if test="record.subjectId != null">
+        SUBJECT_ID = #{record.subjectId,jdbcType=INTEGER},
       </if>
-      <if test="subjectName != null">
-        SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
+      <if test="record.categoryId != null">
+        CATEGORY_ID = #{record.categoryId,jdbcType=INTEGER},
       </if>
-      <if test="subjectDesc != null">
-        SUBJECT_DESC = #{subjectDesc,jdbcType=VARCHAR},
+      <if test="record.subjectName != null">
+        SUBJECT_NAME = #{record.subjectName,jdbcType=VARCHAR},
       </if>
-      <if test="tableId != null">
-        TABLE_ID = #{tableId,jdbcType=INTEGER},
+      <if test="record.subjectDesc != null">
+        SUBJECT_DESC = #{record.subjectDesc,jdbcType=VARCHAR},
       </if>
-      <if test="tableCode != null">
-      TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
-    </if>
-      <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      <if test="record.tableId != null">
+        TABLE_ID = #{record.tableId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tableCode != null">
+        TABLE_CODE = #{record.tableCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=CHAR},
+      </if>
+      <if test="record.periodType != null">
+        PERIOD_TYPE = #{record.periodType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.organType != null">
+        ORGAN_TYPE = #{record.organType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectType != null">
+        SUBJECT_TYPE = #{record.subjectType,jdbcType=CHAR},
+      </if>
+      <if test="record.rateCount != null">
+        RATE_COUNT = #{record.rateCount,jdbcType=INTEGER},
       </if>
     </set>
-    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ndp_subject
+    set SUBJECT_ID = #{record.subjectId,jdbcType=INTEGER},
+      CATEGORY_ID = #{record.categoryId,jdbcType=INTEGER},
+      SUBJECT_NAME = #{record.subjectName,jdbcType=VARCHAR},
+      SUBJECT_DESC = #{record.subjectDesc,jdbcType=VARCHAR},
+      TABLE_ID = #{record.tableId,jdbcType=INTEGER},
+      TABLE_CODE = #{record.tableCode,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=CHAR},
+      PERIOD_TYPE = #{record.periodType,jdbcType=VARCHAR},
+      ORGAN_TYPE = #{record.organType,jdbcType=VARCHAR},
+      SUBJECT_TYPE = #{record.subjectType,jdbcType=CHAR},
+      RATE_COUNT = #{record.rateCount,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.lambo.ndp.model.Subject">
     update ndp_subject
@@ -207,6 +266,21 @@
       <if test="tableCode != null">
         TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
       </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=CHAR},
+      </if>
+      <if test="periodType != null">
+        PERIOD_TYPE = #{periodType,jdbcType=VARCHAR},
+      </if>
+      <if test="organType != null">
+        ORGAN_TYPE = #{organType,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectType != null">
+        SUBJECT_TYPE = #{subjectType,jdbcType=CHAR},
+      </if>
+      <if test="rateCount != null">
+        RATE_COUNT = #{rateCount,jdbcType=INTEGER},
+      </if>
     </set>
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </update>
@@ -216,7 +290,69 @@
       SUBJECT_NAME = #{subjectName,jdbcType=VARCHAR},
       SUBJECT_DESC = #{subjectDesc,jdbcType=VARCHAR},
       TABLE_ID = #{tableId,jdbcType=INTEGER},
-      TABLE_CODE = #{tableCode,jdbcType=VARCHAR}
+      TABLE_CODE = #{tableCode,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=CHAR},
+      PERIOD_TYPE = #{periodType,jdbcType=VARCHAR},
+      ORGAN_TYPE = #{organType,jdbcType=VARCHAR},
+      SUBJECT_TYPE = #{subjectType,jdbcType=CHAR},
+      RATE_COUNT = #{rateCount,jdbcType=INTEGER}
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </update>
+  <select id="getSubject" parameterType="java.lang.Integer" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,subject_desc as subjectDesc,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName,subject_type as subjectType,organ_type as organType,period_type as periodType
+    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
+    and ns.subject_id =#{subjectId}
+
+  </select>
+  <select id="querySubjectColumn" parameterType="java.lang.Integer" resultType="map">
+    select column_id as columnId,subject_id as subjectId,column_name as cellName,sc.cell_id as cellId,
+    search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
+    is_show as isShow,cell_code as cellCode
+    from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
+    order by COLUMN_ORDER asc
+  </select>
+  <select id="querySubjectDoc" parameterType="java.lang.Integer" resultType="map">
+     select document_id as documentId ,doc_name as docName,doc_save_id as docSaveId ,subject_id as subjectId
+     from ndp_subject_document where  subject_id=#{subjectId}
+      order by document_id DEC
+  </select>
+  <select id="getDictData" parameterType="string" resultType="map">
+    select dict_key as 'value',dict_value as label
+    from ndp_dict where dict_id=#{data}
+  </select>
+  <select id="getTagData" parameterType="java.lang.Integer" resultType="map">
+    select tag_name as tagName
+    from ndp_subject_tag where subject_id=#{subjectId}
+  </select>
+  <insert id="insertSubjectColumn" parameterType="map">
+    insert into ndp_subject_column (SUBJECT_ID, COLUMN_NAME ,
+    CELL_ID, SEARCH_CONDITION, SEARCH_SETTING,COLUMN_ORDER,IS_SHOW
+    )
+    values (#{subjectId,jdbcType=INTEGER}, #{columnName,jdbcType=VARCHAR},
+    #{cellId,jdbcType=INTEGER}, #{searchCondition,jdbcType=VARCHAR}, #{searchSetting,jdbcType=VARCHAR},#{columnOrder,jdbcType=INTEGER},#{isShow,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertTag" parameterType="map">
+    insert into ndp_subject_tag(SUBJECT_ID,TAG_NAME)values(#{subjectId,jdbcType=INTEGER},#{tagName,jdbcType=VARCHAR})
+  </insert>
+  <delete id="deleteTag" parameterType="java.lang.Integer">
+    delete from ndp_subject_tag
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSubjectDoc" parameterType="map">
+    insert into ndp_subject_document (SUBJECT_ID, DOC_NAME ,
+    DOC_SAVE_ID
+    )
+    values (#{subjectId,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR},
+    #{docSaveId,jdbcType=INTEGER}
+    )
+  </insert>
+  <delete id="deleteSubjectColumnBySubjectId" parameterType="java.lang.Integer">
+    delete from ndp_subject_column
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteSubjectDocBySubjectId" parameterType="java.lang.Integer">
+    delete from ndp_subject_document
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
 </mapper>
