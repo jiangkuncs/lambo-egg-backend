@@ -5,17 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.demo.constant.DemoResult;
 import com.lambo.demo.constant.DemoResultConstant;
-import com.lambo.demo.model.DemoLog;
-import com.lambo.demo.model.DemoLogExample;
 import com.lambo.upms.client.dao.model.UpmsOrganization;
 import com.lambo.upms.client.dao.model.UpmsOrganizationExample;
 import com.lambo.upms.client.service.api.UpmsClientApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +51,7 @@ public class HelpBoxDataController extends BaseController {
         UpmsOrganizationExample upmsOrganizationExample = new UpmsOrganizationExample();
 
         if(StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(order)){
-            upmsOrganizationExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+            upmsOrganizationExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
         }
         if(StringUtils.isNotBlank(search)){
             upmsOrganizationExample.createCriteria().andNameLike("%" + search + "%");
