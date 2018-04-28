@@ -19,4 +19,8 @@ public interface DataViewService extends BaseService<Dict, DictExample> {
     Map<String,List<Map<String,String>>> getConditionMap();
     //查询数据目录
     List<Map<String, String>> getSearchResult(Map condition);
+    //更新得分记录
+    int updateRateCountBySubjectId(Map condition);
+    //更新访问记录
+    int updateVisitCountBySubjectId(int condition);
 }

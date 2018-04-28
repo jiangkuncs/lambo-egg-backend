@@ -5,6 +5,7 @@ import com.lambo.common.base.BaseController;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.FeedBack;
+import com.lambo.ndp.service.api.DataViewService;
 import com.lambo.ndp.service.api.FeedBackService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 反馈信息controller
@@ -28,6 +31,8 @@ public class FeedbackController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(FeedbackController.class);
     @Autowired
     private FeedBackService feedBackService;
+    @Autowired
+    private DataViewService dataViewService;
 
     @ApiOperation(value = "反馈信息保存")
     @RequestMapping(value = "/save",method = RequestMethod.POST)
@@ -48,7 +53,13 @@ public class FeedbackController extends BaseController {
         fb.setType(categoryType);
         fb.setRecorduser(SecurityUtils.getSubject().getPrincipal().toString());
         fb.setRecorddate(new Date());
+        //保存评价记录
         int count = feedBackService.insert(fb);
+        //更新数据目录的的分
+        Map<String,Object> paraMap = new HashMap();
+        paraMap.put("catagoryId",categoryId);
+        paraMap.put("rateCount", Double.valueOf(rateCount));
+        int updateCount = dataViewService.updateRateCountBySubjectId(paraMap);
         if(count>0)
             return  new NdpResult(NdpResultConstant.SUCCESS, fb);
         else

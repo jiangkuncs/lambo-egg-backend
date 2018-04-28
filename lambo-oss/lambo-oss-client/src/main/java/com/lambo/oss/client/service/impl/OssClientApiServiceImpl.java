@@ -34,7 +34,6 @@ public class OssClientApiServiceImpl implements OssClientApiService {
     @Override
     public Map saveFile(MultipartFile file){
         if (!file.isEmpty()) {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
             String originalFilename = file.getOriginalFilename();
             String fileExtension = FileUtil.getFileExtension(originalFilename);

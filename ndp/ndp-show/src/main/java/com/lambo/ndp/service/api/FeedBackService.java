@@ -12,4 +12,5 @@ import com.lambo.ndp.model.FeedBackExample;
 */
 public interface FeedBackService extends BaseService<FeedBack, FeedBackExample> {
 
+
 }

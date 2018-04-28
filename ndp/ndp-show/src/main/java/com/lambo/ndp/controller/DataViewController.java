@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,23 +54,35 @@ public class DataViewController extends BaseController {
     @LogAround("请求列表数据")
     public Object getSearchResult(
             @RequestParam(required = false, value = "activeOrder") String activeOrder,
-            @RequestParam(required = false, value = "activeStars") List activeStars,
+            @RequestParam(required = false, value = "activeStars") String activeStars,
             @RequestParam(required = false, value = "activeTags") List activeTags,
             @RequestParam(required = false, value = "catograyId") String catograyId,
             @RequestParam(required = false, value = "organTypeId") String organTypeId,
-            @RequestParam(required = false, value = "periodTypeId") String periodTypeId) {
-
+            @RequestParam(required = false, value = "periodTypeId") String periodTypeId,
+            @RequestParam(required = false, value = "pageNum") int pageNum,
+            @RequestParam(required = false, value = "pageSize") int pageSize) {
 
         Map paramMap = new HashMap();
+        paramMap.put("activeOrder",activeOrder);
+        paramMap.put("activeStars",activeStars);
+        paramMap.put("activeTags",activeTags);
+        paramMap.put("catograyId",catograyId);
+        paramMap.put("organTypeId",organTypeId);
+        paramMap.put("periodTypeId",periodTypeId);
 
 
 
+
+        //PageHelper.startPage(pageNum, pageSize);
+        int startRow = (pageNum - 1) * pageSize;
+        PageHelper.offsetPage(startRow, pageSize);
+        paramMap.put("pageNum",pageNum);
+        paramMap.put("pageSize",pageSize);
         List<Map<String, String>> resultList = dataViewService.getSearchResult(paramMap);
+        //list可以直接用，也可以用下边的方法转成PageInfo对象，以获取记录总数等其他信息
+        PageInfo page = new PageInfo(resultList);
 
-        if (resultList.isEmpty())
-            return new NdpResult(NdpResultConstant.FAILED, null);
-        else
-            return new NdpResult(NdpResultConstant.SUCCESS, resultList);
+        return new NdpResult(NdpResultConstant.SUCCESS, page);
 
     }
 

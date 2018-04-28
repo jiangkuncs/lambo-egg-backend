@@ -7,17 +7,24 @@
     WHERE DICT_ID=#{dictId,jdbcType=VARCHAR}
   </select>
 
-  <select id="getSearchResult" parameterType="map" resultType="map">
-    SELECT *
-    FROM NDP_FEEDBACK_RECORD R,NDP_SUBJECT S,NDP_SUBJECT_TAG T
-    WHERE
-      S.SUBJECT_ID=R.RECORDOBJECTID
-    AND
-      S.SUBJECT_ID=T.SUBJECT_ID
-    AND
-      R.TYPE="0"
-
-
-
+  <select id="getSearchResult" parameterType="String" resultType="map">
+    ${value}
   </select>
+
+    <update id="updateRateCountBySubjectId" parameterType="map">
+        UPDATE
+          NDP_SUBJECT
+        SET
+          RATE_COUNT = (RATE_COUNT+ #{rateCount,jdbcType=DOUBLE})/2
+        WHERE
+          SUBJECT_ID= #{catagoryId,jdbcType=VARCHAR};
+    </update>
+    <update id="updateVisitCountBySubjectId" parameterType="String">
+        UPDATE
+        NDP_SUBJECT
+        SET
+        VISIT_COUNT = VISIT_COUNT+ 1
+        WHERE
+        SUBJECT_ID= ${value};
+    </update>
 </mapper>

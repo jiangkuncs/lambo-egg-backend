@@ -5,6 +5,7 @@ import com.lambo.common.base.BaseController;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.SubjectRecord;
+import com.lambo.ndp.service.api.DataViewService;
 import com.lambo.ndp.service.api.SubjectRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,8 @@ public class SubjectRecordController extends BaseController {
 
     @Autowired
     private SubjectRecordService subjectRecordService;
+    @Autowired
+    private DataViewService dataViewService;
 
     @ApiOperation(value = "记录专题访问记录")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -56,6 +59,11 @@ public class SubjectRecordController extends BaseController {
             subjectRecord.setUserName(userName);
             count = subjectRecordService.insertSelective(subjectRecord);
         }
+
+        //更新总浏览量
+
+        int visitCount =dataViewService.updateVisitCountBySubjectId(subjectId);
+
         if(count==1){
             return new NdpResult(NdpResultConstant.SUCCESS, count);
         }else{
