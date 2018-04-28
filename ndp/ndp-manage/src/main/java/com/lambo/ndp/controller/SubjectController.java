@@ -5,14 +5,17 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
+import com.lambo.ndp.model.Dict;
+import com.lambo.ndp.model.Subject;
+import com.lambo.ndp.model.SubjectExample;
 import com.lambo.ndp.service.api.SubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,22 +68,35 @@ public class SubjectController extends BaseController {
             @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "subjectName") String subjectName) {
         Map<String,Object> param = new HashMap<String, Object>();
-        if(StringUtils.isNotBlank(sort)){
-            param.put("sort", StringUtil.humpToLine(sort));
-        }else{
-            param.put("sort","subject_id");
+        SubjectExample subjectExample=new SubjectExample();
+        if(StringUtils.isBlank(sort)){
+            sort = "subject_id";
         }
-        if(StringUtils.isNotBlank(order)){
-            param.put("order",order);
-        }else{
-            param.put("order","desc");
+        if(StringUtils.isBlank(order)){
+            order = "desc";
         }
+//        if(StringUtils.isNotBlank(sort)){
+//            param.put("sort", StringUtil.humpToLine(sort));
+//        }else{
+//            param.put("sort","subject_id");
+//        }
+//        if(StringUtils.isNotBlank(order)){
+//            param.put("order",order);
+//        }else{
+//            param.put("order","desc");
+//        }
+//        if(StringUtils.isNotBlank(subjectName)){
+//            param.put("subjectName",subjectName);
+//        }
+
+        subjectExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
         if(StringUtils.isNotBlank(subjectName)){
-            param.put("subjectName",subjectName);
+            subjectExample.or().andSubjectNameLike("%"+subjectName+"%");
         }
         //物理分页
         PageHelper.offsetPage(offset, limit);
-        List<Map<String,Object>> data = subjectService.querySubject(param);
+        List<Subject> data= subjectService.selectByExample(subjectExample);
+       // List<Map<String,Object>> data = subjectService.querySubject(param);
         PageInfo page = new PageInfo(data);
         Map<String, Object> result = new HashMap<>();
         result.put("rows", page.getList());
@@ -92,32 +108,50 @@ public class SubjectController extends BaseController {
     @ResponseBody
     public Object get(@PathVariable("subjectId") int subjectId) {
 
-        return subjectService.get(subjectId);
+        return subjectService.getSubjectById(subjectId);
+    }
+    @ApiOperation(value = "初始化数据")
+    @RequestMapping(value = "/getInitData", method = RequestMethod.GET)
+    @ResponseBody
+    public Object initSubject() {
+
+        return subjectService.initSubject();
     }
     @ApiOperation(value = "新增数据专题")
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Object create(
             @RequestParam(required = true, value = "categoryId") int categoryId,
-            @RequestParam(required = true, value = "tableCode") String tableCode,
-            @RequestParam(required = true, value = "tableId") int tableId,
+            @RequestParam(required = false, value = "tableCode") String tableCode,
+            @RequestParam(required = false, value = "tableId") int tableId,
             @RequestParam(required = false, value = "subjectDesc") String subjectDesc,
             @RequestParam(required = false, value = "subjectName") String subjectName,
+            @RequestParam(required = false, value = "subjectType") String subjectType,
+            @RequestParam(required = false, value = "subjectTime") String subjectTime,
+            @RequestParam(required = false, value = "subjectOrgan") String subjectOrgan,
+            @RequestParam(required = false, value = "subjectTag") String subjectTag,
             @RequestParam(required = false, value = "subjectColumns") String subjectColumns) {
-        return subjectService.insertSubject(categoryId,tableCode,tableId,subjectDesc,subjectName,subjectColumns);
+        int con=(int)subjectService.insertSubject(categoryId,tableCode,tableId,subjectDesc,subjectName,subjectColumns,subjectType,subjectTime,subjectOrgan,subjectTag);
+        return new NdpResult(NdpResultConstant.SUCCESS, con);
+
     }
     @ApiOperation(value = "新增数据专题")
     @ResponseBody
     @RequestMapping(value = "/update/{subjectId}", method = RequestMethod.POST)
     public Object update(
             @PathVariable("subjectId") int subjectId,
-            @RequestParam(required = true, value = "categoryId") int categoryId,
-            @RequestParam(required = true, value = "tableCode") String tableCode,
-            @RequestParam(required = true, value = "tableId") int tableId,
+            @RequestParam(required = false, value = "categoryId") int categoryId,
+            @RequestParam(required = false, value = "tableCode") String tableCode,
+            @RequestParam(required = false, value = "tableId") int tableId,
             @RequestParam(required = false, value = "subjectDesc") String subjectDesc,
             @RequestParam(required = false, value = "subjectName") String subjectName,
+            @RequestParam(required = false, value = "subjectType") String subjectType,
+            @RequestParam(required = false, value = "subjectTime") String subjectTime,
+            @RequestParam(required = false, value = "subjectOrgan") String subjectOrgan,
+            @RequestParam(required = false, value = "subjectTag") String subjectTag,
             @RequestParam(required = false, value = "subjectColumns") String subjectColumns) {
-        return subjectService.updateSubject(subjectId,categoryId,tableCode,tableId,subjectDesc,subjectName,subjectColumns);
+        int con=(int)subjectService.updateSubject(subjectId,categoryId,tableCode,tableId,subjectDesc,subjectName,subjectColumns,subjectType,subjectTime,subjectOrgan,subjectTag);
+        return new NdpResult(NdpResultConstant.SUCCESS, con);
     }
     @ApiOperation(value = "删除数据专题")
     @RequestMapping(value = "/delete/{subjectId}",method = RequestMethod.GET)

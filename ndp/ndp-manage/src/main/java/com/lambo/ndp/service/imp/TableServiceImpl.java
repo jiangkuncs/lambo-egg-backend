@@ -180,7 +180,10 @@ public class TableServiceImpl implements TableService {
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
     public Object queryTableColumns(String id){
-        List data = tableMapper.queryTableColumns(id);
+        List<Map<String,Object>> data = tableMapper.queryTableColumns(id);
+        for(int i=0;i<data.size();i++){
+            data.get(i).put("cellName","");
+        }
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
 }

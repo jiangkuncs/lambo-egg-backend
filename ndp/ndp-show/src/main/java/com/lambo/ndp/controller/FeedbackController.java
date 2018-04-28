@@ -61,8 +61,8 @@ public class FeedbackController extends BaseController {
         paraMap.put("rateCount", Double.valueOf(rateCount));
         int updateCount = dataViewService.updateRateCountBySubjectId(paraMap);
         if(count>0)
-            return  new NdpResult(NdpResultConstant.SUCCESS, fb);
+        {return  new NdpResult(NdpResultConstant.SUCCESS, fb);}
         else
-            return  new NdpResult(NdpResultConstant.FAILED,fb);
+        {return  new NdpResult(NdpResultConstant.FAILED,fb);}
     }
 }
