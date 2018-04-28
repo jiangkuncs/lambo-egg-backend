@@ -24,4 +24,6 @@ public interface FrontendMapper {
     List getItemData(Map param);
 
     List getBrandData(Map param);
+
+    List getSubjectDocuments(Map param);
 }

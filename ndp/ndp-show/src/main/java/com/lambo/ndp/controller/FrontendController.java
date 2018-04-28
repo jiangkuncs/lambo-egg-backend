@@ -2,6 +2,8 @@ package com.lambo.ndp.controller;
 
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
+import com.lambo.ndp.constant.NdpResult;
+import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.service.api.FrontendService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -285,5 +287,24 @@ public class FrontendController {
             @RequestParam(required = false, defaultValue = "", value = "search") String search)  {
 
         return getDimensionData(offset,limit,sort,order,dimensionType,search);
+    }
+
+    /**
+     * 专题文档列表
+     * @return
+     */
+    @ApiOperation(value = "专题文档列表")
+    @RequestMapping(value = "/dataSubject/getSubjectDocuments",method = RequestMethod.POST)
+    @ResponseBody
+    @LogAround(value="专题文档列表")
+    public Object getSubjectDocuments(
+            @ApiParam(name="subjectId", value = "专题ID")
+            @RequestParam(required = true, defaultValue = "", value = "subjectId") String subjectId)  {
+        Map param = new HashMap();
+        param.put("subject_id",subjectId);
+
+        List list = frontendService.getSubjectDocuments(param);
+
+        return new NdpResult(NdpResultConstant.SUCCESS,list);
     }
 }
