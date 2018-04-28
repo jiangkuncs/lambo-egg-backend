@@ -63,5 +63,10 @@ public class Md5Utils {
 	public static byte[] md5(InputStream input) throws IOException {
 		return DigestUtils.digest(input, MD5);
 	}
+
+	public static void main(String args[]){
+		String str = "12345666f1b370c660445a8657bf8bf1794486";
+		System.out.println(md5(str));
+	}
 	
 }

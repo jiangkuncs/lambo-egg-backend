@@ -6,7 +6,7 @@ import com.baidu.unbiz.fluentvalidator.FluentValidator;
 import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.MD5Util;
+import com.lambo.common.utils.codec.Md5Utils;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.common.validator.NotNullValidator;
 import com.lambo.upms.common.constant.UpmsResult;
@@ -187,7 +187,7 @@ public class UpmsUserController extends BaseController {
         long time = System.currentTimeMillis();
         String salt = UUID.randomUUID().toString().replaceAll("-", "");
         upmsUser.setSalt(salt);
-        upmsUser.setPassword(MD5Util.MD5(password + upmsUser.getSalt()));
+        upmsUser.setPassword(Md5Utils.md5(password + upmsUser.getSalt()));
         upmsUser.setCtime(time);
         upmsUser = upmsUserService.createUser(upmsUser);
         if (null == upmsUser) {
