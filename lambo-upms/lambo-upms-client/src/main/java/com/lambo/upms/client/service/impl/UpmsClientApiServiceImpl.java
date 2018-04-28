@@ -1,6 +1,6 @@
 package com.lambo.upms.client.service.impl;
 
-import com.lambo.common.util.PropertiesFileUtil;
+import com.lambo.common.utils.io.PropertiesFileUtil;
 import com.lambo.upms.client.dao.api.*;
 import com.lambo.upms.client.dao.model.*;
 import com.lambo.upms.client.service.api.UpmsClientApiService;

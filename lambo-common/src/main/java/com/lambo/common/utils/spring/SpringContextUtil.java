@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

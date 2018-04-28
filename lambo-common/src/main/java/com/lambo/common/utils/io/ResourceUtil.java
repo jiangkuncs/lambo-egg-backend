@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.io;
 
 import java.io.IOException;
 import java.io.InputStream;

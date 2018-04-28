@@ -1,6 +1,6 @@
 package com.lambo.upms.client.shiro.session;
 
-import com.lambo.common.util.RedisUtil;
+import com.lambo.common.utils.io.RedisUtil;
 import com.lambo.upms.client.util.SerializableUtil;
 import com.lambo.upms.common.constant.UpmsConstant;
 import org.apache.commons.lang.ObjectUtils;

@@ -2,9 +2,7 @@ package com.lambo.common.base;
 
 import com.github.pagehelper.PageHelper;
 import com.lambo.common.annotation.LogAround;
-import com.lambo.common.db.DataSourceEnum;
-import com.lambo.common.db.DynamicDataSource;
-import com.lambo.common.util.SpringContextUtil;
+import com.lambo.common.utils.spring.SpringContextUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 

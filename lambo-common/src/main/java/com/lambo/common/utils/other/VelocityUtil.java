@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.other;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang.StringUtils;
@@ -8,7 +8,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 /**

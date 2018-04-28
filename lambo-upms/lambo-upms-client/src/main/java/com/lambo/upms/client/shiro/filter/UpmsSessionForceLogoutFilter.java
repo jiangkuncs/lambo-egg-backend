@@ -1,11 +1,10 @@
 package com.lambo.upms.client.shiro.filter;
 
-import com.lambo.common.util.ResponseUtil;
+import com.lambo.common.utils.web.ResponseUtil;
 import com.lambo.upms.client.constant.UpmsClientResult;
 import com.lambo.upms.client.constant.UpmsClientResultConstant;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.web.filter.AccessControlFilter;
-import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

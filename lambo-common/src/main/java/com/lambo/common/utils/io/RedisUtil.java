@@ -1,5 +1,7 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.io;
 
+import com.lambo.common.utils.codec.AESUtil;
+import com.lambo.common.utils.io.PropertiesFileUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

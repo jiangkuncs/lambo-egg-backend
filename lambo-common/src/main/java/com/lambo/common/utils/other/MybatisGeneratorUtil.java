@@ -1,7 +1,8 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.other;
 
+
+import com.lambo.common.utils.lang.StringUtils;
 import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.VelocityContext;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
@@ -11,8 +12,6 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static com.lambo.common.util.StringUtil.lineToHump;
 
 /**
  * 代码生成类
@@ -138,7 +137,7 @@ public class MybatisGeneratorUtil {
 		String servicePath = basePath + "/src/main/java/" + package_name.replaceAll("\\.", "/") + (StringUtils.isNotBlank(module) ? "/" + module : "") + "/service/api";
 		String serviceImplPath = basePath  + "/src/main/java/" + package_name.replaceAll("\\.", "/") + (StringUtils.isNotBlank(module) ? "/" + module : "") + "/service/impl";
 		for (int i = 0; i < tables.size(); i++) {
-			String model = StringUtil.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
+			String model = StringUtils.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
 			String service = servicePath + "/" + model + "Service.java";
 			String serviceMock = servicePath + "/" + model + "ServiceMock.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
@@ -168,7 +167,7 @@ public class MybatisGeneratorUtil {
 				VelocityContext context = new VelocityContext();
 				context.put("package_name", package_name);
 				context.put("model", model);
-				context.put("mapper", StringUtil.toLowerCaseFirstOne(model));
+				context.put("mapper", StringUtils.toLowerCaseFirstOne(model));
 				context.put("ctime", ctime);
 				VelocityUtil.generate(serviceImpl_vm, serviceImpl, context);
 				System.out.println(serviceImpl);
