@@ -10,4 +10,21 @@
   <select id="getSearchResult" parameterType="String" resultType="map">
     ${value}
   </select>
+
+    <update id="updateRateCountBySubjectId" parameterType="map">
+        UPDATE
+          NDP_SUBJECT
+        SET
+          RATE_COUNT = (RATE_COUNT+ #{rateCount,jdbcType=DOUBLE})/2
+        WHERE
+          SUBJECT_ID= #{catagoryId,jdbcType=VARCHAR};
+    </update>
+    <update id="updateVisitCountBySubjectId" parameterType="String">
+        UPDATE
+        NDP_SUBJECT
+        SET
+        VISIT_COUNT = VISIT_COUNT+ 1
+        WHERE
+        SUBJECT_ID= ${value};
+    </update>
 </mapper>

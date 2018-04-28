@@ -150,6 +150,12 @@ public class DataViewServiceImpl extends BaseServiceImpl<DataViewMapper,Dict, Di
 
 
             }
+            //计算分页
+            int curPage = Integer.valueOf(condition.get("pageNum").toString()) ;
+            int pageSize = Integer.valueOf(condition.get("pageSize").toString());
+            int startRow = (curPage - 1) * pageSize;
+
+           // str.append(" LIMIT "+startRow+","+ pageSize);
 
         }
         if(logger.isDebugEnabled()){
@@ -158,6 +164,16 @@ public class DataViewServiceImpl extends BaseServiceImpl<DataViewMapper,Dict, Di
         List<Map<String, String>> resultList = dataViewMapper.getSearchResult(str.toString());
 
         return resultList;
+    }
+
+    @Override
+    public int updateRateCountBySubjectId(Map condition) {
+        return dataViewMapper.updateRateCountBySubjectId(condition);
+    }
+
+    @Override
+    public int updateVisitCountBySubjectId(int condition) {
+        return dataViewMapper.updateVisitCountBySubjectId(condition);
     }
 
 }

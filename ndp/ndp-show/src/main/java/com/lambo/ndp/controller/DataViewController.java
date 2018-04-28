@@ -73,7 +73,11 @@ public class DataViewController extends BaseController {
 
 
 
-        PageHelper.startPage(pageNum, pageSize);
+        //PageHelper.startPage(pageNum, pageSize);
+        int startRow = (pageNum - 1) * pageSize;
+        PageHelper.offsetPage(startRow, pageSize);
+        paramMap.put("pageNum",pageNum);
+        paramMap.put("pageSize",pageSize);
         List<Map<String, String>> resultList = dataViewService.getSearchResult(paramMap);
         //list可以直接用，也可以用下边的方法转成PageInfo对象，以获取记录总数等其他信息
         PageInfo page = new PageInfo(resultList);
