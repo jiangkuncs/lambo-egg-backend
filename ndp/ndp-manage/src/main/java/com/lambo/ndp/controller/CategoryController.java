@@ -83,7 +83,6 @@ public class CategoryController extends BaseController {
         return new NdpResult(NdpResultConstant.SUCCESS,result);
 
     }
-
     @ApiOperation(value = "数据分类列表")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
