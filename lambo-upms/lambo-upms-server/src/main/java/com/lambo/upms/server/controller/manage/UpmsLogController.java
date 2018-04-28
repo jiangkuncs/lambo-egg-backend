@@ -3,14 +3,13 @@ package com.lambo.upms.server.controller.manage;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.upms.common.constant.UpmsResult;
 import com.lambo.upms.common.constant.UpmsResultConstant;
 import com.lambo.upms.server.dao.model.*;
 import com.lambo.upms.server.service.api.UpmsLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,7 @@ public class UpmsLogController extends BaseController {
             @RequestParam(required = false, value = "order") String order) {
         UpmsLogExample upmsLogExample = new UpmsLogExample();
         if (!StringUtils.isBlank(sort) && !StringUtils.isBlank(order)) {
-            upmsLogExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+            upmsLogExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
         }
         if (StringUtils.isNotBlank(search)) {
             upmsLogExample.or()
