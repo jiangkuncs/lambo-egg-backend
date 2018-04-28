@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.core.io.Resource;
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,8 +37,15 @@ public class BaseJunit4Test extends AbstractTransactionalJUnit4SpringContextTest
 
     @Before
     public void setUp() throws Exception {
-        Resource[] resources = ResourceUtil.getResources("/sql/*.sql");
-
+        Resource[] resources = null;
+        try{
+            resources = ResourceUtil.getResources("/sql/*.sql");
+        }catch(Exception e){
+            //
+        }
+        if(resources == null || resources.length == 0){
+            return ;
+        }
         SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) SpringContextUtil.getBean("sqlSessionFactory");
         SqlSession sqlSession = sqlSessionFactory.openSession();
         Connection conn = sqlSession.getConnection();
