@@ -81,7 +81,7 @@ public class UpmsRealm extends AuthorizingRealm {
         if (null == upmsUser) {
             throw new UnknownAccountException();
         }
-        if (!upmsUser.getPassword().equals(Md5Utils.md5(password + upmsUser.getSalt()))) {
+        if (!upmsUser.getPassword().equalsIgnoreCase(Md5Utils.md5(password + upmsUser.getSalt()))) {
             throw new IncorrectCredentialsException();
         }
         if (upmsUser.getLocked() == 1) {
