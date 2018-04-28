@@ -1,5 +1,6 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.io;
 
+import com.lambo.common.utils.other.SystemVariableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,18 +17,35 @@ import java.util.regex.Pattern;
  */
 public class PropertiesFileUtil {
 
-    // 当打开多个资源文件时，缓存资源文件
+    /**
+     * 当打开多个资源文件时，缓存资源文件
+     */
     private static HashMap<String, PropertiesFileUtil> configMap = new HashMap<String, PropertiesFileUtil>();
-    // 打开文件时间，判断超时使用
+
+    /**
+     * 打开文件时间，判断超时使用
+     */
     private Date loadTime = null;
-    // 资源文件
+
+    /**
+     * 资源文件
+     */
     private ResourceBundle resourceBundle = null;
-    // 默认资源文件名称
+
+    /**
+     * 默认资源文件名称
+     */
     private static final String NAME = "config";
-    // 缓存时间
+
+    /**
+     * 缓存时间
+     */
     private static final Integer TIME_OUT = 60 * 1000;
 
-    // 私有构造方法，创建单例
+    /**
+     * 私有构造方法，创建单例
+     * @param name
+     */
     private PropertiesFileUtil(String name) {
         this.loadTime = new Date();
         this.resourceBundle = ResourceBundle.getBundle(name);
@@ -56,7 +74,11 @@ public class PropertiesFileUtil {
         return conf;
     }
 
-    // 根据key读取value
+    /**
+     * 根据key读取value
+     * @param key
+     * @return
+     */
     public String get(String key) {
         try {
             String value = resourceBundle.getString(key);
@@ -68,7 +90,11 @@ public class PropertiesFileUtil {
         }
     }
 
-    // 根据key读取value(整形)
+    /**
+     * 根据key读取value(整形)
+     * @param key
+     * @return
+     */
     public Integer getInt(String key) {
         try {
             String value = resourceBundle.getString(key);
@@ -78,7 +104,11 @@ public class PropertiesFileUtil {
         }
     }
 
-    // 根据key读取value(布尔)
+    /**
+     * 根据key读取value(布尔)
+     * @param key
+     * @return
+     */
     public boolean getBool(String key) {
         try {
             String value = resourceBundle.getString(key);

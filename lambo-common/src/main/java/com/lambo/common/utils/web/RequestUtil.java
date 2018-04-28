@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.web;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;

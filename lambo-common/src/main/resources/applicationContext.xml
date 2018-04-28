@@ -19,7 +19,7 @@
 	</context:component-scan>
 
 	<!-- 启动时初始化Spring上下文环境工具类 -->
-	<bean id="springContextUtil" class="com.lambo.common.util.SpringContextUtil"></bean>
+	<bean id="springContextUtil" class="com.lambo.common.utils.spring.SpringContextUtil"></bean>
 
 	<!-- 启动任务注解 -->
 	<task:annotation-driven />

@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.codec;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;

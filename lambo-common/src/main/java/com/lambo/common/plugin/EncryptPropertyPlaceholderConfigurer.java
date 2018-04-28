@@ -1,7 +1,8 @@
 package com.lambo.common.plugin;
 
-import com.lambo.common.util.AESUtil;
-import com.lambo.common.util.SystemVariableUtil;
+
+import com.lambo.common.utils.codec.AESUtil;
+import com.lambo.common.utils.other.SystemVariableUtil;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 import java.util.regex.*;

@@ -1,7 +1,7 @@
 package com.lambo.common.base;
 
-import com.lambo.common.util.ResourceUtil;
-import com.lambo.common.util.SpringContextUtil;
+import com.lambo.common.utils.io.ResourceUtil;
+import com.lambo.common.utils.spring.SpringContextUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.core.io.Resource;
 
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,5 @@
 package com.lambo.common.base;
 
-import com.lambo.common.util.PropertiesFileUtil;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.slf4j.Logger;

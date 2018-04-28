@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.web;
 
 import com.alibaba.fastjson.JSON;
 

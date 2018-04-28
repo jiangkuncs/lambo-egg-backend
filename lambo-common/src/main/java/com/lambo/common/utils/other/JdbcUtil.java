@@ -1,4 +1,4 @@
-package com.lambo.common.util;
+package com.lambo.common.utils.other;
 
 import java.sql.*;
 import java.util.ArrayList;

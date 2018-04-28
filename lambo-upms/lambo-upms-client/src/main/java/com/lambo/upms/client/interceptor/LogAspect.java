@@ -1,7 +1,7 @@
 package com.lambo.upms.client.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.lambo.common.util.RequestUtil;
+import com.lambo.common.utils.web.RequestUtil;
 import com.lambo.upms.client.dao.model.UpmsLog;
 import com.lambo.upms.client.service.api.UpmsClientApiService;
 import io.swagger.annotations.ApiOperation;

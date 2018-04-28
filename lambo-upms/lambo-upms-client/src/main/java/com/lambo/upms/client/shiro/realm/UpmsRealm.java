@@ -1,7 +1,6 @@
 package com.lambo.upms.client.shiro.realm;
 
-import com.lambo.common.util.MD5Util;
-import com.lambo.common.util.PropertiesFileUtil;
+import com.lambo.common.utils.codec.Md5Utils;
 import com.lambo.upms.client.dao.model.UpmsPermission;
 import com.lambo.upms.client.dao.model.UpmsRole;
 import com.lambo.upms.client.dao.model.UpmsUser;
@@ -82,7 +81,7 @@ public class UpmsRealm extends AuthorizingRealm {
         if (null == upmsUser) {
             throw new UnknownAccountException();
         }
-        if (!upmsUser.getPassword().equals(MD5Util.MD5(password + upmsUser.getSalt()))) {
+        if (!upmsUser.getPassword().equals(Md5Utils.md5(password + upmsUser.getSalt()))) {
             throw new IncorrectCredentialsException();
         }
         if (upmsUser.getLocked() == 1) {
