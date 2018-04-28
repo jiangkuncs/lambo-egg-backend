@@ -1,6 +1,6 @@
 package com.lambo.oss.client.service.impl;
 
-import com.lambo.common.util.FileUtil;
+import com.lambo.common.utils.io.FileUtils;
 import com.lambo.oss.client.constant.OssConstant;
 import com.lambo.oss.client.controller.OssClientApiController;
 import com.lambo.oss.client.service.api.OssClientApiService;
@@ -8,11 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +32,7 @@ public class OssClientApiServiceImpl implements OssClientApiService {
         if (!file.isEmpty()) {
 
             String originalFilename = file.getOriginalFilename();
-            String fileExtension = FileUtil.getFileExtension(originalFilename);
+            String fileExtension = FileUtils.getFileExtension(originalFilename);
             String newName = UUID.randomUUID().toString().replace("-", "");
             String fileMd5 = "";
             try{
@@ -46,8 +42,8 @@ public class OssClientApiServiceImpl implements OssClientApiService {
             }
 
             // 文件保存路径
-            String filePath = FileUtil.path(FileUtil.getWebappPath() + OssConstant.UPLOAD_TEMP_PATH);
-            FileUtil.createDirectory(filePath);
+            String filePath = FileUtils.path(FileUtils.getWebappPath() + OssConstant.UPLOAD_TEMP_PATH);
+            FileUtils.createDirectory(filePath);
 
             try {
                 // 转存文件

@@ -1,24 +1,19 @@
 package com.lambo.oss.client.controller;
 
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.FileUtil;
+import com.lambo.common.utils.io.FileUtils;
 import com.lambo.oss.client.constant.OssConstant;
 import com.lambo.oss.client.constant.OssResult;
 import com.lambo.oss.client.constant.OssResultConstant;
 import com.lambo.oss.client.service.api.OssClientApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -71,14 +66,14 @@ public class OssClientApiController extends BaseController {
     @ResponseBody
     public void get(@PathVariable("name") String name,HttpServletRequest request,HttpServletResponse response) {
 
-        String filePath = FileUtil.path(FileUtil.getWebappPath()
+        String filePath = FileUtils.path(FileUtils.getWebappPath()
                 + OssConstant.UPLOAD_TEMP_PATH)
                 + File.separator + name;
 
 
         File file = new File(filePath);
 
-        FileUtil.downFile(file,request,response);
+        FileUtils.downFile(file,request,response);
 
     }
 }
