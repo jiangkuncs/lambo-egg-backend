@@ -1,9 +1,8 @@
 package com.lambo.oss.client.service.impl;
 
 import com.lambo.common.base.BaseJunit4Test;
-import com.lambo.common.util.FileUtil;
-import com.lambo.common.util.ResourceUtil;
 import com.lambo.common.utils.io.FileUtils;
+import com.lambo.common.utils.io.ResourceUtil;
 import com.lambo.oss.client.constant.OssConstant;
 import com.lambo.oss.client.service.api.OssClientApiService;
 import org.apache.http.entity.ContentType;
@@ -16,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class OssClientApiServiceImplTest extends BaseJunit4Test {
 
@@ -43,8 +40,8 @@ public class OssClientApiServiceImplTest extends BaseJunit4Test {
         Assert.assertEquals(map.get("md5"),"1a424a5cd7cba080351b68fd727567be");
 
         // 清理
-        String testFile = FileUtil.path(FileUtil.getWebappPath() + OssConstant.UPLOAD_TEMP_PATH + File.separator + map.get("name"));
-        FileUtil.deleteFile(testFile);
+        String testFile = FileUtils.path(FileUtils.getWebappPath() + OssConstant.UPLOAD_TEMP_PATH + File.separator + map.get("name"));
+        FileUtils.deleteFile(testFile);
 
     }
 
