@@ -6,7 +6,7 @@ import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 import com.lambo.common.base.BaseResult;
-import com.lambo.common.util.StringUtil;
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.demo.constant.DemoResult;
 import com.lambo.demo.constant.DemoResultConstant;
 import com.lambo.demo.model.DemoLogExample;
@@ -14,13 +14,13 @@ import com.lambo.demo.model.DemoLog;
 import com.lambo.demo.service.api.DemoLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.lambo.common.util.excel.Constants;
+//import com.lambo.common.util.excel.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +57,7 @@ public class DemoDataController extends BaseController {
         if(StringUtils.isBlank(order)){
             order = "desc";
         }
-        demoLogExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+        demoLogExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
 
         if(StringUtils.isNotBlank(search)){
             demoLogExample.createCriteria().andDescriptionLike("%" + search + "%");

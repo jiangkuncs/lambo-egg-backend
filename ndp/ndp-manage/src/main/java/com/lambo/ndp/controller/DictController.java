@@ -9,7 +9,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
+
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
@@ -18,7 +19,7 @@ import com.lambo.ndp.service.api.DictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class DictController extends BaseController {
         if(StringUtils.isBlank(order)){
             order = "desc";
         }
-        dictExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+        dictExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
         if (StringUtils.isNotBlank(dictName)) {
             dictExample.or().andDictIdLike("%" + dictId + "%")
                     .andDictNameLike("%" + dictName + "%");

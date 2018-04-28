@@ -9,8 +9,8 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
-import com.lambo.common.util.excel.Constants;
+
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 //import net.sf.json.JSONArray;
 //import net.sf.json.JSONObject;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +80,7 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "tableName") String tableName) {
         Map<String,Object> param = new HashMap<String, Object>();
         if(StringUtils.isNotBlank(sort)){
-            param.put("sort", StringUtil.humpToLine(sort));
+            param.put("sort", StringUtils.humpToLine(sort));
         }else{
             param.put("sort","table_id");
         }
@@ -158,7 +158,7 @@ public class TableController extends BaseController {
             param.put("tableName",search);
         }
         if(StringUtils.isNotBlank(sort)){
-            param.put("sort", StringUtil.humpToLine(sort));
+            param.put("sort", StringUtils.humpToLine(sort));
         }else{
             param.put("sort","table_name");
         }
@@ -191,7 +191,7 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "selectColumns") String selectColumns) {
 //
         if(StringUtils.isNotBlank(sort)){
-            sort= StringUtil.humpToLine(sort);
+            sort= StringUtils.humpToLine(sort);
         }else{
             sort="table_name";
         }

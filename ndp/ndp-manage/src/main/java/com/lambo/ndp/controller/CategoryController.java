@@ -8,7 +8,8 @@ import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
-import com.lambo.common.util.StringUtil;
+
+import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.Category;
@@ -18,7 +19,6 @@ import com.lambo.ndp.service.api.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -69,7 +69,7 @@ public class CategoryController extends BaseController {
         if(StringUtils.isBlank(order)){
             order = "asc";
         }
-        CategoryExample.setOrderByClause(StringUtil.humpToLine(sort) + " " + order);
+        CategoryExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
         if (StringUtils.isNotBlank(search)) {
             CategoryExample.or().andCategoryNameLike("%" + search + "%");
         }
