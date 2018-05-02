@@ -36,6 +36,33 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">-->
+        <!--<property name="messageConverters">-->
+            <!--<list>-->
+                <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+                    <!--<property name="supportedMediaTypes">-->
+                        <!--<list>-->
+                            <!--<value>text/html;charset=UTF-8</value>-->
+                            <!--<value>text/plain;charset=UTF-8</value>-->
+                            <!--<value>application/json;charset=UTF-8</value>-->
+                        <!--</list>-->
+                    <!--</property>-->
+                <!--</bean>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="mappingJacksonHttpMessageConverter"-->
+          <!--class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+        <!--<property name="supportedMediaTypes">-->
+            <!--<list>-->
+                <!--<value>application/json</value>-->
+                <!--<value>text/html;charset=UTF-8</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+
     <!-- i18n国际化 -->
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <!-- 找不到key时用key作为返回值 -->

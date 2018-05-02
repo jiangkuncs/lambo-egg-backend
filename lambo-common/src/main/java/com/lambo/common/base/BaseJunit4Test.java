@@ -4,19 +4,32 @@ import com.lambo.common.utils.io.ResourceUtil;
 import com.lambo.common.utils.spring.SpringContextUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.SecurityManager;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.core.io.Resource;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @ClassName BaseJunit4Test
@@ -28,14 +41,18 @@ import java.sql.Statement;
 @ContextConfiguration(locations = {
         "classpath*:applicationContext.xml",
         "classpath*:applicationContext-jdbc.xml",
-        "classpath*:applicationContext-listener.xml"
+        "classpath*:applicationContext-listener.xml",
+        "classpath*:applicationContext-shiro.xml",
+        "classpath*:springMVC-servlet.xml"
 })
-@Rollback(value=true)
-@Transactional
+@WebAppConfiguration
 public class BaseJunit4Test extends AbstractTransactionalJUnit4SpringContextTests {
 
+    @Autowired
+    private SecurityManager securityManager;
+
     @Before
-    public void setUp() throws Exception {
+    public void initData() throws Exception {
         Resource[] resources = null;
         try{
             resources = ResourceUtil.getResources("/sql/*.sql");
@@ -84,5 +101,10 @@ public class BaseJunit4Test extends AbstractTransactionalJUnit4SpringContextTest
         }
 
     }
+    @Before
+    public void initShiro(){
+        SecurityUtils.setSecurityManager(securityManager);
+    }
+
 
 }
