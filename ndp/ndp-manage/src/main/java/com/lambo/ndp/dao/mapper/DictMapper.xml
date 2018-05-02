@@ -69,13 +69,16 @@
   <sql id="Base_Column_List">
     DICT_ID, DICT_KEY, DICT_NAME, DICT_DESC, DICT_VALUE
   </sql>
+  <sql id="Base_Column_List_Dist">
+    DICT_ID, DICT_NAME, DICT_DESC
+  </sql>
   <select id="selectByExample" parameterType="com.lambo.ndp.model.DictExample" resultMap="BaseResultMap">
     select
-    <if test="distinct">
+
       distinct
-    </if>
+
     'false' as QUERYID,
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List_Dist" />
     from ndp_dict
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -203,4 +206,9 @@
     where DICT_ID = #{dictId,jdbcType=VARCHAR}
       and DICT_KEY = #{dictKey,jdbcType=VARCHAR}
   </update>
+  <select id="getDict" parameterType="map" resultType="map">
+select DICT_ID as dictId, DICT_NAME as dictName, DICT_DESC as dictDesc,DICT_KEY as dictKey,DICT_VALUE as dictValue
+from ndp_dict
+WHERE DICT_ID = #{dictId,jdbcType=VARCHAR}
+  </select>
 </mapper>

@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by zxc on 2018/3/15.
 */
 public interface SubjectService extends BaseService<Subject, SubjectExample> {
-//    public List<Map<String,Object>> querySubject(Map<String, Object> param);
+    public List<Map<String,Object>> querySubject(Map<String, Object> param);
 //    public Map<String,Object> getSubject(int subjectId);
 //    public List<Map<String,Object>> querySubjectColumn(int subjectId);
     public Object insertSubject(int categoryId,String tableCode,int tableId,String subjectDesc,String subjectName,String subjectColumns,String subjectType,String subjectTime,String subjectOrgan,String subjectTag);

@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 
 /**
 * DictService实现
@@ -47,5 +50,8 @@ public class DictServiceImpl extends BaseServiceImpl<DictMapper, Dict, DictExamp
             }
         }
         return count;
+    }
+    public List<Map<String,Object>> getDict(Map parm ){
+        return dictMapper.getDict(parm);
     }
 }

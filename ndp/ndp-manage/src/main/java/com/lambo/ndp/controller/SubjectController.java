@@ -68,35 +68,35 @@ public class SubjectController extends BaseController {
             @RequestParam(required = false, value = "order") String order,
             @RequestParam(required = false, defaultValue = "", value = "subjectName") String subjectName) {
         Map<String,Object> param = new HashMap<String, Object>();
-        SubjectExample subjectExample=new SubjectExample();
-        if(StringUtils.isBlank(sort)){
-            sort = "subject_id";
+//        SubjectExample subjectExample=new SubjectExample();
+//        if(StringUtils.isBlank(sort)){
+//            sort = "subject_id";
+//        }
+//        if(StringUtils.isBlank(order)){
+//            order = "desc";
+//        }
+        if(StringUtils.isNotBlank(sort)){
+            param.put("sort", StringUtils.humpToLine(sort));
+        }else{
+            param.put("sort","subjectId");
         }
-        if(StringUtils.isBlank(order)){
-            order = "desc";
+        if(StringUtils.isNotBlank(order)){
+            param.put("order",order);
+        }else{
+            param.put("order","desc");
         }
-//        if(StringUtils.isNotBlank(sort)){
-//            param.put("sort", StringUtil.humpToLine(sort));
-//        }else{
-//            param.put("sort","subject_id");
-//        }
-//        if(StringUtils.isNotBlank(order)){
-//            param.put("order",order);
-//        }else{
-//            param.put("order","desc");
-//        }
-//        if(StringUtils.isNotBlank(subjectName)){
-//            param.put("subjectName",subjectName);
-//        }
-
-        subjectExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
         if(StringUtils.isNotBlank(subjectName)){
-            subjectExample.or().andSubjectNameLike("%"+subjectName+"%");
+            param.put("subjectName",subjectName);
         }
+
+//        subjectExample.setOrderByClause(StringUtils.humpToLine(sort) + " " + order);
+//        if(StringUtils.isNotBlank(subjectName)){
+//            subjectExample.or().andSubjectNameLike("%"+subjectName+"%");
+//        }
         //物理分页
         PageHelper.offsetPage(offset, limit);
-        List<Subject> data= subjectService.selectByExample(subjectExample);
-       // List<Map<String,Object>> data = subjectService.querySubject(param);
+       // List<Subject> data= subjectService.selectByExample(subjectExample);
+        List<Map<String,Object>> data = subjectService.querySubject(param);
         PageInfo page = new PageInfo(data);
         Map<String, Object> result = new HashMap<>();
         result.put("rows", page.getList());

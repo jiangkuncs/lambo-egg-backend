@@ -314,7 +314,7 @@
   <select id="querySubjectDoc" parameterType="java.lang.Integer" resultType="map">
      select document_id as documentId ,doc_name as docName,doc_save_id as docSaveId ,subject_id as subjectId
      from ndp_subject_document where  subject_id=#{subjectId}
-      order by document_id DEC
+      order by documentId desc
   </select>
   <select id="getDictData" parameterType="string" resultType="map">
     select dict_key as 'value',dict_value as label
@@ -335,7 +335,7 @@
   <insert id="insertTag" parameterType="map">
     insert into ndp_subject_tag(SUBJECT_ID,TAG_NAME)values(#{subjectId,jdbcType=INTEGER},#{tagName,jdbcType=VARCHAR})
   </insert>
-  <delete id="deleteTag" parameterType="java.lang.Integer">
+  <delete id="deleteTagBySubjectId" parameterType="java.lang.Integer">
     delete from ndp_subject_tag
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </delete>
@@ -344,7 +344,7 @@
     DOC_SAVE_ID
     )
     values (#{subjectId,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR},
-    #{docSaveId,jdbcType=INTEGER}
+    #{docSaveId,jdbcType=VARCHAR}
     )
   </insert>
   <delete id="deleteSubjectColumnBySubjectId" parameterType="java.lang.Integer">
@@ -355,4 +355,12 @@
     delete from ndp_subject_document
     where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
   </delete>
+  <select id="querySubject" parameterType="map" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
+    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
+    <if test="subjectName != null">
+      and subject_name like concat(concat('%',#{subjectName}),'%')
+    </if>
+    order by ${sort} ${order}
+  </select>
 </mapper>
