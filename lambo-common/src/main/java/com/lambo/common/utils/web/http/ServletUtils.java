@@ -7,7 +7,6 @@ import com.lambo.common.utils.collect.MapUtils;
 import com.lambo.common.utils.io.PropertiesUtils;
 import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.common.utils.mapper.JsonMapper;
-import com.lambo.common.utils.mapper.XmlMapper;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -168,15 +167,11 @@ public class ServletUtils {
 		}
 		HttpServletRequest request = ServletUtils.getRequest();
 		String uri = request.getRequestURI();
-		if (StringUtils.endsWithIgnoreCase(uri, ".xml")){
-			return XmlMapper.toXml(resultMap);
+		String functionName = request.getParameter("__callback");
+		if (StringUtils.isNotBlank(functionName)){
+			return JsonMapper.toJsonp(functionName, resultMap);
 		}else{
-			String functionName = request.getParameter("__callback");
-			if (StringUtils.isNotBlank(functionName)){
-				return JsonMapper.toJsonp(functionName, resultMap);
-			}else{
-				return JsonMapper.toJson(resultMap);
-			}
+			return JsonMapper.toJson(resultMap);
 		}
 		
 	}
@@ -213,15 +208,11 @@ public class ServletUtils {
 	public static String renderObject(HttpServletResponse response, Object object) {
 		HttpServletRequest request = ServletUtils.getRequest();
 		String uri = request.getRequestURI();
-		if (StringUtils.endsWithIgnoreCase(uri, ".xml")){
-			return XmlMapper.toXml(object);
+		String functionName = request.getParameter("__callback");
+		if (StringUtils.isNotBlank(functionName)){
+			return renderString(response, JsonMapper.toJsonp(functionName, object));
 		}else{
-			String functionName = request.getParameter("__callback");
-			if (StringUtils.isNotBlank(functionName)){
-				return renderString(response, JsonMapper.toJsonp(functionName, object));
-			}else{
-				return renderString(response, JsonMapper.toJson(object));
-			}
+			return renderString(response, JsonMapper.toJson(object));
 		}
 	}
 	

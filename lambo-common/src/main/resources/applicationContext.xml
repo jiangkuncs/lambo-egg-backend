@@ -22,8 +22,8 @@
 	<bean id="springContextUtil" class="com.lambo.common.utils.spring.SpringContextUtil"></bean>
 
 	<!-- 启动任务注解 -->
-	<task:annotation-driven />
-	<context:component-scan base-package="**.task" />
+	<!--<task:annotation-driven />-->
+	<!--<context:component-scan base-package="**.task" />-->
 
 	<!-- 支持自定义注解 -->
 	<aop:aspectj-autoproxy/>

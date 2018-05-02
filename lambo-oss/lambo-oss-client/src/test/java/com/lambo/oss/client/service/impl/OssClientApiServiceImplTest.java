@@ -8,15 +8,22 @@ import com.lambo.oss.client.service.api.OssClientApiService;
 import org.apache.http.entity.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Map;
 
-public class OssClientApiServiceImplTest extends BaseJunit4Test {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+        "classpath*:applicationContext.xml"
+})
+public class OssClientApiServiceImplTest {
 
     @Autowired
     OssClientApiService ossClientApiService;
