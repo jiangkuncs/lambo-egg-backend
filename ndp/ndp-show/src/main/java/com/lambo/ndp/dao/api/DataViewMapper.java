@@ -11,4 +11,5 @@ public interface DataViewMapper {
     List<Map<String,String>> getSearchResult(String sql);
     int updateRateCountBySubjectId(Map<String,String> paraMap );
     int updateVisitCountBySubjectId(int paraMap);
+    List<Map<String,String>> getCatogryNameByCategoryId();
 }
