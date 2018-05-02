@@ -141,7 +141,7 @@ public class DictController extends BaseController {
         DictExample dictExample = new DictExample();
         dictExample.createCriteria().andDictIdEqualTo(dictId);
 
-        return new NdpResult(NdpResultConstant.SUCCESS, dictService.countByExample(dictExample));
+        return new NdpResult(NdpResultConstant.SUCCESS, dictService.deleteByExample(dictExample));
     }
 
     @ApiOperation(value = "删除数据字典项信息")
@@ -170,8 +170,10 @@ public class DictController extends BaseController {
     @RequestMapping(value = "/get/{dictId}", method = RequestMethod.GET)
     @ResponseBody
     public Object get(@PathVariable("dictId") String dictId) {
-        DictExample dictExample = new DictExample();
-        dictExample.createCriteria().andDictIdEqualTo(dictId);
-        return new NdpResult(NdpResultConstant.SUCCESS, dictService.selectByExample(dictExample));
+//        DictExample dictExample = new DictExample();
+//        dictExample.createCriteria().andDictIdEqualTo(dictId);
+        Map parm=new HashMap();
+        parm.put("dictId",dictId);
+        return new NdpResult(NdpResultConstant.SUCCESS, dictService.getDict(parm));
     }
 }
