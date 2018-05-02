@@ -32,11 +32,11 @@
     <packaging>war</packaging>
 
     <url>http://stomz.top</url>
-    <name>ndp-manage Maven Webapp</name>
-    <artifactId>ndp-manage</artifactId>
+    <name>ndp-show-server Maven Webapp</name>
+    <artifactId>ndp-show-server</artifactId>
 
     <build>
-        <finalName>ndp-manage</finalName>
+        <finalName>ndp-show-server</finalName>
         <filters>
             <filter>src/main/resources/profiles/${env}.properties</filter>
         </filters>
@@ -80,10 +80,10 @@
                 <version>9.2.7.v20150116</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/ndp-manage-server</contextPath>
+                        <contextPath>/ndp-show-server</contextPath>
                     </webApp>
                     <httpConnector>
-                        <port>9527</port>
+                        <port>9528</port>
                     </httpConnector>
                 </configuration>
             </plugin>
