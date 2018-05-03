@@ -7,7 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -49,8 +48,7 @@ public class UpmsAuthControllerTest extends BaseJunit4Test {
         MvcResult result = this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/login")
                         .param("username", "admin")
-                        .param("password", "123456")
-                        .accept(MediaType.APPLICATION_JSON))
+                        .param("password", "123456"))
                 .andExpect(status().isOk())
                 .andReturn();
         return (MockHttpSession)result.getRequest().getSession();
