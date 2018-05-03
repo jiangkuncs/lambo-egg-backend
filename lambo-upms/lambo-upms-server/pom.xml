@@ -12,7 +12,7 @@
     <packaging>war</packaging>
 
     <name>lambo-upms-server Maven Webapp</name>
-    <url>http://www.zhanglambo.cn</url>
+    <url>http://stomz.com</url>
 
     <dependencies>
         <dependency>
@@ -116,10 +116,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18.1</version>
                 <configuration>
-                    <!--
                     <skipTests>true</skipTests>
                     <testFailureIgnore>true</testFailureIgnore>
-                    -->
                 </configuration>
             </plugin>
         </plugins>

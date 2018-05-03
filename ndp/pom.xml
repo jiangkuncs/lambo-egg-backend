@@ -19,7 +19,7 @@
     </properties>
 
     <modules>
-        <module>ndp-manage</module>
-        <module>ndp-show</module>
+        <module>ndp-manage-server</module>
+        <module>ndp-show-server</module>
     </modules>
 </project>
