@@ -30,7 +30,10 @@ import java.util.*;
 public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, SubjectExample> implements SubjectService {
 
     private static Logger logger = LoggerFactory.getLogger(SubjectServiceImpl.class);
-
+    //库表，表格
+    private String isDATA="1";
+    //文件
+    private String isDOC="2";
     @Autowired
     SubjectMapper subjectMapper;
 
@@ -51,7 +54,6 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         int con = subjectMapper.insert(subject);
         int subjectId = subject.getSubjectId();
         //指标插入
-
         subjectTag=subjectTag.replace("[","");
         subjectTag=subjectTag.replace("]","");
         subjectTag=subjectTag.replace("\"","");
@@ -68,7 +70,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         //列插入
         JSONArray json = JSONArray.parseArray(subjectColumns);
         if (json.size() > 0) {
-            if("1".equals(subjectType)){ //库表，表格
+            if(isDATA.equals(subjectType)){
                 for (int i = 0; i < json.size(); i++) {
                     // 遍历 jsonarray 数组，把每一个对象转成 json 对象
                     JSONObject jobData = json.getJSONObject(i);
@@ -87,9 +89,9 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                     subjectMapper.insertSubjectColumn(parmData);
 
                 }
-            }else if("2".equals(subjectType)){ //文件
+            }else if(isDOC.equals(subjectType)){
                 for (int i = 0; i < json.size(); i++) {
-                    JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                    JSONObject job = json.getJSONObject(i);
                     Map<String,Object> parm = new HashMap();
                     parm.put("docName",job.get("docName"));
                     parm.put("docSaveId",job.get("docSaveId"));
@@ -116,8 +118,6 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         Date day=new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         subject.setCreateTime(df.format(day).toString());
-        // subjectMapper.updateSubject(subject);
-       // StringUtils.endsWith();
          int con=subjectMapper.updateByPrimaryKeySelective(subject);
         //指标插入
         con=subjectMapper.deleteTagBySubjectId(subjectId);
@@ -134,10 +134,10 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
             }
         }
         JSONArray json = JSONArray.parseArray(subjectColumns);
-         if("1".equals(subjectType)){
+         if(isDATA.equals(subjectType)){
              subjectMapper.deleteSubjectColumnBySubjectId(subjectId);
              for (int i = 0; i < json.size(); i++) {
-                 JSONObject jobData = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                 JSONObject jobData = json.getJSONObject(i);
                  Map<String,Object> parmData = new HashMap();
                  parmData.put("columnName",jobData.get("cellName"));
                  parmData.put("cellId",jobData.get("cellId"));
@@ -151,13 +151,12 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                  }
                  parmData.put("subjectId",subjectId);
                  subjectMapper.insertSubjectColumn(parmData);
-
              }
 
-         }else if("2".equals(subjectType)){
+         }else if(isDOC.equals(subjectType)){
              subjectMapper.deleteSubjectDocBySubjectId(subjectId);
              for (int i = 0; i < json.size(); i++) {
-                 JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                 JSONObject job = json.getJSONObject(i);
                  Map<String,Object> parm = new HashMap();
                  parm.put("docName",job.get("docName"));
                  parm.put("docSaveId",job.get("docSaveId"));
@@ -176,7 +175,6 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         con=subjectMapper.deleteSubjectDocBySubjectId(subjectId);
         con=subjectMapper.deleteTagBySubjectId(subjectId);
         //删除专题
-        //con=subjectMapper.deleteSubjectBySubjectId(subjectId);
         con=subjectMapper.deleteByPrimaryKey(subjectId);
         return con;
     }
@@ -192,9 +190,9 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         param.put("subjectTag",tag);
         String subjectType= (String) param.get("subjectType");
         List<Map<String,Object>> data=new ArrayList<Map<String,Object>>();
-        if("1".equals(subjectType)){
+        if(isDATA.equals(subjectType)){
             data = subjectMapper.querySubjectColumn(subjectId);
-        }else if("2".equals(subjectType)){
+        }else if(isDOC.equals(subjectType)){
            data=subjectMapper.querySubjectDoc(subjectId);
         }else{
             return new NdpResult(NdpResultConstant.FAILED, data);
@@ -206,8 +204,6 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
     public Object initSubject(){
         String period="PERIOD_TYPE_ID";
         List<Map<String,Object>> dataPeriod = subjectMapper.getDictData(period);
-        System.out.println("dataPeriod="+dataPeriod);
-
         String organ="ORGAN_TYPE_ID";
         List<Map<String,Object>> dataOrgan = subjectMapper.getDictData(organ);
         List<List<Map<String,Object>>> data=new ArrayList<>();

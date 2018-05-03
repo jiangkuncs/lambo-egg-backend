@@ -20,10 +20,9 @@ import com.lambo.ndp.model.TableCellDict;
 import com.lambo.ndp.service.api.TableService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-//import net.sf.json.JSONArray;
-//import net.sf.json.JSONObject;
 import io.swagger.annotations.ApiParam;
 
+import org.apache.poi.ss.formula.functions.Columns;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,28 +103,6 @@ public class TableController extends BaseController {
         result.put("total", page.getTotal());
         return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
-
-//    @ApiOperation(value = "数据元列表数据")
-//    @RequestMapping(value = "/listTableCell",method = RequestMethod.POST)
-//    @ResponseBody
-//    @EnableExportTable
-//    @LogAround("请求列表数据")
-//    public Object listTableCell(
-//
-//            @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
-//            @RequestParam(required = false, defaultValue = "100", value = "limit") int limit,
-//            @RequestParam(required = false, value = "tableId") int tableId) {
-//
-//        Map<String,Object> param = new HashMap<String, Object>();
-//        //物理分页
-//        PageHelper.offsetPage(offset, limit);
-//        List data = tableService.queryTableCell(tableId);
-//        PageInfo page = new PageInfo(data);
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("rows", page.getList());
-//        result.put("total", page.getTotal());
-//        return new NdpResult(NdpResultConstant.SUCCESS,data);
-//    }
     @ApiOperation(value = "数据元列表数据")
     @RequestMapping(value = "/listTableCellForSubject",method = RequestMethod.POST)
     @ResponseBody
@@ -200,10 +177,6 @@ public class TableController extends BaseController {
         }else{
             order="desc";
         }
-
-
-//        PageHelper.offsetPage(offset, limit);
-//        List data = tableService.queryDbTableColumns(param);
         StringBuffer sql = new StringBuffer();
         sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
         sql.append(" and table_schema ='").append("lambo").append("'");
@@ -213,23 +186,24 @@ public class TableController extends BaseController {
         if(StringUtils.isNotBlank(search)){
             sql.append(" and column_name like '%").append(search).append("%'");
         }
-        String Columns="";
+        String columns="";
         Boolean isCon=false;
         if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
             sql.append("and COLUMN_NAME  in('").append("')");
 
         }else{
-            Columns=selectColumns.replace("[","").replace("\"","").replace("]","");
+            columns=selectColumns.replace("[","").replace("\"","").replace("]","");
             isCon=true;
         }
         if(isCon){
             sql.append("and COLUMN_NAME  in(");
-            String[] columnsArry= Columns.split(",");
+            String[] columnsArry= columns.split(",");
             int len = columnsArry.length;
             for (int i = 0; i < len; i++) {
                 sql.append("'").append(columnsArry[i]).append("'");
-                if (i < len - 1)
+                if (i < len - 1) {
                     sql.append(",");
+                }
             }
             sql.append(")");
         }
@@ -244,32 +218,6 @@ public class TableController extends BaseController {
         result.put("rows", page.getList());
         result.put("total", page.getTotal());
         return new NdpResult(NdpResultConstant.SUCCESS,result);
-//
-//        List<Map<String,String>> dataNew=new ArrayList<Map<String,String>>();
-//        String columnName="";
-//        Boolean is=true;
-//        for(int j=0;j<data.size();j++){
-//            Map parm=new HashMap();
-//            parm=(Map)data.get(j);
-//            columnName=(String)parm.get("COLUMN_NAME");
-//           // System.out.println("columnName="+columnName);
-//            for(int i=0;i<columnsArry.length;i++){
-//                if(columnsArry[i].equals(columnName)){
-//                    is=false;
-//                    break;
-//                }
-//
-//            }
-//            if(is){
-//                dataNew.add(parm);
-//            }
-//            is=true;
-//        }
-//        PageInfo page = new PageInfo(data);
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("rows", page.getList());
-//        result.put("total", page.getTotal());
-//        return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
     @ApiOperation(value = "新增库表数据")
     @ResponseBody
@@ -279,8 +227,8 @@ public class TableController extends BaseController {
             @RequestParam(required = true, value = "tableCode") String tableCode,
             @RequestParam(required = false, value = "tableName") String tableName,
             @RequestParam(required = false, value = "tableDesc") String tableDesc,
-            @RequestParam(required = false, value = "TableCellss" ) String TableCellss) {
-            return tableService.create(tableCode,tableName,tableDesc,TableCellss);
+            @RequestParam(required = false, value = "TableCellss" ) String tableCellss) {
+            return tableService.create(tableCode,tableName,tableDesc,tableCellss);
     }
 
     @ApiOperation(value = "更新库表")
@@ -292,9 +240,9 @@ public class TableController extends BaseController {
             @RequestParam(required = true, value = "tableCode") String tableCode,
             @RequestParam(required = true, value = "tableName") String tableName,
             @RequestParam(required = false, value = "tableDesc") String tableDesc,
-            @RequestParam(required = false, value = "TableCellss" ) String TableCellss
+            @RequestParam(required = false, value = "TableCellss" ) String tableCellss
     ){
-        return tableService.update(tableId,tableCode,tableName,tableDesc,TableCellss);
+        return tableService.update(tableId,tableCode,tableName,tableDesc,tableCellss);
     }
 
     @ApiOperation(value = "删除数据元")
