@@ -47,31 +47,9 @@ public class TableServiceImpl implements TableService {
     public List<Map<String,Object>> queryTableCell(int tableId) {
         return tableMapper.queryTableCell(tableId);
     }
-//    public int insertTable(Table table){
-//         return tableMapper.insertTable(table);
-//    }
-//    public int insertTableCell(TableCell tableCell){
-//        return tableMapper.insertTableCell(tableCell);
-//    }
-//    public int updateTable(Map<String, Object> param){
-//      return tableMapper.updateTable(param);
-//    }
-//
-//    public int deleteByPrimaryKey(int ids){
-//    return tableMapper.deleteByPrimaryKey(ids);
-//    }
     public int deleteTableCellByPrimaryKey(int cellId){
         return tableMapper.deleteTableCellByPrimaryKey(cellId);
     }
-//    public int deleteTableCellByTableId(int tableId){
-//        return tableMapper.deleteTableCellByTableId(tableId);
-//    }
-//    public int deleteTableByTableId(int tableId){
-//        return tableMapper.deleteTableByTableId(tableId);
-//    }
-//    public Table selectByPrimaryKey(int id){
-//        return tableMapper.selectByPrimaryKey(id);
-//    }
     public List<Map<String,Object>> queryDbTable(Map<String, Object> param){
         return tableMapper.queryDbTable(param);
     }
@@ -102,14 +80,10 @@ public class TableServiceImpl implements TableService {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
         int tableId=table.getTableId();
-        //System.out.println("tableId="+tableId);
-        //System.out.println("TableCellss:"+TableCellss);
         JSONArray json = JSONArray.parseArray(TableCellss);
-        //System.out.println("json:"+json);
         if(json.size()>0){
             for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
+                JSONObject job = json.getJSONObject(i);
                 TableCell tableCell=new TableCell();
                 tableCell.setTableId(tableId);
                 tableCell.setCellCode((String) job.get("cellCode"));
@@ -147,14 +121,12 @@ public class TableServiceImpl implements TableService {
             param.put("createTime",df.format(day).toString());
             count = tableMapper.updateTable(param);
         }
-        //System.out.println("TableCellss:"+TableCellss);
         count = tableMapper.deleteTableCellByTableId(tableId);
         JSONArray json = JSONArray.parseArray(TableCellss);
-        //System.out.println("json:"+json);
         if(json.size()>0){
             for(int i=0;i<json.size();i++){
-                JSONObject job = json.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-                System.out.println("job:"+job) ;  // 得到 每个对象中的属性值
+                JSONObject job = json.getJSONObject(i);
+                System.out.println("job:"+job) ;
                 TableCell tableCell=new TableCell();
                 tableCell.setTableId(tableId);
                 tableCell.setCellCode((String) job.get("cellCode"));
@@ -169,7 +141,6 @@ public class TableServiceImpl implements TableService {
         return new NdpResult(NdpResultConstant.SUCCESS, count);
     }
     public Object deleteTable(int tableId){
-        //System.out.println("tableId="+tableId+",,,"+getType(tableId));
         tableMapper.deleteTableCellByTableId(tableId);
         return tableMapper.deleteTableByTableId(tableId);
     }
