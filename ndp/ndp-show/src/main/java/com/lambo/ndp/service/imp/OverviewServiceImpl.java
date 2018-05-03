@@ -33,6 +33,10 @@ public class OverviewServiceImpl extends BaseServiceImpl<OverviewMapper,Map, Map
         return overviewMapper.getCategoryOverview(param);
     }
 
+    public List<Map<String,String>> getSubjectTag(Map<String, Object> param){
+        return overviewMapper.getSubjectTag(param);
+    }
+
     public Map<String,Object> getMeasures(Map<String, Object> param){
         Map<String, Object> result = new HashMap<>();
 

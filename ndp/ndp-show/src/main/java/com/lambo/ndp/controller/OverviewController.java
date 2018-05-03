@@ -54,6 +54,23 @@ public class OverviewController extends BaseController {
         return new NdpResult(NdpResultConstant.SUCCESS,result);
     }
 
+    @ApiOperation(value = "主题标签")
+    @RequestMapping(value = "/getSubjectTag",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("主题标签")
+    public Object getSubjectTag(
+            @ApiParam(name="subjectId", value = "主题ID")
+            @RequestParam(required = true, defaultValue = "", value = "subjectId") int subjectId) {
+        Map<String,Object> param = new HashMap<>();
+        param.put("subject_id", subjectId);
+        param.put("TODAY", DateTool.getToday());
+        param.put("YESTERDAY", DateTool.getBeforeOrNextDay(DateTool.getToday(), -1));
+
+        List<Map<String,String>> result = overviewService.getSubjectTag(param);
+
+        return new NdpResult(NdpResultConstant.SUCCESS,result);
+    }
+
     @ApiOperation(value = "最新数据")
     @RequestMapping(value = "/getNewSubject",method = RequestMethod.GET)
     @ResponseBody

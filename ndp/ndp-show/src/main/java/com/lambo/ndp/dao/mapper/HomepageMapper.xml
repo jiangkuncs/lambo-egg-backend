@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.HomepageMapper">
   <select id="getHotSubject" parameterType="map" resultType="map">
-    select ndp_subject.subject_id,subject_name,category_name,record_num
+    select ndp_subject.subject_id,subject_name,category_name,record_num,subject_type
     from  ndp_subject,(
       select subject_id,count(record_id) record_num from ndp_subject_record
       group by subject_id
@@ -13,7 +13,7 @@
       and ndp_subject.category_id = ndp_category.category_id
   </select>
   <select id="getNewSubject" parameterType="map" resultType="map">
-    select ndp_subject.subject_id,ndp_subject.subject_name,ndp_category.category_name,left(ndp_subject.create_time,10) create_time,ndp_subject.subject_desc
+    select ndp_subject.subject_id,ndp_subject.subject_name,ndp_category.category_name,left(ndp_subject.create_time,10) create_time,ndp_subject.subject_desc,subject_type
     from  ndp_subject,ndp_category
     where ndp_subject.category_id = ndp_category.category_id
     <if test="category_id != null and category_id != ''">
@@ -40,10 +40,12 @@
   <select id="getFileNum" parameterType="map" resultType="map">
     select count(subject_id) file_num
     from  ndp_subject
+    where subject_type = 2
   </select>
   <select id="getDataNum" parameterType="map" resultType="map">
     select count(subject_id) subject_num
     from  ndp_subject
+    where subject_type = 1
   </select>
   <select id="getRecordNum" parameterType="map" resultType="map">
     select count(record_id) record_num
