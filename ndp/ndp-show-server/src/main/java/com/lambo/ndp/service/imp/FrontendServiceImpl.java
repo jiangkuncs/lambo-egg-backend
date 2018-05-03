@@ -253,4 +253,9 @@ public class FrontendServiceImpl implements FrontendService {
         }
         return result;
     }
+
+    @Override
+    public List getSubjectDocuments(Map param) {
+        return frontendMapper.getSubjectDocuments(param);
+    }
 }

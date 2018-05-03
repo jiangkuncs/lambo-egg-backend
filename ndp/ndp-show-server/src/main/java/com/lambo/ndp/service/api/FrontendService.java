@@ -22,4 +22,6 @@ public interface FrontendService {
     Map getDimensionData(Map param);
 
     Map getConditionData(Map param);
+
+    List getSubjectDocuments(Map param);
 }

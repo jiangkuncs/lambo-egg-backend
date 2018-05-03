@@ -2,6 +2,7 @@ package com.lambo.ndp.service.api;
 
 import com.lambo.common.base.BaseService;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -19,4 +20,5 @@ public interface OverviewService extends BaseService<Map, Map> {
     public Map<String,Object> getBigCust(Map<String, Object> param);
     public Map<String,Object> getSelfregGroup(Map<String, Object> param);
     public Map<String,Object> getTerminalBulid(Map<String, Object> param);
+    List<Map<String,String>> getSubjectTag(Map<String, Object> param);
 }

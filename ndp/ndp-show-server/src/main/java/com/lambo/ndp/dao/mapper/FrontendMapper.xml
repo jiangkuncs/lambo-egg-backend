@@ -163,4 +163,13 @@
       order by #{sort} #{order}
     </if>
   </select>
+  <select id="getSubjectDocuments" parameterType="map" resultType="map">
+    select `document_id`,
+    `doc_name`,
+    `doc_save_id`,
+    `subject_id`
+    from ndp_subject_document
+    where subject_id = #{subject_id}
+    order by document_id desc
+  </select>
 </mapper>
