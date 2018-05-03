@@ -26,14 +26,14 @@
         <property name="ignoreUnresolvablePlaceholders" value="true" />
     </bean>
 
-    <!-- 主库数据源 -->
-    <bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+    <!-- MYSQL数据源 -->
+    <bean id="mysqlDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
           destroy-method="close">
         <!-- 基本属性 url、user、password -->
-        <property name="driverClassName" value="${master.jdbc.driver}"/>
-        <property name="url" value="${master.jdbc.url}"/>
-        <property name="username" value="${master.jdbc.username}"/>
-        <property name="password" value="${master.jdbc.password}"/>
+        <property name="driverClassName" value="${mysql.jdbc.driver}"/>
+        <property name="url" value="${mysql.jdbc.url}"/>
+        <property name="username" value="${mysql.jdbc.username}"/>
+        <property name="password" value="${mysql.jdbc.password}"/>
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
@@ -53,13 +53,13 @@
         <property name="filters" value="stat"/>
     </bean>
 
-    <!-- 从库数据源 -->
-    <bean id="slaveDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <!-- GREENPLUM数据源 -->
+    <bean id="greenplumDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
-        <property name="driverClassName" value="${slave.jdbc.driver}"/>
-        <property name="url" value="${slave.jdbc.url}"/>
-        <property name="username" value="${slave.jdbc.username}"/>
-        <property name="password" value="${slave.jdbc.password}"/>
+        <property name="driverClassName" value="${greenplum.jdbc.driver}"/>
+        <property name="url" value="${greenplum.jdbc.url}"/>
+        <property name="username" value="${greenplum.jdbc.username}"/>
+        <property name="password" value="${greenplum.jdbc.password}"/>
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1"/>
         <property name="minIdle" value="1"/>
@@ -84,11 +84,11 @@
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <!-- 可配置多个数据源 -->
-                <entry value-ref="masterDataSource" key="masterDataSource"></entry>
-                <entry value-ref="slaveDataSource" key="slaveDataSource"></entry>
+                <entry value-ref="mysqlDataSource" key="mysqlDataSource"></entry>
+                <entry value-ref="greenplumDataSource" key="greenplumDataSource"></entry>
             </map>
         </property>
-        <property name="defaultTargetDataSource" ref="masterDataSource"></property>
+        <property name="defaultTargetDataSource" ref="mysqlDataSource"></property>
     </bean>
 
     <!-- 为Mybatis创建SqlSessionFactory，同时指定数据源 -->

@@ -7,6 +7,8 @@ import com.baidu.unbiz.fluentvalidator.ComplexResult;
 import com.baidu.unbiz.fluentvalidator.FluentValidator;
 import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.lambo.common.annotation.BaseService;
+import com.lambo.common.db.DataSourceEnum;
+import com.lambo.common.db.DynamicDataSource;
 import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
@@ -73,7 +75,10 @@ public class TableServiceImpl implements TableService {
 //        return tableMapper.selectByPrimaryKey(id);
 //    }
     public List<Map<String,Object>> queryDbTable(Map<String, Object> param){
-        return tableMapper.queryDbTable(param);
+        DynamicDataSource.setDataSource("greenplumDataSource");
+        List<Map<String,Object>> list = tableMapper.queryDbTable(param);
+        DynamicDataSource.clearDataSource();
+        return list;
     }
     public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param){
         return tableMapper.queryDbTableColumns(param);
