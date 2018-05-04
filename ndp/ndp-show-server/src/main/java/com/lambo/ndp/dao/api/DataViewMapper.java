@@ -12,4 +12,5 @@ public interface DataViewMapper {
     int updateRateCountBySubjectId(Map<String,String> paraMap );
     int updateVisitCountBySubjectId(int paraMap);
     List<Map<String,String>> getCatogryNameByCategoryId();
+    int insertRecord(Map recordMap);
 }

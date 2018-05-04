@@ -181,4 +181,9 @@ public class DataViewServiceImpl extends BaseServiceImpl<DataViewMapper,Dict, Di
         return dataViewMapper.updateVisitCountBySubjectId(condition);
     }
 
+    @Override
+    public int insertRecord(Map recordMap) {
+        return dataViewMapper.insertRecord(recordMap);
+    }
+
 }

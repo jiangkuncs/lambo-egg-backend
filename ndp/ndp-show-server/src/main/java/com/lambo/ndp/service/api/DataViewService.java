@@ -23,4 +23,6 @@ public interface DataViewService extends BaseService<Dict, DictExample> {
     int updateRateCountBySubjectId(Map condition);
     //更新访问记录
     int updateVisitCountBySubjectId(int condition);
+
+    int insertRecord(Map recordMap);
 }

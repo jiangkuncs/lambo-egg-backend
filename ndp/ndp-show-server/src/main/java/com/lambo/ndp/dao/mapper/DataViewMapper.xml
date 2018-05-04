@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.DataViewMapper">
-  <select id="getDictListByDictId" parameterType="String" resultType="map">
+    <select id="getDictListByDictId" parameterType="String" resultType="map">
     SELECT DICT_KEY,DICT_VALUE
     FROM NDP_DICT
     WHERE DICT_ID=#{dictId,jdbcType=VARCHAR}
   </select>
-    <select id="getCatogryNameByCategoryId"  resultType="map">
+    <select id="getCatogryNameByCategoryId" resultType="map">
         SELECT CATEGORY_ID,CATEGORY_NAME
         FROM NDP_CATEGORY;
     </select>
-  <select id="getSearchResult" parameterType="String" resultType="map">
+    <select id="getSearchResult" parameterType="String" resultType="map">
     ${value}
   </select>
 
@@ -30,4 +30,21 @@
         WHERE
         SUBJECT_ID= ${value};
     </update>
+    <insert id="insertRecord" parameterType="map">
+        INSERT INTO
+          NDP_SUBJECT_RECORD(
+          USER_NAME,
+          SUBJECT_ID,
+          CATEGORY_ID,
+          CREATE_TIME)
+        SELECT
+          #{userName,jdbcType=VARCHAR},
+          SUBJECT_ID,
+          CATEGORY_ID,
+          #{dateTime,jdbcType=VARCHAR}
+        FROM
+          NDP_SUBJECT
+        WHERE
+          SUBJECT_ID=#{subjectId,jdbcType=VARCHAR}
+    </insert>
 </mapper>
