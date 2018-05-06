@@ -7,9 +7,9 @@ import com.baidu.unbiz.fluentvalidator.ComplexResult;
 import com.baidu.unbiz.fluentvalidator.FluentValidator;
 import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.lambo.common.annotation.BaseService;
-import com.lambo.common.db.DataSourceEnum;
 import com.lambo.common.db.DynamicDataSource;
 import com.lambo.common.validator.LengthValidator;
+import com.lambo.ndp.constant.DataSourceEnum;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.dao.api.TableMapper;
@@ -25,17 +25,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
 * TableService实现
 * Created by zxc on 2018/3/10.
 */
 @Service
-@Transactional
+
 public class TableServiceImpl implements TableService {
 
     private static Logger logger = LoggerFactory.getLogger(TableServiceImpl.class);
@@ -53,14 +50,34 @@ public class TableServiceImpl implements TableService {
         return tableMapper.deleteTableCellByPrimaryKey(cellId);
     }
     public List<Map<String,Object>> queryDbTable(Map<String, Object> param){
-        DynamicDataSource.setDataSource("greenplumDataSource");
-        List<Map<String,Object>> list = tableMapper.queryDbTable(param);
-        DynamicDataSource.clearDataSource();
+        List<Map<String,Object>> list=new ArrayList<>();
+        try{
+            DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
+            list= tableMapper.queryDbTable(param);
+        }catch (Exception e){
+            logger.error("Exception", e);
+        }finally{
+            DynamicDataSource.clearDataSource();
+        }
+
+
+
         return list;
     }
     public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param){
-        return tableMapper.queryDbTableColumns(param);
+
+        try{
+            DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
+            //System.out.println("1="+DynamicDataSource.getDataSource());
+            return tableMapper.queryDbTableColumns(param);
+        }catch (Exception e){
+            logger.error("Exception", e);
+        }finally{
+            DynamicDataSource.clearDataSource();
+        }
+        return null;
     }
+    @Transactional
     public Object create(String tableCode,String tableName,String tableDesc,String TableCellss){
         ComplexResult result = FluentValidator.checkAll()
                 .on(tableCode, new LengthValidator(1, 50, "表名"))
@@ -70,6 +87,7 @@ public class TableServiceImpl implements TableService {
         if (!result.isSuccess()) {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
+        System.out.println("TableCellss="+TableCellss);
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         Date day=new Date();
@@ -91,7 +109,7 @@ public class TableServiceImpl implements TableService {
                 JSONObject job = json.getJSONObject(i);
                 TableCell tableCell=new TableCell();
                 tableCell.setTableId(tableId);
-                tableCell.setCellCode((String) job.get("cellCode"));
+                tableCell.setCellCode((String) job.get("cellcode"));
                 tableCell.setCellName((String) job.get("cellName"));
                 tableCell.setDictId((String) job.get("dictId"));
                 tableCell.setDataDesc((String) job.get("dataDesc"));
@@ -102,6 +120,7 @@ public class TableServiceImpl implements TableService {
         }
         return new NdpResult(NdpResultConstant.SUCCESS, con);
     }
+    @Transactional
     public Object update(int tableId,String tableCode,String tableName,String tableDesc,String TableCellss){
         int count = 0;
         ComplexResult result = FluentValidator.checkAll()
@@ -134,7 +153,7 @@ public class TableServiceImpl implements TableService {
                 System.out.println("job:"+job) ;
                 TableCell tableCell=new TableCell();
                 tableCell.setTableId(tableId);
-                tableCell.setCellCode((String) job.get("cellCode"));
+                tableCell.setCellCode((String) job.get("cellcode"));
                 tableCell.setCellName((String) job.get("cellName"));
                 tableCell.setDictId((String) job.get("dictId"));
                 tableCell.setDataDesc((String) job.get("dataDesc"));
@@ -145,18 +164,33 @@ public class TableServiceImpl implements TableService {
         }
         return new NdpResult(NdpResultConstant.SUCCESS, count);
     }
+    @Transactional
     public Object deleteTable(int tableId){
         tableMapper.deleteTableCellByTableId(tableId);
         return tableMapper.deleteTableByTableId(tableId);
     }
+
     public Object get(int id){
         Map<String,Object> param = tableMapper.selectTableByPrimaryKey(id);
         List data = tableMapper.queryTableCell(id);
         data.add(0,param);
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
-    public Object queryTableColumns(String id){
-        List<Map<String,Object>> data = tableMapper.queryTableColumns(id);
+    public Object queryTableColumns(String tableName,String dataSchema){
+        List<Map<String,Object>> data=new ArrayList<>();
+        Map<String,Object> parm=new HashMap<String,Object>();
+        parm.put("tableName",tableName);
+        parm.put("dataSchema",dataSchema);
+        try{
+            DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
+            //System.out.println("1="+DynamicDataSource.getDataSource());
+            data = tableMapper.queryTableColumns(parm);
+        }catch (Exception e){
+            logger.error("Exception", e);
+        }finally{
+            DynamicDataSource.clearDataSource();
+        }
+
         for(int i=0;i<data.size();i++){
             data.get(i).put("cellName","");
         }

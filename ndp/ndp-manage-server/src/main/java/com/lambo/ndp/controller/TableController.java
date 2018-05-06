@@ -17,6 +17,7 @@ import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.model.Table;
 import com.lambo.ndp.model.TableCell;
 import com.lambo.ndp.model.TableCellDict;
+import com.lambo.ndp.service.api.TableGpService;
 import com.lambo.ndp.service.api.TableService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +48,8 @@ public class TableController extends BaseController {
 
     @Autowired
     private TableService tableService;
+//    @Autowired
+//    private TableGpService tableGpService;
     @ApiOperation(value = "库表列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
@@ -127,10 +130,14 @@ public class TableController extends BaseController {
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
             @RequestParam(required = false, defaultValue = "", value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
-            @RequestParam(required = false, value = "order") String order) {
-
+            @RequestParam(required = false, value = "order") String order,
+            @RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema) {
+        //System.out.println("dataSchema="+dataSchema);
         Map<String,Object> param = new HashMap<String, Object>();
 
+        if(StringUtils.isNotBlank(dataSchema)){
+            param.put("tableSchema",dataSchema);
+        }
         if(StringUtils.isNotBlank(search)){
             param.put("tableName",search);
         }
@@ -147,6 +154,7 @@ public class TableController extends BaseController {
         //物理分页
         PageHelper.offsetPage(offset, limit);
         List data = tableService.queryDbTable(param);
+        System.out.println("sql="+data);
         PageInfo page = new PageInfo(data);
 
         Map<String, Object> result = new HashMap<>();
@@ -164,6 +172,7 @@ public class TableController extends BaseController {
             @RequestParam(required = false, defaultValue = "", value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
             @RequestParam(required = false, value = "order") String order,
+            @RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
             @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName,
             @RequestParam(required = false, value = "selectColumns") String selectColumns) {
 //
@@ -179,7 +188,10 @@ public class TableController extends BaseController {
         }
         StringBuffer sql = new StringBuffer();
         sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
-        sql.append(" and table_schema ='").append("lambo").append("'");
+        if(StringUtils.isNotBlank(dataSchema)){
+            sql.append(" and table_schema ='").append(dataSchema).append("'");
+        }
+
         if(StringUtils.isNotBlank(tableName)){
            sql.append(" and table_name ='").append(tableName).append("'");
         }
@@ -270,10 +282,12 @@ public class TableController extends BaseController {
     public Object get(@PathVariable("id") int id) {
      return tableService.get(id);
     }
+
     @ApiOperation(value = "根据库表查询列")
-    @RequestMapping(value = "/getColumn/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getColumn", method = RequestMethod.GET)
     @ResponseBody
-    public Object getC(@PathVariable("id") String id) {
-        return tableService.queryTableColumns(id);
+    public Object getC(@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
+                       @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName) {
+        return tableService.queryTableColumns(tableName,dataSchema);
     }
 }

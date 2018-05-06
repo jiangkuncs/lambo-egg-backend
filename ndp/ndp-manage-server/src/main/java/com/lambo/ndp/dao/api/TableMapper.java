@@ -20,6 +20,6 @@ public interface TableMapper {
     public List<Map<String,Object>> queryDbTable(Map<String, Object> param);
     public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param);
     public List<Map<String,Object>> queryTableCell(int tableId);
-    public List<Map<String,Object>> queryTableColumns(String id);
+    public List<Map<String,Object>> queryTableColumns(Map<String,Object> id);
     public  Map<String,Object> selectTableByPrimaryKey(int id);
 }

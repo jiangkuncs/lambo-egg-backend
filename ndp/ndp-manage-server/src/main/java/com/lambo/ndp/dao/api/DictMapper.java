@@ -28,6 +28,5 @@ public interface DictMapper {
 
     int updateByPrimaryKey(Dict record);
 
-    public List<Map<String,Object>> getDict(Map parm );
 
 }

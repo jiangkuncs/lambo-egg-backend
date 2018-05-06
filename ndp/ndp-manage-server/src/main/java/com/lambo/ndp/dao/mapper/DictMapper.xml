@@ -206,9 +206,5 @@
     where DICT_ID = #{dictId,jdbcType=VARCHAR}
       and DICT_KEY = #{dictKey,jdbcType=VARCHAR}
   </update>
-  <select id="getDict" parameterType="map" resultType="map">
-select DICT_ID as dictId, DICT_NAME as dictName, DICT_DESC as dictDesc,DICT_KEY as dictKey,DICT_VALUE as dictValue
-from ndp_dict
-WHERE DICT_ID = #{dictId,jdbcType=VARCHAR}
-  </select>
+
 </mapper>

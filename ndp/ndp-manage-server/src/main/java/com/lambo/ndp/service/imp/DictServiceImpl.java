@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lambo.common.annotation.BaseService;
 import com.lambo.common.base.BaseServiceImpl;
 import com.lambo.ndp.dao.api.DictMapper;
+import com.lambo.ndp.dao.api.DictOtherMapper;
 import com.lambo.ndp.model.Dict;
 import com.lambo.ndp.model.DictExample;
 import com.lambo.ndp.service.api.DictService;
@@ -29,7 +30,8 @@ public class DictServiceImpl extends BaseServiceImpl<DictMapper, Dict, DictExamp
 
     @Autowired
     DictMapper dictMapper;
-
+    @Autowired
+    DictOtherMapper dictOtherMapper;
     @Override
     public Object update(String dictId,String dictName,String dictDesc,String dictKeyList ){
         int count = 0;
@@ -52,6 +54,6 @@ public class DictServiceImpl extends BaseServiceImpl<DictMapper, Dict, DictExamp
         return count;
     }
     public List<Map<String,Object>> getDict(Map parm ){
-        return dictMapper.getDict(parm);
+        return dictOtherMapper.getDict(parm);
     }
 }

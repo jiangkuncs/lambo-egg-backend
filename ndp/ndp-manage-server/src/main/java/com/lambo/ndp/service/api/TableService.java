@@ -26,7 +26,7 @@ public interface TableService  {
     public List<Map<String,Object>> queryTable(Map<String, Object> param);
     public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param);
     public List<Map<String,Object>> queryTableCell(int tableId);
-    public Object queryTableColumns(String id);
+    public Object queryTableColumns(String tableName,String dataSchema);
 //    public Table selectByPrimaryKey(int tableId);
     public Object create(String tableCode,String tableName,String tableDesc,String TableCellss);
     public Object update(int tableId,String tableCode,String tableName,String tableDesc,String TableCellss);

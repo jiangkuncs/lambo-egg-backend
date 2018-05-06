@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.TableMapper">
-  <select id="queryDbTable" parameterType="map" resultType="map">
-    select table_name from information_schema.tables where table_schema='lambo'
+    <select id="queryDbTable12" parameterType="map" resultType="map">
+      select table_name from information_schema.tables
+        UNION ALL
+        select table_name from INFORMATION_SCHEMA.views where table_schema='yxgk'
+        <if test="tableName != null">
+            and table_name like concat(concat('%',#{tableName}),'%')
+        </if>
+        order by ${sort} ${order}
+    </select>
+
+    <select id="queryDbTable" parameterType="map" resultType="map">
+    select table_name from information_schema.tables where 1=1
+        <if test="tableSchema != null">
+            and table_schema=#{tableSchema,jdbcType=VARCHAR}
+        </if>
       <if test="tableName != null">
-          and table_name like concat(concat('%',#{tableName}),'%')
+           and table_name like concat(concat('%',#{tableName}),'%')
       </if>
-    UNION ALL
-      select table_name from INFORMATION_SCHEMA.views where table_schema='lambo'
-      <if test="tableName != null">
-          and table_name like concat(concat('%',#{tableName}),'%')
-      </if>
-      order by ${sort} ${order}
+
 </select>
     <select id="queryTableColumns" parameterType="String" resultType="map">
-        select COLUMN_NAME as cellCode from information_schema.COLUMNS where table_schema='lambo'and table_name =  #{id,jdbcType=VARCHAR}
+        select COLUMN_NAME as cellCode from information_schema.COLUMNS where table_schema=#{dataSchema,jdbcType=VARCHAR}and table_name =#{tableName,jdbcType=VARCHAR}
         order by COLUMN_NAME DESC
     </select>
     <select id="queryDbTableColumns" parameterType="map" resultType="map">
@@ -68,7 +76,7 @@
 
   </select>
   <select id="queryTableCell" parameterType="Integer" resultType="map">
-    select DISTINCT CELL_ID as cellId,TABLE_ID as tableId,CELL_CODE as cellCode,CELL_NAME as cellName ,NDP_TABLE_CELL.DICT_ID as dictId,DATA_UNIT as dataUnit,DATA_DESC as dataDesc,NDP_DICT.DICT_NAME as dictName
+    select DISTINCT CELL_ID as cellId,TABLE_ID as tableId,CELL_CODE as cellcode,CELL_NAME as cellName ,NDP_TABLE_CELL.DICT_ID as dictId,DATA_UNIT as dataUnit,DATA_DESC as dataDesc,NDP_DICT.DICT_NAME as dictName
     from NDP_TABLE_CELL left join NDP_DICT ON NDP_TABLE_CELL.DICT_ID=NDP_DICT.DICT_ID
     where TABLE_ID =#{tableId}
 
