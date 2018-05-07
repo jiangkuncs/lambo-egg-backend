@@ -1,9 +1,4 @@
 package com.lambo.ndp.controller;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.baidu.unbiz.fluentvalidator.ComplexResult;
-import com.baidu.unbiz.fluentvalidator.FluentValidator;
-import com.baidu.unbiz.fluentvalidator.ResultCollectors;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lambo.common.annotation.EnableExportTable;
@@ -11,28 +6,22 @@ import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
 
 import com.lambo.common.utils.lang.StringUtils;
-import com.lambo.common.validator.LengthValidator;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
-import com.lambo.ndp.model.Table;
-import com.lambo.ndp.model.TableCell;
-import com.lambo.ndp.model.TableCellDict;
-import com.lambo.ndp.service.api.TableGpService;
 import com.lambo.ndp.service.api.TableService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
-import org.apache.poi.ss.formula.functions.Columns;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import java.text.SimpleDateFormat;
+
 import java.util.*;
-import org.springframework.transaction.annotation.Transactional;
+
 import static java.lang.Character.getType;
 
 /**
@@ -48,8 +37,6 @@ public class TableController extends BaseController {
 
     @Autowired
     private TableService tableService;
-//    @Autowired
-//    private TableGpService tableGpService;
     @ApiOperation(value = "库表列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     @ResponseBody
@@ -130,14 +117,14 @@ public class TableController extends BaseController {
             @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
             @RequestParam(required = false, defaultValue = "", value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
-            @RequestParam(required = false, value = "order") String order,
-            @RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema) {
-        //System.out.println("dataSchema="+dataSchema);
+            @RequestParam(required = false, value = "order") String order
+            //@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema
+            ) {
         Map<String,Object> param = new HashMap<String, Object>();
-
-        if(StringUtils.isNotBlank(dataSchema)){
-            param.put("tableSchema",dataSchema);
-        }
+//
+//        if(StringUtils.isNotBlank(dataSchema)){
+//            param.put("tableSchema",dataSchema);
+//        }
         if(StringUtils.isNotBlank(search)){
             param.put("tableName",search);
         }
@@ -154,7 +141,6 @@ public class TableController extends BaseController {
         //物理分页
         PageHelper.offsetPage(offset, limit);
         List data = tableService.queryDbTable(param);
-        System.out.println("sql="+data);
         PageInfo page = new PageInfo(data);
 
         Map<String, Object> result = new HashMap<>();
@@ -172,10 +158,9 @@ public class TableController extends BaseController {
             @RequestParam(required = false, defaultValue = "", value = "search") String search,
             @RequestParam(required = false, value = "sort") String sort,
             @RequestParam(required = false, value = "order") String order,
-            @RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
+            //@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
             @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName,
             @RequestParam(required = false, value = "selectColumns") String selectColumns) {
-//
         if(StringUtils.isNotBlank(sort)){
             sort= StringUtils.humpToLine(sort);
         }else{
@@ -188,10 +173,9 @@ public class TableController extends BaseController {
         }
         StringBuffer sql = new StringBuffer();
         sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
-        if(StringUtils.isNotBlank(dataSchema)){
-            sql.append(" and table_schema ='").append(dataSchema).append("'");
-        }
-
+//        if(StringUtils.isNotBlank(dataSchema)){
+//            sql.append(" and table_schema ='").append(dataSchema).append("'");
+//        }
         if(StringUtils.isNotBlank(tableName)){
            sql.append(" and table_name ='").append(tableName).append("'");
         }
@@ -220,7 +204,6 @@ public class TableController extends BaseController {
             sql.append(")");
         }
         sql.append("order by ").append(sort).append(" ").append(order);
-        System.out.println("sql="+sql.toString());
         Map param = new HashMap();
         param.put("sql",sql.toString());
         PageHelper.offsetPage(offset,limit);
@@ -286,8 +269,8 @@ public class TableController extends BaseController {
     @ApiOperation(value = "根据库表查询列")
     @RequestMapping(value = "/getColumn", method = RequestMethod.GET)
     @ResponseBody
-    public Object getC(@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
+    public Object getC(//@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
                        @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName) {
-        return tableService.queryTableColumns(tableName,dataSchema);
+        return tableService.queryTableColumns(tableName);
     }
 }

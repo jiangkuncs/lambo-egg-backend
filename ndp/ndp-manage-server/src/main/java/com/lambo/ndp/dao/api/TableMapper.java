@@ -7,11 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface TableMapper {
-    //public int insertTable(Map<String, Object> param);
     public int insertTable(Table table);
     public int insertTableCell(TableCell tableCell);
     public int updateTable(Map<String, Object> param);
-
     public int deleteByPrimaryKey(int ids);
     public int deleteTableCellByPrimaryKey(int cellId);
     public int deleteTableCellByTableId(int tableId);

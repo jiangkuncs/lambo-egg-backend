@@ -27,17 +27,4 @@ public interface SubjectMapper {
     int updateByPrimaryKeySelective(Subject record);
 
     int updateByPrimaryKey(Subject record);
-
-    int insertSubjectColumn(Map<String, Object> param);
-    int insertSubjectDoc(Map<String, Object> param);
-    int deleteSubjectColumnBySubjectId(Integer subjectId);
-    int deleteSubjectDocBySubjectId(Integer subjectId);
-    int deleteTagBySubjectId(Integer subjectId);
-    public List<Map<String,Object>> getDictData(String data);
-    public List<Map<String,Object>> querySubjectColumn(int subjectId);
-    public List<Map<String,Object>> querySubjectDoc(int subjectId);
-    public Map<String,Object> getSubject(int subjectId);
-    public int insertTag(Map<String,Object> parm);
-    public List<Map<String,Object>> getTagData(int subjectId);
-    List<Map<String,Object>> querySubject(Map<String, Object> param);
 }

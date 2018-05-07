@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.ndp.dao.api.TableMapper">
-    <select id="queryDbTable12" parameterType="map" resultType="map">
-      select table_name from information_schema.tables
-        UNION ALL
-        select table_name from INFORMATION_SCHEMA.views where table_schema='yxgk'
-        <if test="tableName != null">
-            and table_name like concat(concat('%',#{tableName}),'%')
-        </if>
-        order by ${sort} ${order}
-    </select>
-
     <select id="queryDbTable" parameterType="map" resultType="map">
-    select table_name from information_schema.tables where 1=1
-        <if test="tableSchema != null">
-            and table_schema=#{tableSchema,jdbcType=VARCHAR}
-        </if>
+    select relname as table_name from pg_class where 1=1
       <if test="tableName != null">
-           and table_name like concat(concat('%',#{tableName}),'%')
+           and relname like concat(concat('%',#{tableName}),'%')
       </if>
 
 </select>
     <select id="queryTableColumns" parameterType="String" resultType="map">
-        select COLUMN_NAME as cellCode from information_schema.COLUMNS where table_schema=#{dataSchema,jdbcType=VARCHAR}and table_name =#{tableName,jdbcType=VARCHAR}
+        select COLUMN_NAME as cellCode from information_schema.COLUMNS where  table_name =#{tableName,jdbcType=VARCHAR}
         order by COLUMN_NAME DESC
     </select>
     <select id="queryDbTableColumns" parameterType="map" resultType="map">
@@ -65,7 +52,6 @@
     from NDP_TABLE
     where 1=1
     <if test="tableCode != null">
-     <!-- and TABLE_CODE = like concat(concat('%',#{tableCode}),'%')-->
       and TABLE_CODE like concat(concat('%',#{tableCode}),'%')
     </if>
     <if test="tableName != null">
@@ -86,12 +72,6 @@
     from NDP_TABLE
     where TABLE_ID = #{tableId}
   </select>
-  <!-- <insert id="insertTable" useGeneratedKeys="true" keyProperty="table_id" parameterType="map">
-     insert into NDP_TABLE ( TABLE_CODE, TABLE_NAME,
-     TABLE_DESC,CREATE_USER, CREATE_TIME)
-     values (#{tableCode,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR},#{tableDesc,jdbcType=VARCHAR},
-     #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=CHAR})
-   </insert>-->
   <insert id="insertTable" useGeneratedKeys="true" keyProperty="tableId" parameterType="com.lambo.ndp.model.Table">
     insert into NDP_TABLE ( TABLE_CODE, TABLE_NAME,
     TABLE_DESC,CREATE_USER, CREATE_TIME)

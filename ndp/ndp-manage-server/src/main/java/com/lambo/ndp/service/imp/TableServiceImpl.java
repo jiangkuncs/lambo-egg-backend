@@ -68,7 +68,6 @@ public class TableServiceImpl implements TableService {
 
         try{
             DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
-            //System.out.println("1="+DynamicDataSource.getDataSource());
             return tableMapper.queryDbTableColumns(param);
         }catch (Exception e){
             logger.error("Exception", e);
@@ -87,7 +86,6 @@ public class TableServiceImpl implements TableService {
         if (!result.isSuccess()) {
             return new NdpResult(NdpResultConstant.INVALID_LENGTH, result.getErrors());
         }
-        System.out.println("TableCellss="+TableCellss);
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         Date day=new Date();
@@ -176,14 +174,12 @@ public class TableServiceImpl implements TableService {
         data.add(0,param);
         return new NdpResult(NdpResultConstant.SUCCESS,data);
     }
-    public Object queryTableColumns(String tableName,String dataSchema){
+    public Object queryTableColumns(String tableName){
         List<Map<String,Object>> data=new ArrayList<>();
         Map<String,Object> parm=new HashMap<String,Object>();
         parm.put("tableName",tableName);
-        parm.put("dataSchema",dataSchema);
         try{
             DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
-            //System.out.println("1="+DynamicDataSource.getDataSource());
             data = tableMapper.queryTableColumns(parm);
         }catch (Exception e){
             logger.error("Exception", e);

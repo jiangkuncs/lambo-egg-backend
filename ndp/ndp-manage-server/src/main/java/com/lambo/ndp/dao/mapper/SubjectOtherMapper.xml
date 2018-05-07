@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.ndp.dao.api.SubjectOtherMapper">
+  <select id="getSubject" parameterType="java.lang.Integer" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,subject_desc as subjectDesc,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName,subject_type as subjectType,organ_type as organType,period_type as periodType
+    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
+    and ns.subject_id =#{subjectId}
+
+  </select>
+  <select id="querySubjectColumn" parameterType="java.lang.Integer" resultType="map">
+    select column_id as columnId,subject_id as subjectId,column_name as cellName,sc.cell_id as cellId,
+    search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
+    is_show as isShow,cell_code as cellCode
+    from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
+    order by COLUMN_ORDER asc
+  </select>
+  <select id="querySubjectDoc" parameterType="java.lang.Integer" resultType="map">
+     select document_id as documentId ,doc_name as docName,doc_save_id as docSaveId ,subject_id as subjectId
+     from ndp_subject_document where  subject_id=#{subjectId}
+      order by documentId desc
+  </select>
+  <select id="getDictData" parameterType="string" resultType="map">
+    select dict_key as 'value',dict_value as label
+    from ndp_dict where dict_id=#{data}
+  </select>
+  <select id="getTagData" parameterType="java.lang.Integer" resultType="map">
+    select tag_name as tagName
+    from ndp_subject_tag where subject_id=#{subjectId}
+  </select>
+  <insert id="insertSubjectColumn" parameterType="map">
+    insert into ndp_subject_column (SUBJECT_ID, COLUMN_NAME ,
+    CELL_ID, SEARCH_CONDITION, SEARCH_SETTING,COLUMN_ORDER,IS_SHOW
+    )
+    values (#{subjectId,jdbcType=INTEGER}, #{columnName,jdbcType=VARCHAR},
+    #{cellId,jdbcType=INTEGER}, #{searchCondition,jdbcType=VARCHAR}, #{searchSetting,jdbcType=VARCHAR},#{columnOrder,jdbcType=INTEGER},#{isShow,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertTag" parameterType="map">
+    insert into ndp_subject_tag(SUBJECT_ID,TAG_NAME)values(#{subjectId,jdbcType=INTEGER},#{tagName,jdbcType=VARCHAR})
+  </insert>
+  <delete id="deleteTagBySubjectId" parameterType="java.lang.Integer">
+    delete from ndp_subject_tag
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSubjectDoc" parameterType="map">
+    insert into ndp_subject_document (SUBJECT_ID, DOC_NAME ,
+    DOC_SAVE_ID
+    )
+    values (#{subjectId,jdbcType=INTEGER}, #{docName,jdbcType=VARCHAR},
+    #{docSaveId,jdbcType=VARCHAR}
+    )
+  </insert>
+  <delete id="deleteSubjectColumnBySubjectId" parameterType="java.lang.Integer">
+    delete from ndp_subject_column
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteSubjectDocBySubjectId" parameterType="java.lang.Integer">
+    delete from ndp_subject_document
+    where SUBJECT_ID = #{subjectId,jdbcType=INTEGER}
+  </delete>
+  <select id="querySubject" parameterType="map" resultType="map">
+    select subject_id as subjectId,subject_name as subjectName ,ns.category_id as categoryId,table_id as tableId,table_code as tableCode,nc.category_name as categoryName
+    from  ndp_subject ns,ndp_category nc where ns.CATEGORY_ID=nc.CATEGORY_ID
+    <if test="subjectName != null">
+      and subject_name like concat(concat('%',#{subjectName}),'%')
+    </if>
+    order by ${sort} ${order}
+  </select>
+</mapper>

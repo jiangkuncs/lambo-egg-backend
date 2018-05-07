@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.ndp.dao.api.DictOtherMapper">
+  <select id="getDict" parameterType="map" resultType="map">
+select DICT_ID as dictId, DICT_NAME as dictName, DICT_DESC as dictDesc,DICT_KEY as dictKey,DICT_VALUE as dictValue
+from ndp_dict
+WHERE DICT_ID = #{dictId,jdbcType=VARCHAR}
+  </select>
+</mapper>

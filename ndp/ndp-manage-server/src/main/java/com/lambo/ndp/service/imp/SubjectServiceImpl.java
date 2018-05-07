@@ -7,6 +7,7 @@ import com.lambo.common.base.BaseServiceImpl;
 import com.lambo.ndp.constant.NdpResult;
 import com.lambo.ndp.constant.NdpResultConstant;
 import com.lambo.ndp.dao.api.SubjectMapper;
+import com.lambo.ndp.dao.api.SubjectOtherMapper;
 import com.lambo.ndp.model.Subject;
 import com.lambo.ndp.model.SubjectExample;
 import com.lambo.ndp.service.api.SubjectService;
@@ -36,7 +37,8 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
     private String isDOC="2";
     @Autowired
     SubjectMapper subjectMapper;
-
+    @Autowired
+    SubjectOtherMapper subjectOtherMapper;
     @Override
     public Object insertSubject(int categoryId, String tableCode, int tableId, String subjectDesc, String subjectName, String subjectColumns,String subjectType,String subjectTime,String subjectOrgan,String subjectTag) {
         Subject subject = new Subject();
@@ -64,7 +66,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                 Map<String,Object> tag=new HashMap<String,Object>();
                 tag.put("subjectId",subjectId);
                 tag.put("tagName",tagChar[a]);
-                subjectMapper.insertTag(tag);
+                subjectOtherMapper.insertTag(tag);
             }
         }
         //列插入
@@ -86,7 +88,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                         parmData.put("isShow",jobData.get("isShow"));
                     }
                     parmData.put("subjectId",subjectId);
-                    subjectMapper.insertSubjectColumn(parmData);
+                    subjectOtherMapper.insertSubjectColumn(parmData);
 
                 }
             }else if(isDOC.equals(subjectType)){
@@ -96,7 +98,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                     parm.put("docName",job.get("docName"));
                     parm.put("docSaveId",job.get("docSaveId"));
                     parm.put("subjectId",subjectId);
-                    subjectMapper.insertSubjectDoc(parm);
+                    subjectOtherMapper.insertSubjectDoc(parm);
                 }
             }
         }
@@ -120,7 +122,7 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         subject.setCreateTime(df.format(day).toString());
          int con=subjectMapper.updateByPrimaryKeySelective(subject);
         //指标插入
-        con=subjectMapper.deleteTagBySubjectId(subjectId);
+        con=subjectOtherMapper.deleteTagBySubjectId(subjectId);
         subjectTag=subjectTag.replace("[","");
         subjectTag=subjectTag.replace("]","");
         subjectTag=subjectTag.replace("\"","");
@@ -130,12 +132,12 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                 Map<String,Object> tag=new HashMap<String,Object>();
                 tag.put("subjectId",subjectId);
                 tag.put("tagName",tagChar[a]);
-                subjectMapper.insertTag(tag);
+                subjectOtherMapper.insertTag(tag);
             }
         }
         JSONArray json = JSONArray.parseArray(subjectColumns);
          if(isDATA.equals(subjectType)){
-             subjectMapper.deleteSubjectColumnBySubjectId(subjectId);
+             subjectOtherMapper.deleteSubjectColumnBySubjectId(subjectId);
              for (int i = 0; i < json.size(); i++) {
                  JSONObject jobData = json.getJSONObject(i);
                  Map<String,Object> parmData = new HashMap();
@@ -150,18 +152,18 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
                      parmData.put("isShow",jobData.get("isShow"));
                  }
                  parmData.put("subjectId",subjectId);
-                 subjectMapper.insertSubjectColumn(parmData);
+                 subjectOtherMapper.insertSubjectColumn(parmData);
              }
 
          }else if(isDOC.equals(subjectType)){
-             subjectMapper.deleteSubjectDocBySubjectId(subjectId);
+             subjectOtherMapper.deleteSubjectDocBySubjectId(subjectId);
              for (int i = 0; i < json.size(); i++) {
                  JSONObject job = json.getJSONObject(i);
                  Map<String,Object> parm = new HashMap();
                  parm.put("docName",job.get("docName"));
                  parm.put("docSaveId",job.get("docSaveId"));
                  parm.put("subjectId",subjectId);
-                 subjectMapper.insertSubjectDoc(parm);
+                 subjectOtherMapper.insertSubjectDoc(parm);
              }
          }
         return con;
@@ -171,17 +173,17 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
     public int deleteSubjectBySubjectId(Integer subjectId){
         int con=1;
         //删除专题列
-        con=subjectMapper.deleteSubjectColumnBySubjectId(subjectId);
-        con=subjectMapper.deleteSubjectDocBySubjectId(subjectId);
-        con=subjectMapper.deleteTagBySubjectId(subjectId);
+        con=subjectOtherMapper.deleteSubjectColumnBySubjectId(subjectId);
+        con=subjectOtherMapper.deleteSubjectDocBySubjectId(subjectId);
+        con=subjectOtherMapper.deleteTagBySubjectId(subjectId);
         //删除专题
         con=subjectMapper.deleteByPrimaryKey(subjectId);
         return con;
     }
     @Override
     public Object getSubjectById(int subjectId){
-        Map<String,Object> param = subjectMapper.getSubject(subjectId);
-        List<Map<String,Object>> dataTag=subjectMapper.getTagData(subjectId);
+        Map<String,Object> param = subjectOtherMapper.getSubject(subjectId);
+        List<Map<String,Object>> dataTag=subjectOtherMapper.getTagData(subjectId);
         ArrayList<String> tag = new ArrayList<String>();
         for(Map obj : dataTag){
             String tagName= (String) obj.get("tagName");
@@ -191,9 +193,9 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
         String subjectType= (String) param.get("subjectType");
         List<Map<String,Object>> data=new ArrayList<Map<String,Object>>();
         if(isDATA.equals(subjectType)){
-            data = subjectMapper.querySubjectColumn(subjectId);
+            data = subjectOtherMapper.querySubjectColumn(subjectId);
         }else if(isDOC.equals(subjectType)){
-           data=subjectMapper.querySubjectDoc(subjectId);
+           data=subjectOtherMapper.querySubjectDoc(subjectId);
         }else{
             return new NdpResult(NdpResultConstant.FAILED, data);
         }
@@ -203,9 +205,9 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
     @Override
     public Object initSubject(){
         String period="PERIOD_TYPE_ID";
-        List<Map<String,Object>> dataPeriod = subjectMapper.getDictData(period);
+        List<Map<String,Object>> dataPeriod = subjectOtherMapper.getDictData(period);
         String organ="ORGAN_TYPE_ID";
-        List<Map<String,Object>> dataOrgan = subjectMapper.getDictData(organ);
+        List<Map<String,Object>> dataOrgan = subjectOtherMapper.getDictData(organ);
         List<List<Map<String,Object>>> data=new ArrayList<>();
         data.add(0,dataPeriod);
         data.add(1,dataOrgan);
@@ -213,6 +215,6 @@ public class SubjectServiceImpl extends BaseServiceImpl<SubjectMapper,Subject, S
     }
     @Override
     public List<Map<String, Object>> querySubject(Map<String, Object> param) {
-        return subjectMapper.querySubject(param);
+        return subjectOtherMapper.querySubject(param);
     }
 }
