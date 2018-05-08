@@ -59,9 +59,6 @@ public class TableServiceImpl implements TableService {
         }finally{
             DynamicDataSource.clearDataSource();
         }
-
-
-
         return list;
     }
     public List<Map<String,Object>> queryDbTableColumns(String tableName){

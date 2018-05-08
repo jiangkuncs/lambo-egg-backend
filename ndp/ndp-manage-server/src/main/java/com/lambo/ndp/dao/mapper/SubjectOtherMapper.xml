@@ -13,6 +13,7 @@
     is_show as isShow,cell_code as cellcode
     from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
     order by COLUMN_ORDER asc
+
   </select>
   <select id="querySubjectDoc" parameterType="java.lang.Integer" resultType="map">
      select document_id as documentId ,doc_name as docName,doc_save_id as docSaveId ,subject_id as subjectId

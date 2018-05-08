@@ -271,7 +271,7 @@ public class TableController extends BaseController {
     @ApiOperation(value = "根据库表查询列")
     @RequestMapping(value = "/getColumn", method = RequestMethod.GET)
     @ResponseBody
-    public Object getC(//@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
+    public Object getC(
                        @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName) {
         return tableService.queryTableColumns(tableName);
     }

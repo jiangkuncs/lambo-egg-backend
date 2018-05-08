@@ -12,6 +12,7 @@
         select COLUMN_NAME as cellcode from information_schema.COLUMNS where  table_name =#{tableName,jdbcType=VARCHAR}
         order by ordinal_position ASC
     </select>
+
     <select id="queryDbTableColumns" parameterType="map" resultType="map">
         select COLUMN_NAME  from information_schema.COLUMNS where  table_name =#{tableName,jdbcType=VARCHAR}
     </select>

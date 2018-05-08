@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
 * TableService接口
-* Created by zxc on 2018/3/20.
+* Created by zxc on 2018/4/20.
 */
 public interface TableService  {
     List<Map<String,Object>> queryDbTable(Map<String, Object> param);
