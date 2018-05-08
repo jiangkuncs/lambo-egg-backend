@@ -2,7 +2,9 @@ package com.lambo.ndp.service.imp;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.lambo.common.db.DynamicDataSource;
 import com.lambo.common.utils.excel.Constants;
+import com.lambo.ndp.constant.DataSourceEnum;
 import com.lambo.ndp.constant.FrontendConstants;
 import com.lambo.ndp.dao.api.FrontendMapper;
 import com.lambo.ndp.service.api.FrontendService;
@@ -155,7 +157,15 @@ public class FrontendServiceImpl implements FrontendService {
                     limit = Integer.parseInt(param.get("limit")+"");
                 }
                 PageHelper.offsetPage(offset,limit);
-                List list = frontendMapper.getSqlData(finalParam);
+                DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
+                List list = new ArrayList();
+                try {
+                    list = frontendMapper.getSqlData(finalParam);
+                } catch (Exception e){
+                    logger.error("查询数据出错", e);
+                }finally {
+                    DynamicDataSource.clearDataSource();
+                }
                 PageInfo page = new PageInfo(list);
                 result.put(Constants.rows,page.getList());
                 result.put(Constants.total,page.getTotal());
@@ -237,16 +247,25 @@ public class FrontendServiceImpl implements FrontendService {
                 limit = Integer.parseInt(param.get("limit")+"");
             }
             PageHelper.offsetPage(offset,limit);
-            List rows = null;
-            if(dimensionType.equals(FrontendConstants.province)){
-                rows = frontendMapper.getProviceData(param);
-            }else if(dimensionType.equals(FrontendConstants.city)){
-                rows = frontendMapper.getCityData(param);
-            }else if(dimensionType.equals(FrontendConstants.item)){
-                rows = frontendMapper.getItemData(param);
-            }else if(dimensionType.equals(FrontendConstants.brand)){
-                rows = frontendMapper.getBrandData(param);
+
+            DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
+            List rows = new ArrayList();
+            try {
+                if(dimensionType.equals(FrontendConstants.province)){
+                    rows = frontendMapper.getProviceData(param);
+                }else if(dimensionType.equals(FrontendConstants.city)){
+                    rows = frontendMapper.getCityData(param);
+                }else if(dimensionType.equals(FrontendConstants.item)){
+                    rows = frontendMapper.getItemData(param);
+                }else if(dimensionType.equals(FrontendConstants.brand)){
+                    rows = frontendMapper.getBrandData(param);
+                }
+            } catch (Exception e){
+                logger.error("查询数据出错", e);
+            }finally {
+                DynamicDataSource.clearDataSource();
             }
+
             PageInfo page = new PageInfo(rows);
             result.put(Constants.rows,page.getList());
             result.put(Constants.total,page.getTotal());
