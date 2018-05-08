@@ -64,11 +64,11 @@ public class TableServiceImpl implements TableService {
 
         return list;
     }
-    public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param){
+    public List<Map<String,Object>> queryDbTableColumns(String tableName){
 
         try{
             DynamicDataSource.setDataSource(DataSourceEnum.GREENPLUM.getName());
-            return tableMapper.queryDbTableColumns(param);
+            return tableMapper.queryDbTableColumns(tableName);
         }catch (Exception e){
             logger.error("Exception", e);
         }finally{

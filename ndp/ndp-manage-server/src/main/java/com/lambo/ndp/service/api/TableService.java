@@ -17,7 +17,7 @@ public interface TableService  {
     public int deleteTableCellByPrimaryKey(int cellId);
     public Object deleteTable(int tableId);
     public List<Map<String,Object>> queryTable(Map<String, Object> param);
-    public List<Map<String,Object>> queryDbTableColumns(Map<String, Object> param);
+    public List<Map<String,Object>> queryDbTableColumns(String tableName);
     public List<Map<String,Object>> queryTableCell(int tableId);
     public Object queryTableColumns(String tableName);
     public Object create(String tableCode,String tableName,String tableDesc,String TableCellss);

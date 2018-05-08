@@ -159,8 +159,9 @@ public class TableController extends BaseController {
             @RequestParam(required = false, value = "sort") String sort,
             @RequestParam(required = false, value = "order") String order,
             //@RequestParam(required = false, defaultValue = "", value = "dataSchema") String dataSchema,
-            @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName,
-            @RequestParam(required = false, value = "selectColumns") String selectColumns) {
+            @RequestParam(required = true, defaultValue = "", value = "tableName") String tableName
+            //@RequestParam(required = false, value = "selectColumns") String selectColumns
+     ) {
         if(StringUtils.isNotBlank(sort)){
             sort= StringUtils.humpToLine(sort);
         }else{
@@ -171,43 +172,44 @@ public class TableController extends BaseController {
         }else{
             order="desc";
         }
-        StringBuffer sql = new StringBuffer();
-        sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
-//        if(StringUtils.isNotBlank(dataSchema)){
-//            sql.append(" and table_schema ='").append(dataSchema).append("'");
+//        StringBuffer sql = new StringBuffer();
+//        sql.append(" select COLUMN_NAME from information_schema.COLUMNS where 1=1 ");
+////        if(StringUtils.isNotBlank(dataSchema)){
+////            sql.append(" and table_schema ='").append(dataSchema).append("'");
+////        }
+//        if(StringUtils.isNotBlank(tableName)){
+//           sql.append(" and table_name ='").append(tableName).append("'");
 //        }
-        if(StringUtils.isNotBlank(tableName)){
-           sql.append(" and table_name ='").append(tableName).append("'");
-        }
-        if(StringUtils.isNotBlank(search)){
-            sql.append(" and column_name like '%").append(search).append("%'");
-        }
-        String columns="";
-        Boolean isCon=false;
-        if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
-            sql.append("and COLUMN_NAME  in('").append("')");
-
-        }else{
-            columns=selectColumns.replace("[","").replace("\"","").replace("]","");
-            isCon=true;
-        }
-        if(isCon){
-            sql.append("and COLUMN_NAME  in(");
-            String[] columnsArry= columns.split(",");
-            int len = columnsArry.length;
-            for (int i = 0; i < len; i++) {
-                sql.append("'").append(columnsArry[i]).append("'");
-                if (i < len - 1) {
-                    sql.append(",");
-                }
-            }
-            sql.append(")");
-        }
-        sql.append("order by ").append(sort).append(" ").append(order);
-        Map param = new HashMap();
-        param.put("sql",sql.toString());
+//        if(StringUtils.isNotBlank(search)){
+//            sql.append(" and column_name like '%").append(search).append("%'");
+//        }
+//        String columns="";
+//        Boolean isCon=false;
+//        if(selectColumns==null || "".equals(selectColumns) || "[]".equals(selectColumns)){
+//            sql.append("and COLUMN_NAME  in('").append("')");
+//
+//        }else{
+//            columns=selectColumns.replace("[","").replace("\"","").replace("]","");
+//            isCon=true;
+//        }
+//        if(isCon){
+//            sql.append("and COLUMN_NAME  in(");
+//            String[] columnsArry= columns.split(",");
+//            int len = columnsArry.length;
+//            for (int i = 0; i < len; i++) {
+//                sql.append("'").append(columnsArry[i]).append("'");
+//                if (i < len - 1) {
+//                    sql.append(",");
+//                }
+//            }
+//            sql.append(")");
+//        }
+//        sql.append("order by ").append(sort).append(" ").append(order);
+//        Map param = new HashMap();
+//        param.put("sql",sql.toString());
         PageHelper.offsetPage(offset,limit);
-        List data = tableService.queryDbTableColumns(param);
+       // List data = tableService.queryDbTableColumns(param);
+        List data= tableService.queryDbTableColumns(tableName);
         PageInfo page = new PageInfo(data);
         Map<String, Object> result = new HashMap<>();
         result.put("rows", page.getList());

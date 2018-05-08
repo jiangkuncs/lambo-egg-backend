@@ -10,7 +10,7 @@
   <select id="querySubjectColumn" parameterType="java.lang.Integer" resultType="map">
     select column_id as columnId,subject_id as subjectId,column_name as cellName,sc.cell_id as cellId,
     search_condition as searchCondition,search_setting as searchSetting,column_order as columnOrder,
-    is_show as isShow,cell_code as cellCode
+    is_show as isShow,cell_code as cellcode
     from ndp_subject_column sc left join ndp_table_cell tc on  sc.cell_id=tc.cell_id where  subject_id=#{subjectId}
     order by COLUMN_ORDER asc
   </select>

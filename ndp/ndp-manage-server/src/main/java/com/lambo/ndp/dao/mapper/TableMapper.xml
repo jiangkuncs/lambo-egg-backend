@@ -9,11 +9,11 @@
 
 </select>
     <select id="queryTableColumns" parameterType="String" resultType="map">
-        select COLUMN_NAME as cellCode from information_schema.COLUMNS where  table_name =#{tableName,jdbcType=VARCHAR}
-        order by COLUMN_NAME DESC
+        select COLUMN_NAME as cellcode from information_schema.COLUMNS where  table_name =#{tableName,jdbcType=VARCHAR}
+        order by ordinal_position ASC
     </select>
     <select id="queryDbTableColumns" parameterType="map" resultType="map">
-        ${sql}
+        select COLUMN_NAME  from information_schema.COLUMNS where  table_name =#{tableName,jdbcType=VARCHAR}
     </select>
   <resultMap id="BaseResultTableMap" type="com.lambo.ndp.model.Table">
   <id column="TABLE_ID" jdbcType="INTEGER" property="tableId" />
@@ -64,7 +64,7 @@
   <select id="queryTableCell" parameterType="Integer" resultType="map">
     select DISTINCT CELL_ID as cellId,TABLE_ID as tableId,CELL_CODE as cellcode,CELL_NAME as cellName ,NDP_TABLE_CELL.DICT_ID as dictId,DATA_UNIT as dataUnit,DATA_DESC as dataDesc,NDP_DICT.DICT_NAME as dictName
     from NDP_TABLE_CELL left join NDP_DICT ON NDP_TABLE_CELL.DICT_ID=NDP_DICT.DICT_ID
-    where TABLE_ID =#{tableId}
+    where TABLE_ID =#{tableId} order by cellId ASC
 
   </select>
   <select id="selectTableById" parameterType="Integer" resultMap="BaseResultTableMap">
