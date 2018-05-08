@@ -116,40 +116,71 @@
   </select>
 
   <select id="getProviceData" parameterType="map" resultType="map">
-    select com_id,com_name,com_test,com_test1
-    from pl_com
+    SELECT PCOM_ID COM_ID,PCOM_NAME COM_NAME
+    FROM SCMR_PRO
     where 1=1
     <if test="search != null">
-      and (com_id like concat(concat('%',#{search}),'%')
-        or com_name like concat(concat('%',#{search}),'%'))
+      and (PCOM_ID like concat(concat('%',#{search}),'%')
+        or PCOM_NAME like concat(concat('%',#{search}),'%'))
     </if>
-    <if test="sort != null and order != null">
-      order by #{sort} #{order}
-    </if>
+    <choose>
+      <when test="sort != null and order != null">
+        order by #{sort} #{order}
+      </when>
+      <otherwise>
+        order by PCOM_ID
+      </otherwise>
+    </choose>
   </select>
   <select id="getCityData" parameterType="map" resultType="map">
-    select com_id,com_name
-    from pl_com
-    where 1=1
+    SELECT SUBSTR(SCMR_PRO.PCOM_ID,3)||CCOM_ID seq,SCMR_PRO.PCOM_ID,PCOM_NAME,CCOM_ID COM_ID,COM_NAME
+    FROM SCMR_CITY,SCMR_PRO
+    WHERE IS_CITY='1'
+    AND SCMR_CITY.PCOM_ID=SCMR_PRO.PCOM_ID
     <if test="search != null">
-      and (com_id like concat(concat('%',#{search}),'%')
-      or com_name like concat(concat('%',#{search}),'%'))
+      and (CCOM_ID like concat(concat('%',#{search}),'%')
+      or COM_NAME like concat(concat('%',#{search}),'%'))
     </if>
-    <if test="sort != null and order != null">
-      order by #{sort} #{order}
-    </if>
+    <choose>
+      <when test="sort != null and order != null">
+        order by #{sort} #{order}
+      </when>
+      <otherwise>
+        order by SUBSTR(SCMR_PRO.PCOM_ID,3)||CCOM_ID
+      </otherwise>
+    </choose>
   </select>
   <select id="getItemData" parameterType="map" resultType="map">
-    select item_id,item_name
-    from pl_item
+    select PACK_BAR item_id,ITEM_NAME,NVL(BRDOWNER_NAME,'其他') BRDOWNER_NAME
+    from (
+      SELECT PACK_BAR,ITEM_NAME,NVL(BRDOWNER_NAME,'其他') BRDOWNER_NAME
+      FROM SCMR_ITEM_BASE
+      WHERE EXISTS(SELECT ITEM_CODE FROM SCMR_EDC_BUSINESS_MONTH WHERE ORG_CODE='10000001'
+      AND (MONTH_CODE=TO_CHAR(now() -interval '3 year','YYYY')||12
+      OR MONTH_CODE=TO_CHAR(now()- interval '1 year','YYYY')||12
+      )
+      AND SCMR_ITEM_BASE.PACK_BAR=ITEM_CODE
+      GROUP BY ITEM_CODE
+      HAVING sUM(OSALE_QTY_YEAR)>0
+      )
+      UNION all
+      SELECT PACK_BAR,ITEM_NAME,NVL(BRDOWNER_NAME,'其他') BRDOWNER_NAME
+      FROM SCMR_ITEM_BASE
+      WHERE REGI_DATE>=TO_CHAR(now() -interval '12 month','YYYYmmdd')
+    ) a
     where 1=1
     <if test="search != null">
       and (item_id like concat(concat('%',#{search}),'%')
       or item_name like concat(concat('%',#{search}),'%'))
     </if>
-    <if test="sort != null and order != null">
-      order by #{sort} #{order}
-    </if>
+    <choose>
+      <when test="sort != null and order != null">
+        order by #{sort} #{order}
+      </when>
+      <otherwise>
+        order by item_id
+      </otherwise>
+    </choose>
   </select>
   <select id="getBrandData" parameterType="map" resultType="map">
     select test_id,test_name
