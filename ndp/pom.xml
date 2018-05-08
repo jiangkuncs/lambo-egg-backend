@@ -21,5 +21,6 @@
     <modules>
         <module>ndp-manage-server</module>
         <module>ndp-show-server</module>
+        <module>ndp-file-server</module>
     </modules>
 </project>
