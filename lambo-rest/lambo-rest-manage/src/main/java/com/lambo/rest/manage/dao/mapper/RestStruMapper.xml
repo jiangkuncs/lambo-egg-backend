@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.rest.manage.dao.api.RestStruMapper">
+  <resultMap id="BaseResultMap" type="com.lambo.rest.manage.model.RestStru">
+    <id column="stru_id" jdbcType="VARCHAR" property="struId" />
+    <result column="stru_name" jdbcType="VARCHAR" property="struName" />
+    <result column="is_leaf" jdbcType="CHAR" property="isLeaf" />
+    <result column="rest_id" jdbcType="VARCHAR" property="restId" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="is_use" jdbcType="CHAR" property="isUse" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    stru_id, stru_name, is_leaf, rest_id, parent_id, is_use
+  </sql>
+  <select id="selectByExample" parameterType="com.lambo.rest.manage.model.RestStruExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from rest_stru
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rest_stru
+    where stru_id = #{struId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from rest_stru
+    where stru_id = #{struId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lambo.rest.manage.model.RestStruExample">
+    delete from rest_stru
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lambo.rest.manage.model.RestStru">
+    insert into rest_stru (stru_id, stru_name, is_leaf, 
+      rest_id, parent_id, is_use
+      )
+    values (#{struId,jdbcType=VARCHAR}, #{struName,jdbcType=VARCHAR}, #{isLeaf,jdbcType=CHAR}, 
+      #{restId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{isUse,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lambo.rest.manage.model.RestStru">
+    insert into rest_stru
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="struId != null">
+        stru_id,
+      </if>
+      <if test="struName != null">
+        stru_name,
+      </if>
+      <if test="isLeaf != null">
+        is_leaf,
+      </if>
+      <if test="restId != null">
+        rest_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="isUse != null">
+        is_use,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="struId != null">
+        #{struId,jdbcType=VARCHAR},
+      </if>
+      <if test="struName != null">
+        #{struName,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null">
+        #{isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="restId != null">
+        #{restId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null">
+        #{isUse,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rest_stru
+    <set>
+      <if test="record.struId != null">
+        stru_id = #{record.struId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.struName != null">
+        stru_name = #{record.struName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isLeaf != null">
+        is_leaf = #{record.isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="record.restId != null">
+        rest_id = #{record.restId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isUse != null">
+        is_use = #{record.isUse,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rest_stru
+    set stru_id = #{record.struId,jdbcType=VARCHAR},
+      stru_name = #{record.struName,jdbcType=VARCHAR},
+      is_leaf = #{record.isLeaf,jdbcType=CHAR},
+      rest_id = #{record.restId,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=VARCHAR},
+      is_use = #{record.isUse,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lambo.rest.manage.model.RestStru">
+    update rest_stru
+    <set>
+      <if test="struName != null">
+        stru_name = #{struName,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null">
+        is_leaf = #{isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="restId != null">
+        rest_id = #{restId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null">
+        is_use = #{isUse,jdbcType=CHAR},
+      </if>
+    </set>
+    where stru_id = #{struId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lambo.rest.manage.model.RestStru">
+    update rest_stru
+    set stru_name = #{struName,jdbcType=VARCHAR},
+      is_leaf = #{isLeaf,jdbcType=CHAR},
+      rest_id = #{restId,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      is_use = #{isUse,jdbcType=CHAR}
+    where stru_id = #{struId,jdbcType=VARCHAR}
+  </update>
+</mapper>
