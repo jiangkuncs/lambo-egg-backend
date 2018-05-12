@@ -170,8 +170,9 @@
     ) a
     where 1=1
     <if test="search != null">
-      and (item_id like concat(concat('%',#{search}),'%')
-      or item_name like concat(concat('%',#{search}),'%'))
+      and (PACK_BAR like concat(concat('%',#{search}),'%')
+      or item_name like concat(concat('%',#{search}),'%')
+      or NVL(BRDOWNER_NAME,'其他') like concat(concat('%',#{search}),'%'))
     </if>
     <choose>
       <when test="sort != null and order != null">

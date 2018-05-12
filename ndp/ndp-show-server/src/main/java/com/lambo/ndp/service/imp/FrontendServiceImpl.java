@@ -7,6 +7,7 @@ import com.lambo.common.utils.excel.Constants;
 import com.lambo.ndp.constant.DataSourceEnum;
 import com.lambo.ndp.constant.FrontendConstants;
 import com.lambo.ndp.dao.api.FrontendMapper;
+import com.lambo.ndp.service.api.DictService;
 import com.lambo.ndp.service.api.FrontendService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -27,6 +28,8 @@ public class FrontendServiceImpl implements FrontendService {
 
     @Autowired
     private FrontendMapper frontendMapper;
+    @Autowired
+    private DictService dictService;
 
     @Override
     public List getCategoryList(Map param) {
@@ -78,7 +81,19 @@ public class FrontendServiceImpl implements FrontendService {
         /*if(!param.containsKey("is_show")){
             param.put("is_show","1");
         }*/
-        return frontendMapper.getSubjectInfo(param);
+        List list = frontendMapper.getSubjectInfo(param);
+        for (int i = 0; i < list.size(); i++){
+            Map tmp = (Map)list.get(i);
+            if (null != ((String) tmp.get("dict_id")) && !"".equals((String) tmp.get("dict_id"))){
+                Map<String, String> dictMap = dictService.getDictMap((String) tmp.get("dict_id"));
+                StringBuffer sb = new StringBuffer();
+                for (String key : dictMap.keySet()){
+                    sb.append(key).append(": ").append(dictMap.get(key)).append("; ");
+                }
+                tmp.put("dict_detail", sb.toString());
+            }
+        }
+        return list;
     }
 
     @Override
@@ -93,6 +108,8 @@ public class FrontendServiceImpl implements FrontendService {
                 String table = "";
                 String sort = "";
                 String order = "";
+                Map<String, Map<String, String>> dictColumn = new HashMap<>();
+
                 if(param.get("sort") != null && !param.get("sort").equals("")
                         && param.get("order") != null && !param.get("order").equals("")){
                     sort = (String) param.get("sort");
@@ -113,6 +130,10 @@ public class FrontendServiceImpl implements FrontendService {
                     }*/
                     if(sort.equalsIgnoreCase((String) column.get("cell_code"))){
                         sort = " a0." + sort;
+                    }
+
+                    if(null != ((String) column.get("dict_id")) && !"".equals((String) column.get("dict_id"))){
+                        dictColumn.put(((String) column.get("cell_code")).toLowerCase(), dictService.getDictMap((String) column.get("dict_id")));
                     }
                     /*if(column.get("search_condition") != null && column.get("ref_table")!=null){
                         sql += " b" + i +"."+column.get("name_field")+",";
@@ -165,6 +186,12 @@ public class FrontendServiceImpl implements FrontendService {
                     logger.error("查询数据出错", e);
                 }finally {
                     DynamicDataSource.clearDataSource();
+                }
+                for (int i = 0; i < list.size(); i++){
+                    Map tmp = (Map)list.get(i);
+                    for (String column : dictColumn.keySet()){
+                        tmp.put(column, dictColumn.get(column).get(tmp.get(column)));
+                    }
                 }
                 PageInfo page = new PageInfo(list);
                 result.put(Constants.rows,page.getList());
