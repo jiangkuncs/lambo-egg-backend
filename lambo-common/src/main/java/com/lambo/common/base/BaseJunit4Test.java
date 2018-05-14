@@ -70,7 +70,9 @@ public class BaseJunit4Test extends AbstractTransactionalJUnit4SpringContextTest
         try {
             state = conn.createStatement();
             for(int i=0;i<resources.length;i++){
-                state.execute("runscript from '" + resources[i].getURI().toString().substring(6) + "'");
+                String target = resources[i].getURI().toString().substring(6);
+                System.out.println("执行：" + target);
+                state.execute("runscript from '" + target + "'");
             }
 
         } catch (Exception e) {
@@ -91,13 +93,13 @@ public class BaseJunit4Test extends AbstractTransactionalJUnit4SpringContextTest
                     e.printStackTrace();
                 }
             }
-            if (conn != null) {
-                try {
-                    state.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+//            if (conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
 
     }
