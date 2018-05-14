@@ -18,6 +18,10 @@ public class SqlFactory {
 
     public static String generateSql(String sqlStr,Map paramMap){
 
+        if(sqlStr == null){
+            throw new RuntimeException("sql模板为空");
+        }
+
         SqlTemplateEngin sqlTemplateEngin = new SqlTemplateEngin();
         SqlTemplate sqlTemplate = sqlTemplateEngin.getSqlTemplate(sqlStr) ;
 

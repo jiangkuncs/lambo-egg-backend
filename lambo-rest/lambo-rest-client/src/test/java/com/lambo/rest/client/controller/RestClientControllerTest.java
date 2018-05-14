@@ -1,27 +1,17 @@
 package com.lambo.rest.client.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.lambo.common.base.BaseJunit4Test;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {
-        "classpath*:applicationContext.xml",
-        "classpath*:applicationContext-jdbc.xml",
-        "classpath*:applicationContext-listener.xml",
-        "classpath*:springMVC-servlet.xml"
-})
-@WebAppConfiguration
-public class RestClientControllerTest {
+public class RestClientControllerTest extends BaseJunit4Test {
     @Autowired
     private RestClientController restClientController;
     private MockMvc mockMvc;
@@ -31,14 +21,34 @@ public class RestClientControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(restClientController).build();
     }
 
+    /**
+     * 简单测试
+     * @throws Exception
+     */
     @Test
-    public void query() throws Exception {
+    public void query1() throws Exception {
         ResultActions resultActions = this.mockMvc.perform(
-                MockMvcRequestBuilders.get("/rest/service/aaa/bbb?t=1")
+                MockMvcRequestBuilders.get("/rest/service/aaa/bbb?id=1")
         );
         String result =  resultActions.andReturn().getResponse().getContentAsString();
 
-        System.out.println(result);
+        JSONObject obj = JSONObject.parseObject(result);
+        Assert.assertTrue(obj.getJSONArray("data").size() > 0);
+    }
+
+
+    /**
+     * 简单mock
+     * @throws Exception
+     */
+    @Test
+    public void query2() throws Exception {
+        ResultActions resultActions = this.mockMvc.perform(
+                MockMvcRequestBuilders.get("/rest/service/aaa/bbb?id=1&mock=true")
+        );
+        String result =  resultActions.andReturn().getResponse().getContentAsString();
+        JSONObject obj = JSONObject.parseObject(result);
+        Assert.assertTrue(obj.getJSONArray("data").size() > 0);
     }
 
 

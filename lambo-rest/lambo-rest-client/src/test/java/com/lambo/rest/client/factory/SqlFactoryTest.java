@@ -63,4 +63,6 @@ public class SqlFactoryTest {
         Assert.assertEquals(result.trim(),"select a from t  WHERE b= '20180510'");
     }
 
+
+
 }

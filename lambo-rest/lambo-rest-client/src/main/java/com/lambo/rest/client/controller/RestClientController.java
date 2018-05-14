@@ -53,8 +53,12 @@ public class RestClientController {
             String paramKey = restSettingParam.getParamKey();
             String paramValue = request.getParameter(paramKey);
             boolean necessary = restSettingParam.getNecessary().equals(1);
-            if(paramValue == null && necessary){
-                throw new RuntimeException("服务"+restId+"参数"+paramKey+"不允许为空");
+            if(paramValue == null){
+                if(necessary){
+                    throw new RuntimeException("服务"+restId+"参数"+paramKey+"不允许为空");
+                }else{
+                    paramValue = restSettingParam.getDefaultValue();
+                }
             }
             paramMap.put(paramKey,paramValue);
         }
@@ -71,11 +75,14 @@ public class RestClientController {
      * @return
      */
     private RestSetting getRestSettingByUrl(String url){
+        if(url == null){
+            throw new RuntimeException("服务url不能为空");
+        }
         url = url.replace(URL_PREFIX,"");
         RestSettingExample restSettingExample = new RestSettingExample();
-        restSettingExample.createCriteria().andUrlEqualTo(url);
-        List<RestSetting> list = restSettingService.selectByExample(restSettingExample);
-        if(list == null){
+        restSettingExample.createCriteria().andUrlEqualTo(url.trim());
+        List<RestSetting> list = restSettingService.selectByExampleWithBLOBs(restSettingExample);
+        if(list == null || list.size() == 0){
             throw new RuntimeException("服务"+url+"不存在,请检查数据");
         }
         if(list.size() > 1){

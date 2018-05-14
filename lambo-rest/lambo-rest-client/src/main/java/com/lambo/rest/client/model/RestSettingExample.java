@@ -315,73 +315,73 @@ public class RestSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeIsNull() {
-            addCriterion("opration_type is null");
+        public Criteria andOperationTypeIsNull() {
+            addCriterion("operation_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeIsNotNull() {
-            addCriterion("opration_type is not null");
+        public Criteria andOperationTypeIsNotNull() {
+            addCriterion("operation_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeEqualTo(String value) {
-            addCriterion("opration_type =", value, "oprationType");
+        public Criteria andOperationTypeEqualTo(String value) {
+            addCriterion("operation_type =", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeNotEqualTo(String value) {
-            addCriterion("opration_type <>", value, "oprationType");
+        public Criteria andOperationTypeNotEqualTo(String value) {
+            addCriterion("operation_type <>", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeGreaterThan(String value) {
-            addCriterion("opration_type >", value, "oprationType");
+        public Criteria andOperationTypeGreaterThan(String value) {
+            addCriterion("operation_type >", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("opration_type >=", value, "oprationType");
+        public Criteria andOperationTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("operation_type >=", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeLessThan(String value) {
-            addCriterion("opration_type <", value, "oprationType");
+        public Criteria andOperationTypeLessThan(String value) {
+            addCriterion("operation_type <", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeLessThanOrEqualTo(String value) {
-            addCriterion("opration_type <=", value, "oprationType");
+        public Criteria andOperationTypeLessThanOrEqualTo(String value) {
+            addCriterion("operation_type <=", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeLike(String value) {
-            addCriterion("opration_type like", value, "oprationType");
+        public Criteria andOperationTypeLike(String value) {
+            addCriterion("operation_type like", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeNotLike(String value) {
-            addCriterion("opration_type not like", value, "oprationType");
+        public Criteria andOperationTypeNotLike(String value) {
+            addCriterion("operation_type not like", value, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeIn(List<String> values) {
-            addCriterion("opration_type in", values, "oprationType");
+        public Criteria andOperationTypeIn(List<String> values) {
+            addCriterion("operation_type in", values, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeNotIn(List<String> values) {
-            addCriterion("opration_type not in", values, "oprationType");
+        public Criteria andOperationTypeNotIn(List<String> values) {
+            addCriterion("operation_type not in", values, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeBetween(String value1, String value2) {
-            addCriterion("opration_type between", value1, value2, "oprationType");
+        public Criteria andOperationTypeBetween(String value1, String value2) {
+            addCriterion("operation_type between", value1, value2, "operationType");
             return (Criteria) this;
         }
 
-        public Criteria andOprationTypeNotBetween(String value1, String value2) {
-            addCriterion("opration_type not between", value1, value2, "oprationType");
+        public Criteria andOperationTypeNotBetween(String value1, String value2) {
+            addCriterion("operation_type not between", value1, value2, "operationType");
             return (Criteria) this;
         }
 

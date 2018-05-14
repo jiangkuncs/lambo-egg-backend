@@ -5,9 +5,11 @@ import com.lambo.rest.client.constant.OprationTypeEnum;
 import com.lambo.rest.client.dao.api.RestClientCommonExcutorMapper;
 import com.lambo.rest.client.factory.SqlFactory;
 import com.lambo.rest.client.model.RestSetting;
+import com.lambo.rest.client.service.api.RestClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,14 +21,15 @@ import java.util.Map;
  * @Author sunzhen
  * @Date 2018/5/11 16:16
  **/
-public class RestClientServiceImpl {
+@Service
+public class RestClientServiceImpl implements RestClientService {
 
     private final static Logger logger = LoggerFactory.getLogger(RestClientServiceImpl.class);
-
     @Autowired
     RestClientCommonExcutorMapper restClientCommonExcutorMapper;
 
-    Object getResult(RestSetting restSetting, Map paramMap, Boolean mock){
+    @Override
+    public Object getResult(RestSetting restSetting, Map paramMap, Boolean mock){
         String sqlTemplate ;
         if(mock){
             sqlTemplate = restSetting.getMockData();
@@ -35,37 +38,44 @@ public class RestClientServiceImpl {
         }else{
             sqlTemplate = restSetting.getRestSql();
             String sql = SqlFactory.generateSql(sqlTemplate,paramMap);
-            return excutor(sql,restSetting.getOprationType(),restSetting.getDatasource());
+            if(logger.isDebugEnabled()){
+                logger.debug("执行SQL为:"+sql);
+                logger.debug("操作类型为:"+restSetting.getOperationType());
+                logger.debug("数据源为:"+restSetting.getDatasource());
+            }
+            return excutor(sql,restSetting.getOperationType(),restSetting.getDatasource());
         }
     }
 
     /**
      * sql执行
      * @param sql
-     * @param opration_type
+     * @param operation_type
      * @return
      */
-    Object excutor(String sql,String opration_type,String datasource){
+    @Override
+    public Object excutor(String sql,String operation_type,String datasource){
 
         DynamicDataSource.setDataSource(datasource);
         try{
-            if(OprationTypeEnum.SELECT_LIST.getName().equals(opration_type)){
+            if(OprationTypeEnum.SELECT_LIST.getName().equals(operation_type)){
+                DynamicDataSource.setDataSource("slaveDataSource");
                 return  restClientCommonExcutorMapper.select(sql);
-            }else if(OprationTypeEnum.SELECT_ONE.getName().equals(opration_type)){
+            }else if(OprationTypeEnum.SELECT_ONE.getName().equals(operation_type)){
                 List list = restClientCommonExcutorMapper.select(sql);
                 if(list != null && list.size() > 0){
                     return list.get(0);
                 }else{
                     return new HashMap();
                 }
-            }else if(OprationTypeEnum.UPDATE.getName().equals(opration_type)){
+            }else if(OprationTypeEnum.UPDATE.getName().equals(operation_type)){
                 return  restClientCommonExcutorMapper.update(sql);
-            }else if(OprationTypeEnum.INSERT.getName().equals(opration_type)){
+            }else if(OprationTypeEnum.INSERT.getName().equals(operation_type)){
                 return  restClientCommonExcutorMapper.insert(sql);
-            }else if(OprationTypeEnum.DELETE.getName().equals(opration_type)){
+            }else if(OprationTypeEnum.DELETE.getName().equals(operation_type)){
                 return  restClientCommonExcutorMapper.delete(sql);
             }else{
-                throw new RuntimeException("不识别的操作类型："+opration_type);
+                throw new RuntimeException("不识别的操作类型："+operation_type);
             }
         }catch(Exception e){
             logger.error("sql执行出错",e);

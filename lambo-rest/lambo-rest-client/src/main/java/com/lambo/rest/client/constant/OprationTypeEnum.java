@@ -8,8 +8,8 @@ package com.lambo.rest.client.constant;
  **/
 public enum OprationTypeEnum {
 
-    SELECT_LIST("select_list",1),
-    SELECT_ONE("select_one",2),
+    SELECT_LIST("selectList",1),
+    SELECT_ONE("selectOne",2),
     INSERT("insert",3),
     UPDATE("update",4),
     DELETE("delete",5),
