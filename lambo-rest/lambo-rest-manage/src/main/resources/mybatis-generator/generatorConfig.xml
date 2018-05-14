@@ -40,7 +40,7 @@
         <javaClientGenerator targetPackage="com.lambo.rest.manage.dao.api" targetProject="src/main/java" type="XMLMAPPER" />
 
         <!--生成对应表及类名-->
-        <table tableName="rest_stru" domainObjectName="RestStru"
+        <table tableName="rest_setting" domainObjectName="RestSetting"
                        enableCountByExample="false"
                        enableUpdateByExample="true"
                        enableDeleteByExample="true"

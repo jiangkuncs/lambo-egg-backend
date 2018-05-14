@@ -5,6 +5,7 @@
     <id column="rest_id" jdbcType="VARCHAR" property="restId" />
     <result column="rest_name" jdbcType="VARCHAR" property="restName" />
     <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
     <result column="datasource" jdbcType="VARCHAR" property="datasource" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -74,7 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    rest_id, rest_name, url, datasource, note, create_time, update_time, create_user
+    rest_id, rest_name, url, operation_type, datasource, note, create_time, update_time, 
+    create_user
   </sql>
   <sql id="Blob_Column_List">
     rest_sql, mock_data
@@ -131,13 +133,13 @@
   </delete>
   <insert id="insert" parameterType="com.lambo.rest.manage.model.RestSetting">
     insert into rest_setting (rest_id, rest_name, url, 
-      datasource, note, create_time, 
-      update_time, create_user, rest_sql, 
-      mock_data)
+      operation_type, datasource, note, 
+      create_time, update_time, create_user, 
+      rest_sql, mock_data)
     values (#{restId,jdbcType=VARCHAR}, #{restName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{datasource,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{restSql,jdbcType=LONGVARCHAR}, 
-      #{mockData,jdbcType=LONGVARCHAR})
+      #{operationType,jdbcType=VARCHAR}, #{datasource,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{restSql,jdbcType=LONGVARCHAR}, #{mockData,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lambo.rest.manage.model.RestSetting">
     insert into rest_setting
@@ -150,6 +152,9 @@
       </if>
       <if test="url != null">
         url,
+      </if>
+      <if test="operationType != null">
+        operation_type,
       </if>
       <if test="datasource != null">
         datasource,
@@ -182,6 +187,9 @@
       </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        #{operationType,jdbcType=VARCHAR},
       </if>
       <if test="datasource != null">
         #{datasource,jdbcType=VARCHAR},
@@ -218,6 +226,9 @@
       <if test="record.url != null">
         url = #{record.url,jdbcType=VARCHAR},
       </if>
+      <if test="record.operationType != null">
+        operation_type = #{record.operationType,jdbcType=VARCHAR},
+      </if>
       <if test="record.datasource != null">
         datasource = #{record.datasource,jdbcType=VARCHAR},
       </if>
@@ -249,6 +260,7 @@
     set rest_id = #{record.restId,jdbcType=VARCHAR},
       rest_name = #{record.restName,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
+      operation_type = #{record.operationType,jdbcType=VARCHAR},
       datasource = #{record.datasource,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -265,6 +277,7 @@
     set rest_id = #{record.restId,jdbcType=VARCHAR},
       rest_name = #{record.restName,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
+      operation_type = #{record.operationType,jdbcType=VARCHAR},
       datasource = #{record.datasource,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -282,6 +295,9 @@
       </if>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null">
+        operation_type = #{operationType,jdbcType=VARCHAR},
       </if>
       <if test="datasource != null">
         datasource = #{datasource,jdbcType=VARCHAR},
@@ -311,6 +327,7 @@
     update rest_setting
     set rest_name = #{restName,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
+      operation_type = #{operationType,jdbcType=VARCHAR},
       datasource = #{datasource,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -324,6 +341,7 @@
     update rest_setting
     set rest_name = #{restName,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
+      operation_type = #{operationType,jdbcType=VARCHAR},
       datasource = #{datasource,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

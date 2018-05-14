@@ -9,6 +9,8 @@ public class RestSetting {
 
     private String url;
 
+    private String operationType;
+
     private String datasource;
 
     private String note;
@@ -45,6 +47,14 @@ public class RestSetting {
 
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(String operationType) {
+        this.operationType = operationType == null ? null : operationType.trim();
     }
 
     public String getDatasource() {
@@ -112,6 +122,7 @@ public class RestSetting {
         sb.append(", restId=").append(restId);
         sb.append(", restName=").append(restName);
         sb.append(", url=").append(url);
+        sb.append(", operationType=").append(operationType);
         sb.append(", datasource=").append(datasource);
         sb.append(", note=").append(note);
         sb.append(", createTime=").append(createTime);

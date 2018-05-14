@@ -7,8 +7,8 @@ CREATE TABLE `rest_setting` (
   `rest_sql` text,
   `mock_data` text,
   `note` varchar(200) DEFAULT NULL,
-  `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `update_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `create_time` datetime NOT NULL ,
+  `update_time` datetime NOT NULL ,
   `create_user` varchar(50) NOT NULL,
   PRIMARY KEY (`rest_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

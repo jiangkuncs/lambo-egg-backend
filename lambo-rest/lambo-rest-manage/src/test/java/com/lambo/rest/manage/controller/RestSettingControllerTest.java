@@ -31,12 +31,12 @@ public class RestSettingControllerTest extends BaseJunit4Test {
     @Test
     public void list1() throws Exception {
         ResultActions resultActions = this.mockMvc.perform(
-                MockMvcRequestBuilders.get("/manage/rest/setting/create?url=aaa")
+                MockMvcRequestBuilders.get("/manage/rest/setting/create")
                         .session(getLoginSession())
         );
         String result =  resultActions.andReturn().getResponse().getContentAsString();
         System.out.println(result);
-        Assert.assertEquals(result,1);
+        Assert.assertEquals(result,"1");
     }
 
     /**

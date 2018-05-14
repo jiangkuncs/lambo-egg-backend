@@ -4,10 +4,12 @@
   <resultMap id="BaseResultMap" type="com.lambo.rest.manage.model.RestStru">
     <id column="stru_id" jdbcType="VARCHAR" property="struId" />
     <result column="stru_name" jdbcType="VARCHAR" property="struName" />
+    <result column="stru_url" jdbcType="VARCHAR" property="struUrl" />
     <result column="is_leaf" jdbcType="CHAR" property="isLeaf" />
     <result column="rest_id" jdbcType="VARCHAR" property="restId" />
     <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
     <result column="is_use" jdbcType="CHAR" property="isUse" />
+    <result column="order_seq" jdbcType="INTEGER" property="orderSeq" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    stru_id, stru_name, is_leaf, rest_id, parent_id, is_use
+    stru_id, stru_name, stru_url, is_leaf, rest_id, parent_id, is_use, order_seq
   </sql>
   <select id="selectByExample" parameterType="com.lambo.rest.manage.model.RestStruExample" resultMap="BaseResultMap">
     select
@@ -102,12 +104,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lambo.rest.manage.model.RestStru">
-    insert into rest_stru (stru_id, stru_name, is_leaf, 
-      rest_id, parent_id, is_use
-      )
-    values (#{struId,jdbcType=VARCHAR}, #{struName,jdbcType=VARCHAR}, #{isLeaf,jdbcType=CHAR}, 
-      #{restId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{isUse,jdbcType=CHAR}
-      )
+    insert into rest_stru (stru_id, stru_name, stru_url, 
+      is_leaf, rest_id, parent_id, 
+      is_use, order_seq)
+    values (#{struId,jdbcType=VARCHAR}, #{struName,jdbcType=VARCHAR}, #{struUrl,jdbcType=VARCHAR}, 
+      #{isLeaf,jdbcType=CHAR}, #{restId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
+      #{isUse,jdbcType=CHAR}, #{orderSeq,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lambo.rest.manage.model.RestStru">
     insert into rest_stru
@@ -117,6 +119,9 @@
       </if>
       <if test="struName != null">
         stru_name,
+      </if>
+      <if test="struUrl != null">
+        stru_url,
       </if>
       <if test="isLeaf != null">
         is_leaf,
@@ -130,6 +135,9 @@
       <if test="isUse != null">
         is_use,
       </if>
+      <if test="orderSeq != null">
+        order_seq,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="struId != null">
@@ -137,6 +145,9 @@
       </if>
       <if test="struName != null">
         #{struName,jdbcType=VARCHAR},
+      </if>
+      <if test="struUrl != null">
+        #{struUrl,jdbcType=VARCHAR},
       </if>
       <if test="isLeaf != null">
         #{isLeaf,jdbcType=CHAR},
@@ -150,6 +161,9 @@
       <if test="isUse != null">
         #{isUse,jdbcType=CHAR},
       </if>
+      <if test="orderSeq != null">
+        #{orderSeq,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByExampleSelective" parameterType="map">
@@ -160,6 +174,9 @@
       </if>
       <if test="record.struName != null">
         stru_name = #{record.struName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.struUrl != null">
+        stru_url = #{record.struUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.isLeaf != null">
         is_leaf = #{record.isLeaf,jdbcType=CHAR},
@@ -173,6 +190,9 @@
       <if test="record.isUse != null">
         is_use = #{record.isUse,jdbcType=CHAR},
       </if>
+      <if test="record.orderSeq != null">
+        order_seq = #{record.orderSeq,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -182,10 +202,12 @@
     update rest_stru
     set stru_id = #{record.struId,jdbcType=VARCHAR},
       stru_name = #{record.struName,jdbcType=VARCHAR},
+      stru_url = #{record.struUrl,jdbcType=VARCHAR},
       is_leaf = #{record.isLeaf,jdbcType=CHAR},
       rest_id = #{record.restId,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=VARCHAR},
-      is_use = #{record.isUse,jdbcType=CHAR}
+      is_use = #{record.isUse,jdbcType=CHAR},
+      order_seq = #{record.orderSeq,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -195,6 +217,9 @@
     <set>
       <if test="struName != null">
         stru_name = #{struName,jdbcType=VARCHAR},
+      </if>
+      <if test="struUrl != null">
+        stru_url = #{struUrl,jdbcType=VARCHAR},
       </if>
       <if test="isLeaf != null">
         is_leaf = #{isLeaf,jdbcType=CHAR},
@@ -208,16 +233,21 @@
       <if test="isUse != null">
         is_use = #{isUse,jdbcType=CHAR},
       </if>
+      <if test="orderSeq != null">
+        order_seq = #{orderSeq,jdbcType=INTEGER},
+      </if>
     </set>
     where stru_id = #{struId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lambo.rest.manage.model.RestStru">
     update rest_stru
     set stru_name = #{struName,jdbcType=VARCHAR},
+      stru_url = #{struUrl,jdbcType=VARCHAR},
       is_leaf = #{isLeaf,jdbcType=CHAR},
       rest_id = #{restId,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=VARCHAR},
-      is_use = #{isUse,jdbcType=CHAR}
+      is_use = #{isUse,jdbcType=CHAR},
+      order_seq = #{orderSeq,jdbcType=INTEGER}
     where stru_id = #{struId,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -5,6 +5,8 @@ public class RestStru {
 
     private String struName;
 
+    private String struUrl;
+
     private String isLeaf;
 
     private String restId;
@@ -12,6 +14,8 @@ public class RestStru {
     private String parentId;
 
     private String isUse;
+
+    private Integer orderSeq;
 
     public String getStruId() {
         return struId;
@@ -27,6 +31,14 @@ public class RestStru {
 
     public void setStruName(String struName) {
         this.struName = struName == null ? null : struName.trim();
+    }
+
+    public String getStruUrl() {
+        return struUrl;
+    }
+
+    public void setStruUrl(String struUrl) {
+        this.struUrl = struUrl == null ? null : struUrl.trim();
     }
 
     public String getIsLeaf() {
@@ -61,6 +73,14 @@ public class RestStru {
         this.isUse = isUse == null ? null : isUse.trim();
     }
 
+    public Integer getOrderSeq() {
+        return orderSeq;
+    }
+
+    public void setOrderSeq(Integer orderSeq) {
+        this.orderSeq = orderSeq;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -69,10 +89,12 @@ public class RestStru {
         sb.append("Hash = ").append(hashCode());
         sb.append(", struId=").append(struId);
         sb.append(", struName=").append(struName);
+        sb.append(", struUrl=").append(struUrl);
         sb.append(", isLeaf=").append(isLeaf);
         sb.append(", restId=").append(restId);
         sb.append(", parentId=").append(parentId);
         sb.append(", isUse=").append(isUse);
+        sb.append(", orderSeq=").append(orderSeq);
         sb.append("]");
         return sb.toString();
     }

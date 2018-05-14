@@ -244,6 +244,76 @@ public class RestStruExample {
             return (Criteria) this;
         }
 
+        public Criteria andStruUrlIsNull() {
+            addCriterion("stru_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlIsNotNull() {
+            addCriterion("stru_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlEqualTo(String value) {
+            addCriterion("stru_url =", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlNotEqualTo(String value) {
+            addCriterion("stru_url <>", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlGreaterThan(String value) {
+            addCriterion("stru_url >", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("stru_url >=", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlLessThan(String value) {
+            addCriterion("stru_url <", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlLessThanOrEqualTo(String value) {
+            addCriterion("stru_url <=", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlLike(String value) {
+            addCriterion("stru_url like", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlNotLike(String value) {
+            addCriterion("stru_url not like", value, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlIn(List<String> values) {
+            addCriterion("stru_url in", values, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlNotIn(List<String> values) {
+            addCriterion("stru_url not in", values, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlBetween(String value1, String value2) {
+            addCriterion("stru_url between", value1, value2, "struUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStruUrlNotBetween(String value1, String value2) {
+            addCriterion("stru_url not between", value1, value2, "struUrl");
+            return (Criteria) this;
+        }
+
         public Criteria andIsLeafIsNull() {
             addCriterion("is_leaf is null");
             return (Criteria) this;
@@ -521,6 +591,66 @@ public class RestStruExample {
 
         public Criteria andIsUseNotBetween(String value1, String value2) {
             addCriterion("is_use not between", value1, value2, "isUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqIsNull() {
+            addCriterion("order_seq is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqIsNotNull() {
+            addCriterion("order_seq is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqEqualTo(Integer value) {
+            addCriterion("order_seq =", value, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqNotEqualTo(Integer value) {
+            addCriterion("order_seq <>", value, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqGreaterThan(Integer value) {
+            addCriterion("order_seq >", value, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_seq >=", value, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqLessThan(Integer value) {
+            addCriterion("order_seq <", value, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqLessThanOrEqualTo(Integer value) {
+            addCriterion("order_seq <=", value, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqIn(List<Integer> values) {
+            addCriterion("order_seq in", values, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqNotIn(List<Integer> values) {
+            addCriterion("order_seq not in", values, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqBetween(Integer value1, Integer value2) {
+            addCriterion("order_seq between", value1, value2, "orderSeq");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderSeqNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_seq not between", value1, value2, "orderSeq");
             return (Criteria) this;
         }
     }
