@@ -2,10 +2,10 @@ package com.lambo.rest.client.service.impl;
 
 import com.lambo.common.annotation.BaseService;
 import com.lambo.common.base.BaseServiceImpl;
-import com.lambo.rest.client.dao.api.RestSettingParamMapper;
+import com.lambo.rest.client.dao.api.RestClientSettingParamMapper;
 import com.lambo.rest.client.model.RestSettingParam;
 import com.lambo.rest.client.model.RestSettingParamExample;
-import com.lambo.rest.client.service.api.RestSettingParamService;
+import com.lambo.rest.client.service.api.RestClientSettingParamService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Service;
 */
 @Service
 @BaseService
-public class RestSettingParamServiceImpl extends BaseServiceImpl<RestSettingParamMapper, RestSettingParam, RestSettingParamExample> implements RestSettingParamService {
+public class RestClientSettingParamServiceImpl extends BaseServiceImpl<RestClientSettingParamMapper, RestSettingParam, RestSettingParamExample> implements RestClientSettingParamService {
 
 }

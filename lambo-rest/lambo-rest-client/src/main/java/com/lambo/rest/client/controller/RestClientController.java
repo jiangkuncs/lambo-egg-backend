@@ -7,8 +7,8 @@ import com.lambo.rest.client.model.RestSettingExample;
 import com.lambo.rest.client.model.RestSettingParam;
 import com.lambo.rest.client.model.RestSettingParamExample;
 import com.lambo.rest.client.service.api.RestClientService;
-import com.lambo.rest.client.service.api.RestSettingParamService;
-import com.lambo.rest.client.service.api.RestSettingService;
+import com.lambo.rest.client.service.api.RestClientSettingParamService;
+import com.lambo.rest.client.service.api.RestClientSettingService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,9 +33,9 @@ public class RestClientController {
     private static final String URL_PREFIX = "/rest/service";
 
     @Autowired
-    RestSettingService restSettingService;
+    RestClientSettingService restSettingService;
     @Autowired
-    RestSettingParamService restSettingParamService;
+    RestClientSettingParamService restSettingParamService;
     @Autowired
     RestClientService restClientService;
 

@@ -7,6 +7,6 @@ import com.lambo.rest.client.model.RestSettingExample;
 /**
  * RestSettingService
  */
-public interface RestSettingService extends BaseService<RestSetting, RestSettingExample> {
+public interface RestClientSettingService extends BaseService<RestSetting, RestSettingExample> {
 
 }

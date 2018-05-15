@@ -5,7 +5,7 @@ import com.lambo.rest.client.model.RestSettingParamExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface RestSettingParamMapper {
+public interface RestClientSettingParamMapper {
     int deleteByPrimaryKey(@Param("restId") String restId, @Param("paramKey") String paramKey);
 
     int insert(RestSettingParam record);

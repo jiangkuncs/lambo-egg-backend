@@ -4,7 +4,7 @@ import com.lambo.rest.client.model.RestSetting;
 import com.lambo.rest.client.model.RestSettingExample;
 import java.util.List;
 
-public interface RestSettingMapper {
+public interface RestClientSettingMapper {
     int deleteByPrimaryKey(String restId);
 
     int insert(RestSetting record);
