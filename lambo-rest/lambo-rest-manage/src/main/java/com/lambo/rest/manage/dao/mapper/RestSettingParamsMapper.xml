@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.rest.manage.dao.api.RestSettingParamsMapper">
+  <resultMap id="BaseResultMap" type="com.lambo.rest.manage.model.RestSettingParams">
+    <id column="rest_id" jdbcType="VARCHAR" property="restId" />
+    <id column="param_key" jdbcType="VARCHAR" property="paramKey" />
+    <result column="param_name" jdbcType="VARCHAR" property="paramName" />
+    <result column="necessary" jdbcType="CHAR" property="necessary" />
+    <result column="default_value" jdbcType="VARCHAR" property="defaultValue" />
+    <result column="order_seq" jdbcType="INTEGER" property="orderSeq" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    rest_id, param_key, param_name, necessary, default_value, order_seq
+  </sql>
+  <select id="selectByExample" parameterType="com.lambo.rest.manage.model.RestSettingParamsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from rest_setting_params
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rest_setting_params
+    where rest_id = #{restId,jdbcType=VARCHAR}
+      and param_key = #{paramKey,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from rest_setting_params
+    where rest_id = #{restId,jdbcType=VARCHAR}
+      and param_key = #{paramKey,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lambo.rest.manage.model.RestSettingParamsExample">
+    delete from rest_setting_params
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lambo.rest.manage.model.RestSettingParams">
+    insert into rest_setting_params (rest_id, param_key, param_name, 
+      necessary, default_value, order_seq
+      )
+    values (#{restId,jdbcType=VARCHAR}, #{paramKey,jdbcType=VARCHAR}, #{paramName,jdbcType=VARCHAR}, 
+      #{necessary,jdbcType=CHAR}, #{defaultValue,jdbcType=VARCHAR}, #{orderSeq,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lambo.rest.manage.model.RestSettingParams">
+    insert into rest_setting_params
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="restId != null">
+        rest_id,
+      </if>
+      <if test="paramKey != null">
+        param_key,
+      </if>
+      <if test="paramName != null">
+        param_name,
+      </if>
+      <if test="necessary != null">
+        necessary,
+      </if>
+      <if test="defaultValue != null">
+        default_value,
+      </if>
+      <if test="orderSeq != null">
+        order_seq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="restId != null">
+        #{restId,jdbcType=VARCHAR},
+      </if>
+      <if test="paramKey != null">
+        #{paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="paramName != null">
+        #{paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="necessary != null">
+        #{necessary,jdbcType=CHAR},
+      </if>
+      <if test="defaultValue != null">
+        #{defaultValue,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSeq != null">
+        #{orderSeq,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rest_setting_params
+    <set>
+      <if test="record.restId != null">
+        rest_id = #{record.restId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramKey != null">
+        param_key = #{record.paramKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paramName != null">
+        param_name = #{record.paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.necessary != null">
+        necessary = #{record.necessary,jdbcType=CHAR},
+      </if>
+      <if test="record.defaultValue != null">
+        default_value = #{record.defaultValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderSeq != null">
+        order_seq = #{record.orderSeq,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rest_setting_params
+    set rest_id = #{record.restId,jdbcType=VARCHAR},
+      param_key = #{record.paramKey,jdbcType=VARCHAR},
+      param_name = #{record.paramName,jdbcType=VARCHAR},
+      necessary = #{record.necessary,jdbcType=CHAR},
+      default_value = #{record.defaultValue,jdbcType=VARCHAR},
+      order_seq = #{record.orderSeq,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lambo.rest.manage.model.RestSettingParams">
+    update rest_setting_params
+    <set>
+      <if test="paramName != null">
+        param_name = #{paramName,jdbcType=VARCHAR},
+      </if>
+      <if test="necessary != null">
+        necessary = #{necessary,jdbcType=CHAR},
+      </if>
+      <if test="defaultValue != null">
+        default_value = #{defaultValue,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSeq != null">
+        order_seq = #{orderSeq,jdbcType=INTEGER},
+      </if>
+    </set>
+    where rest_id = #{restId,jdbcType=VARCHAR}
+      and param_key = #{paramKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lambo.rest.manage.model.RestSettingParams">
+    update rest_setting_params
+    set param_name = #{paramName,jdbcType=VARCHAR},
+      necessary = #{necessary,jdbcType=CHAR},
+      default_value = #{defaultValue,jdbcType=VARCHAR},
+      order_seq = #{orderSeq,jdbcType=INTEGER}
+    where rest_id = #{restId,jdbcType=VARCHAR}
+      and param_key = #{paramKey,jdbcType=VARCHAR}
+  </update>
+</mapper>
