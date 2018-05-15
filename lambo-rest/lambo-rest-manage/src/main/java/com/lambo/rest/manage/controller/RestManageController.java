@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +28,8 @@ import java.util.List;
 @Controller
 @Api(value = "rest服务管理", description = "rest服务管理")
 @RequestMapping("/manage/rest/manage")
-public class RestMamageController {
-    private static Logger logger = LoggerFactory.getLogger(RestMamageController.class);
+public class RestManageController {
+    private static Logger logger = LoggerFactory.getLogger(RestManageController.class);
 
     @Autowired
     RestMamageService restMamageService;
@@ -79,9 +80,13 @@ public class RestMamageController {
             restSetting.setRestSql(restSql);
             restSetting.setMockData(mockData);
 
-            Date data = new Date();
-            restSetting.setCreateTime(data);
-            restSetting.setUpdateTime(data);
+            SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String dateTime = format0.format(date);
+
+            logger.info("dateTime="+dateTime);
+            restSetting.setCreateTime(dateTime);
+            restSetting.setUpdateTime(dateTime);
 
             Subject subject = SecurityUtils.getSubject();
             String username = (String) subject.getPrincipal();
@@ -137,8 +142,7 @@ public class RestMamageController {
                          @RequestParam(required = false, value = "createTime") String createTime,
                          @RequestParam(required = false, value = "settingParams") String settingParams) {
 
-        logger.info("restSql="+restSql);
-        logger.info("mockData="+mockData);
+        logger.info("createTime="+createTime);
 
 
         RestStru restStru = new RestStru();
@@ -155,8 +159,6 @@ public class RestMamageController {
         restStru.setIsUse(isUse);
         restStru.setOrderSeq(orderSeq);
 
-        logger.info("createTime="+createTime);
-
         if(("1").equals(isLeaf)){
             //REST_SETTING
             restSetting.setRestId(restId);
@@ -167,10 +169,12 @@ public class RestMamageController {
             restSetting.setNote(note);
             restSetting.setRestSql(restSql);
             restSetting.setMockData(mockData);
+            restSetting.setCreateTime(createTime);
 
-            Date data = new Date();
-            restSetting.setCreateTime(data);
-            restSetting.setUpdateTime(data);
+            SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String dateTime = format0.format(date);
+            restSetting.setUpdateTime(dateTime);
 
             Subject subject = SecurityUtils.getSubject();
             String username = (String) subject.getPrincipal();

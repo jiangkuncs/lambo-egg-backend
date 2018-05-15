@@ -1,7 +1,5 @@
 package com.lambo.rest.manage.model;
 
-import java.util.Date;
-
 public class RestSetting {
     private String restId;
 
@@ -15,9 +13,9 @@ public class RestSetting {
 
     private String note;
 
-    private Date createTime;
+    private String createTime;
 
-    private Date updateTime;
+    private String updateTime;
 
     private String createUser;
 
@@ -73,20 +71,20 @@ public class RestSetting {
         this.note = note == null ? null : note.trim();
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
     }
 
     public String getCreateUser() {
