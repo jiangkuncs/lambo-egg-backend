@@ -56,6 +56,33 @@ public class RestMamageServiceImpl extends BaseServiceImpl<RestStruMapper, RestS
     }
 
     @Override
+    @Transactional
+    public Integer update(RestStru restStru,RestSetting restSetting,List<RestSettingParams> paramsList){
+
+        //REST_STRU
+        int count = restStruMapper.updateByPrimaryKey(restStru);
+
+        if("1".equals(restStru.getIsLeaf())){
+
+            restSettingMapper.updateByPrimaryKeyWithBLOBs(restSetting);
+
+            //REST_SETTING_PARAMS
+            //先删除后插入
+            RestSettingParamsExample restSettingParamsExample =  new RestSettingParamsExample();
+            restSettingParamsExample.createCriteria().andRestIdEqualTo(restSetting.getRestId());
+            restSettingParamsMapper.deleteByExample(restSettingParamsExample);
+
+            if(null!=paramsList && paramsList.size()>0){
+                for(int i=0;i<paramsList.size();i++){
+                    restSettingParamsMapper.insert((RestSettingParams)paramsList.get(i));
+                }
+            }
+        }
+
+        return count;
+    }
+
+    @Override
     public Object query(String struId){
         Map dataMap = new HashMap();
 
