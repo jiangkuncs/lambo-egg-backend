@@ -20,8 +20,7 @@ public class SqlFormatTest {
             paramList.add(paramArr[i]);
         }
         String result = AnalyzeContext.getContext().analyze(sql,paramList);
-        System.out.println(result);
-        Assert.assertEquals(result.trim(),"select * from dual where id = 1000 AND name =  'BILL'  and phone in (15112345678,13112345678,15312345678) AND ADDRESS NOT IN( 'BEIJING' , 'SHANGHAI' )");
+        Assert.assertEquals(result.trim(),"select * from dual where id =  '1000'  AND name =  'BILL'  and phone in ( '15112345678' , '13112345678' , '15312345678' ) AND ADDRESS NOT IN( 'BEIJING' , 'SHANGHAI' )");
     }
 
 }
