@@ -27,7 +27,7 @@ import java.util.List;
 
 @Controller
 @Api(value = "rest服务管理", description = "rest服务管理")
-@RequestMapping("/manage/rest/manage")
+@RequestMapping("/manage/rest")
 public class RestManageController {
     private static Logger logger = LoggerFactory.getLogger(RestManageController.class);
 
@@ -84,7 +84,6 @@ public class RestManageController {
             Date date = new Date();
             String dateTime = format0.format(date);
 
-            logger.info("dateTime="+dateTime);
             restSetting.setCreateTime(dateTime);
             restSetting.setUpdateTime(dateTime);
 
@@ -141,9 +140,6 @@ public class RestManageController {
                          @RequestParam(required = false, value = "mockData") String mockData,
                          @RequestParam(required = false, value = "createTime") String createTime,
                          @RequestParam(required = false, value = "settingParams") String settingParams) {
-
-        logger.info("createTime="+createTime);
-
 
         RestStru restStru = new RestStru();
         RestSetting restSetting = new RestSetting();
