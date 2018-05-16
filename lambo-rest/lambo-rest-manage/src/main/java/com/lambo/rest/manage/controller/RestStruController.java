@@ -123,10 +123,10 @@ public class RestStruController extends BaseController {
     }
 
     @ApiOperation(value = "查询rest子目录")
-    @RequestMapping(value = "/getChildren",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryChildren",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("查询rest子目录")
-    public Object getChildren(
+    public Object queryChildren(
             @RequestParam(required = false, value = "parentId") String parentId) {
 
         RestStruExample restStruExample =  new RestStruExample();

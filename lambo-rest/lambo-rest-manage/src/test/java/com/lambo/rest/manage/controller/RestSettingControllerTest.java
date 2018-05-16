@@ -20,18 +20,18 @@ public class RestSettingControllerTest extends BaseJunit4Test {
     @Autowired
     private UpmsAuthController upmsAuthController;
     @Autowired
-    private RestSettingController restSettingController;
+    private RestStruController restStruController;
     private MockMvc mockMvc;
 
     @Before
     public void setup(){
-        mockMvc = MockMvcBuilders.standaloneSetup(upmsAuthController,restSettingController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(upmsAuthController,restStruController).build();
     }
 
     @Test
     public void list1() throws Exception {
         ResultActions resultActions = this.mockMvc.perform(
-                MockMvcRequestBuilders.get("/manage/rest/setting/create")
+                MockMvcRequestBuilders.get("/manage/rest/stru/get")
                         .session(getLoginSession())
         );
         String result =  resultActions.andReturn().getResponse().getContentAsString();
