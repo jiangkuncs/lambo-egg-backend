@@ -83,29 +83,34 @@ public class RestMamageServiceImpl extends BaseServiceImpl<RestStruMapper, RestS
     }
 
     @Override
-    public Object query(String struId){
+    public Integer delete(String struId){
+        RestStru restStru = new RestStru();
+        restStru.setIsUse("0");
+
+        RestStruExample restStruExample =  new RestStruExample();
+        restStruExample.createCriteria().andStruIdEqualTo(struId);
+
+        return restStruMapper.updateByExampleSelective(restStru,restStruExample);
+    }
+
+    @Override
+    public Object query(String restId){
         Map dataMap = new HashMap();
 
-        if(null!=struId || !"".endsWith(struId)) {
+        if(null!=restId || !"".endsWith(restId)) {
 
-            //REST_STRU
-            RestStru restStru = restStruMapper.selectByPrimaryKey(struId);
-            dataMap.put("restStru", restStru);
+            //REST_SETTING
+            RestSetting restSetting = restSettingMapper.selectByPrimaryKey(restId);
+            if (null != restSetting) {
+                dataMap.put("restSetting", restSetting);
+            }
 
-            if ("1".equals(restStru.getIsLeaf())) {
-                //REST_SETTING
-                RestSetting restSetting = restSettingMapper.selectByPrimaryKey(struId);
-                if (null != restSetting) {
-                    dataMap.put("restSetting", restSetting);
-                }
-
-                //REST_SETTING_PARAMS
-                RestSettingParamsExample restSettingParamsExample = new RestSettingParamsExample();
-                restSettingParamsExample.createCriteria().andRestIdEqualTo(struId);
-                List<RestSettingParams> restSettingParamsList = restSettingParamsMapper.selectByExample(restSettingParamsExample);
-                if (null != restSettingParamsList) {
-                    dataMap.put("restSettingParamsList", restSettingParamsList);
-                }
+            //REST_SETTING_PARAMS
+            RestSettingParamsExample restSettingParamsExample = new RestSettingParamsExample();
+            restSettingParamsExample.createCriteria().andRestIdEqualTo(restId);
+            List<RestSettingParams> restSettingParamsList = restSettingParamsMapper.selectByExample(restSettingParamsExample);
+            if (null != restSettingParamsList) {
+                dataMap.put("restSettingParamsList", restSettingParamsList);
             }
         }
 

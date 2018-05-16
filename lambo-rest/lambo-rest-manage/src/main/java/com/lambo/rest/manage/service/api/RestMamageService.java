@@ -14,6 +14,8 @@ public interface RestMamageService extends BaseService<RestStru,RestStruExample>
 
     public Integer update(RestStru restStru,RestSetting restSetting,List<RestSettingParams> paramsList);
 
+    public Integer delete(String struId);
+
     public Object query(String struId);
 
 }

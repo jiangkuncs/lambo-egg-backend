@@ -202,14 +202,22 @@ public class RestManageController {
         return count;
     }
 
+    @ApiOperation(value = "删除rest服务")
+    @RequestMapping(value = "/delete/{struId}",method = RequestMethod.POST)
+    @ResponseBody
+    @LogAround("更新rest服务")
+    public Object delete(@PathVariable("struId") String struId){
+        return new BaseResult(BaseResultConstant.SUCCESS,restMamageService.delete(struId));
+    }
+
     @ApiOperation(value = "查询rest服务")
     @RequestMapping(value = "/query",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("查询rest服务")
     public Object get(
-            @RequestParam(required = true, value = "struId") String struId) {
+            @RequestParam(required = true, value = "restId") String restId) {
 
-        return  new BaseResult(BaseResultConstant.SUCCESS,restMamageService.query(struId));
+        return  new BaseResult(BaseResultConstant.SUCCESS,restMamageService.query(restId));
     }
 
 }
