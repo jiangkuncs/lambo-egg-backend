@@ -1,5 +1,7 @@
 package com.inspur.sim.controller;
 
+import com.inspur.sim.constant.SimResult;
+import com.inspur.sim.constant.SimResultConstant;
 import com.inspur.sim.util.QAUtil;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseController;
@@ -21,14 +23,13 @@ public class QAController extends BaseController {
     @RequestMapping(value = "/ask",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("请求问答服务")
-    public Object ask( @RequestParam(required = true, value = "question") String question) {
-
-        System.out.println(question);
+    public Object ask( @RequestParam(value = "question") String question) {
+        String askResponse = "";
         try {
-            QAUtil.ask(question);
+            askResponse = QAUtil.ask(question);
         } catch (CloudNotInitializedException e) {
             e.printStackTrace();
         }
-        return null;
-    };
+        return new SimResult(SimResultConstant.SUCCESS, askResponse);
+    }
 }
