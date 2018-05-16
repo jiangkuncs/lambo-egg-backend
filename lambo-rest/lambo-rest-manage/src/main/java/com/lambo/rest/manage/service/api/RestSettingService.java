@@ -4,7 +4,6 @@ import com.lambo.common.base.BaseService;
 import com.lambo.rest.manage.model.RestSetting;
 import com.lambo.rest.manage.model.RestSettingExample;
 import com.lambo.rest.manage.model.RestSettingParams;
-import com.lambo.rest.manage.model.RestStru;
 
 import java.util.List;
 
@@ -13,7 +12,10 @@ import java.util.List;
  */
 public interface RestSettingService extends BaseService<RestSetting, RestSettingExample> {
 
+    public Integer insert(RestSetting restSetting,List<RestSettingParams> paramsList);
 
-    public Integer insertRest(RestStru restStru,RestSetting restSetting,List<RestSettingParams> paramsList);
+    public Integer update(RestSetting restSetting,List<RestSettingParams> paramsList);
+
+    public Object query(String struId);
 
 }

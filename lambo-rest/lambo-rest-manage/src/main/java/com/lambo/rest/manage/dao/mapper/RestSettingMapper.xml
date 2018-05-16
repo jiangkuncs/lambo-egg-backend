@@ -8,8 +8,8 @@
     <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
     <result column="datasource" jdbcType="VARCHAR" property="datasource" />
     <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lambo.rest.manage.model.RestSetting">
@@ -138,7 +138,7 @@
       rest_sql, mock_data)
     values (#{restId,jdbcType=VARCHAR}, #{restName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{operationType,jdbcType=VARCHAR}, #{datasource,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
       #{restSql,jdbcType=LONGVARCHAR}, #{mockData,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.lambo.rest.manage.model.RestSetting">
@@ -198,10 +198,10 @@
         #{note,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -236,10 +236,10 @@
         note = #{record.note,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        create_time = #{record.createTime,jdbcType=VARCHAR},
       </if>
       <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        update_time = #{record.updateTime,jdbcType=VARCHAR},
       </if>
       <if test="record.createUser != null">
         create_user = #{record.createUser,jdbcType=VARCHAR},
@@ -263,8 +263,8 @@
       operation_type = #{record.operationType,jdbcType=VARCHAR},
       datasource = #{record.datasource,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=VARCHAR},
       create_user = #{record.createUser,jdbcType=VARCHAR},
       rest_sql = #{record.restSql,jdbcType=LONGVARCHAR},
       mock_data = #{record.mockData,jdbcType=LONGVARCHAR}
@@ -280,8 +280,8 @@
       operation_type = #{record.operationType,jdbcType=VARCHAR},
       datasource = #{record.datasource,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_time = #{record.createTime,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=VARCHAR},
       create_user = #{record.createUser,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -306,10 +306,10 @@
         note = #{note,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
@@ -330,8 +330,8 @@
       operation_type = #{operationType,jdbcType=VARCHAR},
       datasource = #{datasource,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
       rest_sql = #{restSql,jdbcType=LONGVARCHAR},
       mock_data = #{mockData,jdbcType=LONGVARCHAR}
@@ -344,8 +344,8 @@
       operation_type = #{operationType,jdbcType=VARCHAR},
       datasource = #{datasource,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR}
     where rest_id = #{restId,jdbcType=VARCHAR}
   </update>
