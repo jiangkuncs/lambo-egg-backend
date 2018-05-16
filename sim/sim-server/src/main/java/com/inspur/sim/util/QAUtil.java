@@ -33,13 +33,12 @@ public class QAUtil {
         askService.init(cloudConfig);
 
         // 询问返回的结果
-        AskResponse askResponse = null;
-        askResponse = askService.ask(askRequest);
+        AskResponse askResponse = askService.ask(askRequest);
         // 返回所有结果的json
         System.out.println(askResponse.getContent());
         // 返回指向的状态码
         System.out.println(askResponse.getStatus());
-        return askResponse.getAnswer();
+        return askResponse.getContent();
 
 //        // 循环输入
 //        Scanner scanner = new Scanner(System.in);
