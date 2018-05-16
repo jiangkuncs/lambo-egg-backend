@@ -1,5 +1,6 @@
 package com.lambo.rest.client.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.lambo.common.db.DynamicDataSource;
 import com.lambo.rest.client.constant.OprationTypeEnum;
 import com.lambo.rest.client.dao.api.RestClientCommonExcutorMapper;
@@ -34,7 +35,18 @@ public class RestClientServiceImpl implements RestClientService {
         if(mock){
             sqlTemplate = restSetting.getMockData();
             String data = SqlFactory.generateSql(sqlTemplate,paramMap);
-            return data;
+            String operation_type = restSetting.getOperationType();
+            if(OprationTypeEnum.SELECT_LIST.getName().equals(operation_type)){
+                return JSON.parseArray(data);
+            }else if(OprationTypeEnum.SELECT_ONE.getName().equals(operation_type)){
+                return JSON.parseObject(data);
+            }
+            try{
+                return Integer.parseInt(data);
+            }catch(Exception e){
+                return data;
+            }
+
         }else{
             sqlTemplate = restSetting.getRestSql();
             String sql = SqlFactory.generateSql(sqlTemplate,paramMap);

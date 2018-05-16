@@ -86,4 +86,16 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
         Assert.assertEquals(count,1);
     }
 
+    /**
+     * 测试explain
+     * @throws Exception
+     */
+    @Test
+    public void excutor6() throws Exception {
+        String sql = "explain select * from test_data_table";
+        Object object = restClientService.excutor(sql, OprationTypeEnum.SELECT_LIST.getName(),"masterDataSource");
+        System.out.println(object);
+    }
+
+
 }

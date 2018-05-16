@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,38 @@ public class RestClientController {
         return new BaseResult(BaseResultConstant.SUCCESS,object);
     }
 
+
+
+    @ApiOperation(value = "获取服务配置")
+    @RequestMapping(value = "/client/rest/queryById",method = {RequestMethod.GET})
+    @ResponseBody
+    public Object queryById(@RequestParam(required = false, value = "restId") String restId) {
+
+        RestSetting restSetting = getRestSettingByRestId(restId);
+        List<RestSettingParam> paramList = getRestSettingParamByRestId(restId);
+
+        Map map = new HashMap();
+        map.put("restSetting",restSetting);
+        map.put("paramList",paramList);
+        return new BaseResult(BaseResultConstant.SUCCESS,map);
+
+    }
+
+    @ApiOperation(value = "获取服务配置")
+    @RequestMapping(value = "/client/rest/queryByUrl",method = {RequestMethod.GET})
+    @ResponseBody
+    public Object queryByUrl(@RequestParam(required = false, value = "url") String url) {
+
+        RestSetting restSetting = getRestSettingByUrl(url);
+        List<RestSettingParam> paramList = getRestSettingParamByRestId(restSetting.getRestId());
+
+        Map map = new HashMap();
+        map.put("restSetting",restSetting);
+        map.put("paramList",paramList);
+        return new BaseResult(BaseResultConstant.SUCCESS,map);
+
+    }
+
     /**
      * 通过url获取服务设置
      * @param url
@@ -78,7 +112,7 @@ public class RestClientController {
         if(url == null){
             throw new RuntimeException("服务url不能为空");
         }
-        url = url.replace(URL_PREFIX,"");
+        url = url.replaceAll(".*" + URL_PREFIX,"");
         RestSettingExample restSettingExample = new RestSettingExample();
         restSettingExample.createCriteria().andUrlEqualTo(url.trim());
         List<RestSetting> list = restSettingService.selectByExampleWithBLOBs(restSettingExample);
@@ -100,6 +134,18 @@ public class RestClientController {
         RestSettingParamExample restSettingParamExample = new RestSettingParamExample();
         restSettingParamExample.createCriteria().andRestIdEqualTo(restId);
         List<RestSettingParam> list = restSettingParamService.selectByExample(restSettingParamExample);
-        return list;
+        return list == null ? new ArrayList<RestSettingParam>() : list;
     }
+
+    private RestSetting getRestSettingByRestId(String restId){
+        RestSettingExample restSettingExample = new RestSettingExample();
+        restSettingExample.createCriteria().andRestIdEqualTo(restId);
+        List<RestSetting> list =  restSettingService.selectByExampleWithBLOBs(restSettingExample);
+        if(list == null){
+            throw new RuntimeException("查询不到restId="+restId+"的服务");
+        }
+        return list.get(0);
+    }
+
+
 }
