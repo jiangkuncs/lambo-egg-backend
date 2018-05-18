@@ -1,17 +1,21 @@
 package com.inspur.sim.util;
 
+import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import qa.engine.bot.sdk.ask.*;
 import qa.engine.bot.sdk.ask.util.Constant;
 import qa.engine.bot.sdk.ask.util.UserUtil;
 
 public class QAUtil {
 
+    private static Logger logger = LoggerFactory.getLogger(QAUtil.class);
 
-    public static String ask(String question) throws CloudNotInitializedException {
+    public static JSONObject ask(String question) throws CloudNotInitializedException {
         // 应用id
-        String appKey = "XYOYNw2PTEk=";
+        String appKey = "nvtkQJJPniw=";
         // 应用秘钥
-        String appSecret = "YoxwjJFX9LA=";
+        String appSecret = "SnDLPsLxMko=";
         // 输入会话Id
         String sessionId = UserUtil.getRndSessionId();
 
@@ -38,25 +42,25 @@ public class QAUtil {
         System.out.println(askResponse.getContent());
         // 返回指向的状态码
         System.out.println(askResponse.getStatus());
-        return askResponse.getContent();
-
-//        // 循环输入
-//        Scanner scanner = new Scanner(System.in);
-//        while (scanner.hasNext()) {
-//            question = scanner.nextLine();
-//            askRequest = new AskRequest(appKey, appSecret, question, Constant.PRIMARY_TYPE, sessionId,
-//                    Constant.CUSTOM_PLATFORM);
-//            try {
-//                askResponse = askService.ask(askRequest);
-//                String answer = askResponse.getAnswer();
-//                if (answer == null || answer.equals("") && askResponse.getResponseAnswer().getTextMenu() != null) {
-//                    answer = "文字菜单内容，请调用文字菜单接口解析";
-//                }
-//                System.out.println(answer);
-//            } catch (CloudNotInitializedException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
+        // 返回answer
+        String answer = askResponse.getAnswer();
+        JSONObject jsonobj = null;
+        try {
+            answer = answer.replace("{", "{\"");
+            answer = answer.replace(":", "\":\"");
+            answer = answer.replace(", ", "\",\"");
+            answer = answer.replace("}", "\"}");
+            answer = answer.replace("=", "\"=\"");
+            System.out.println(answer);
+            answer = answer.replace("\"[", "[");
+            answer = answer.replace("]\"", "]");
+            System.out.println(answer);
+            jsonobj=JSONObject.fromObject(answer);
+            System.out.println(jsonobj);
+        } catch (Exception e) {
+            logger.debug("json转换失败,大概是URL的锅.");
+            jsonobj=JSONObject.fromObject(askResponse.getContent());
+        }
+        return jsonobj;
     }
 }
