@@ -95,7 +95,7 @@ public class SqlTemplateTest {
 
         Configuration configuration = new Configuration();
 
-        SqlTemplate template = configuration.getTemplate("select  * from user <where> <if test='list != null'> id in <foreach item='item' index='index' collection='list'    open='(' separator=',' close=')'>   ${item}   ${index}  </foreach> </if> </where>") ;
+        SqlTemplate template = configuration.getTemplate("select  * from user <where> <if test='list != null'> id in <foreach item='item' index='index' collection='list'    open='(' separator=',' close=')'>   '${item}' </foreach> </if> </where>") ;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
 
@@ -120,7 +120,7 @@ public class SqlTemplateTest {
 
         SqlMeta sqlMeta = template.process(map);
 
-        Assert.assertEquals(sqlMeta.getSql().trim(),"select  * from user  WHERE id in  (     1   0   ,    2   1   ,    3   2   ,    4   3   ,    5   4   ,    6   5   ,    7   6   )");
+        Assert.assertEquals(sqlMeta.getSql().trim(),"select  * from user  WHERE id in  (     '1'  ,    '2'  ,    '3'  ,    '4'  ,    '5'  ,    '6'  ,    '7'  )");
 
     }
 

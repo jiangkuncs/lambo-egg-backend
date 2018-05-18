@@ -34,6 +34,18 @@ public class SqlFactoryTest {
         Assert.assertEquals(result.trim(),"select a from b where name like  '%123%'");
     }
 
+    @Test
+    public void generateSql2_1() throws Exception {
+        String sqlTemplate = "select a from b where name like '${'%'+name+'%'}'";
+
+        Map paramMap = new HashMap<String , Object>(){{
+            put("name", "123");
+        }};
+
+        String result = SqlFactory.generateSql(sqlTemplate,paramMap);
+        Assert.assertEquals(result.trim(),"select a from b where name like '%123%'");
+    }
+
 
     @Test
     public void generateSql3() throws Exception {
