@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.lambo.common.utils.io.ResourceUtil;
+import com.lambo.rest.client.factory.BuiltInVariable;
 import org.springframework.core.io.Resource;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -57,11 +58,20 @@ public class SqlTemplate {
 
 		Context context = new Context(cfg, data);
 
+		setBuildInVariable(context);
+
 		calculate(context);
 
 		parseParameter(context);
 
 		return new SqlMeta(context.getSql(), context.getParameter());
+	}
+
+	public void setBuildInVariable(Context context){
+		Map<String,String> variables = BuiltInVariable.getBuiltInVariable();
+		for (Object o : variables.keySet()) {
+			context.bind((String)o,variables.get(o));
+		}
 	}
 
 	private void parseParameter(final Context context) {

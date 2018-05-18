@@ -4,6 +4,7 @@ import com.lambo.rest.client.factory.sqltemplate.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,33 +95,32 @@ public class SqlTemplateTest {
 
         Configuration configuration = new Configuration();
 
-        SqlTemplate template = configuration
-                .getTemplate("select  * from user <where> id in <foreach item=\"item\" index=\"index\" collection=\"list\"    open=\"(\" separator=\",\" close=\")\">   ${item}   ${index}  </foreach></where>") ;
+        SqlTemplate template = configuration.getTemplate("select  * from user <where> <if test='list != null'> id in <foreach item='item' index='index' collection='list'    open='(' separator=',' close=')'>   ${item}   ${index}  </foreach> </if> </where>") ;
 
         HashMap<String, Object> map = new HashMap<String, Object>();
 
         //map.put("id", "123");
         //map.put("name", "hhh1");
 
-		/*ArrayList<String> arrayList = new ArrayList<String>() ;
+		ArrayList<String> arrayList = new ArrayList<String>() ;
 
 		arrayList.add("1") ;
 		arrayList.add("2") ;
 		arrayList.add("3") ;
-		arrayList.add("4") ;*/
+		arrayList.add("4") ;
 
 
 
-        HashMap<String, Object> map2 = new HashMap<String, Object>();
+//        HashMap<String, Object> map2 = new HashMap<String, Object>();
+//
+//        map2.put("11", "11-11") ;
+//        map2.put("22", "22-22") ;
 
-        map2.put("11", "11-11") ;
-        map2.put("22", "22-22") ;
+        map.put("list", "1,2,3,4,5,6,7") ;
 
-        map.put("list", map2) ;
+        SqlMeta sqlMeta = template.process(map);
 
-        SqlMeta process = template.process(map);
-
-        System.out.println(process);
+        Assert.assertEquals(sqlMeta.getSql().trim(),"select  * from user  WHERE id in  (     1   0   ,    2   1   ,    3   2   ,    4   3   ,    5   4   ,    6   5   ,    7   6   )");
 
     }
 

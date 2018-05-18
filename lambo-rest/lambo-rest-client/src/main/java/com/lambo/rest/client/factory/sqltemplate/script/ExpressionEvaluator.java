@@ -52,6 +52,16 @@ public class ExpressionEvaluator {
 		if (value instanceof Map) {
 			return ((Map) value).entrySet();
 		}
+
+		if (value instanceof String){
+			List<Object> answer = new ArrayList<Object>();
+			String[] arr = ((String) value).split(",");
+			for(int i = 0; i < arr.length; i++){
+				answer.add(arr[i]);
+			}
+			return answer;
+
+		}
 		throw new RuntimeException("Error evaluating expression '" + expression
 				+ "'.  Return value (" + value + ") was not iterable.");
 	}

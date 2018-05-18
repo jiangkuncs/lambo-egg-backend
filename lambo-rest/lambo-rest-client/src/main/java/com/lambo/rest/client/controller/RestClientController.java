@@ -10,6 +10,7 @@ import com.lambo.rest.client.service.api.RestClientService;
 import com.lambo.rest.client.service.api.RestClientSettingParamService;
 import com.lambo.rest.client.service.api.RestClientSettingService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,24 +48,25 @@ public class RestClientController {
     @ResponseBody
     public Object query(HttpServletRequest request) {
 
-        RestSetting restSetting = getRestSettingByUrl(request.getRequestURI().toString());
+        RestSetting restSetting = getRestSettingByUrl(request.getRequestURI());
         String restId = restSetting.getRestId();
         List<RestSettingParam> restSettingParamList = getRestSettingParamByRestId(restId);
-        Map paramMap = new HashMap();
+        Map<String,String> paramMap = new HashMap<>();
         for(RestSettingParam restSettingParam : restSettingParamList){
             String paramKey = restSettingParam.getParamKey();
             String paramValue = request.getParameter(paramKey);
             boolean necessary = restSettingParam.getNecessary().equals(1);
-            if(paramValue == null){
+            if(StringUtils.isNotBlank(paramValue)){
                 if(necessary){
                     throw new RuntimeException("服务"+restId+"参数"+paramKey+"不允许为空");
                 }else{
-                    paramValue = restSettingParam.getDefaultValue();
+                    String defaultValue = restSettingParam.getDefaultValue();
+                    paramValue = StringUtils.isNotBlank(defaultValue) ? defaultValue : null;
                 }
             }
             paramMap.put(paramKey,paramValue);
         }
-        boolean mock = request.getParameter("mock") != null && request.getParameter("mock").equals("true");
+        boolean mock = request.getParameter("mock") != null && "true".equals(request.getParameter("mock"));
 
         Object object = restClientService.getResult(restSetting,paramMap,mock);
 

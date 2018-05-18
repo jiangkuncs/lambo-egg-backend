@@ -25,7 +25,9 @@ public class SqlFactory {
         SqlTemplateEngin sqlTemplateEngin = new SqlTemplateEngin();
         SqlTemplate sqlTemplate = sqlTemplateEngin.getSqlTemplate(sqlStr) ;
 
+
         SqlMeta sqlMeta = sqlTemplate.process(paramMap) ;
+
 
         String result = AnalyzeContext.getContext().analyze(sqlMeta.getSql(),sqlMeta.getParameter());
 

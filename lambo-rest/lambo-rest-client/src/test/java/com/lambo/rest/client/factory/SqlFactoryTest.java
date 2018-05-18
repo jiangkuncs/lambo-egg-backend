@@ -1,15 +1,11 @@
 package com.lambo.rest.client.factory;
 
-import com.lambo.rest.client.factory.sqltemplate.SqlMeta;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
 
 public class SqlFactoryTest {
 
@@ -28,16 +24,16 @@ public class SqlFactoryTest {
 
     @Test
     public void generateSql2() throws Exception {
-        String sqlTemplate = "select a from b where a=#{com_id}";
+        String sqlTemplate = "select a from b where name like #{@com.lambo.rest.client.factory.Utils@convertLike(name)}";
 
         Map paramMap = new HashMap<String , Object>(){{
-            put("com_id", "123");
+            put("name", "123");
         }};
 
         String result = SqlFactory.generateSql(sqlTemplate,paramMap);
-        Assert.assertEquals(result.trim(),"select a from b where a= '123'");
-
+        Assert.assertEquals(result.trim(),"select a from b where name like  '%123%'");
     }
+
 
     @Test
     public void generateSql3() throws Exception {
@@ -61,6 +57,27 @@ public class SqlFactoryTest {
 
         String result = SqlFactory.generateSql(sqlTemplate,paramMap);
         Assert.assertEquals(result.trim(),"select a from t  WHERE b= '20180510'");
+    }
+
+    @Test
+    public void generateSql5() throws Exception {
+        String sqlTemplate = "select a from b where month = #{@com.lambo.rest.client.factory.Utils@getSamePeriod(month)}";
+
+        Map paramMap = new HashMap<String , Object>(){{
+            put("month", "201805");
+        }};
+
+        String result = SqlFactory.generateSql(sqlTemplate,paramMap);
+        Assert.assertEquals(result.trim(),"select a from b where month =  '201705'");
+    }
+
+    @Test
+    public void generateSql6() throws Exception {
+        String sqlTemplate = "select a from b where month = #{BUILTIN_NOW_DATE_YYYYMM}";
+
+
+        String result = SqlFactory.generateSql(sqlTemplate,new HashMap());
+        Assert.assertEquals(result.trim(),"select a from b where month =  '201805'");
     }
 
 
