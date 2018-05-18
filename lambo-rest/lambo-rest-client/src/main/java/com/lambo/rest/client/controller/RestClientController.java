@@ -1,5 +1,6 @@
 package com.lambo.rest.client.controller;
 
+import com.lambo.common.base.BaseController;
 import com.lambo.common.base.BaseResult;
 import com.lambo.common.base.BaseResultConstant;
 import com.lambo.rest.client.model.RestSetting;
@@ -31,7 +32,7 @@ import java.util.Map;
  * @Date 2018/5/11 11:37
  **/
 @Controller
-public class RestClientController {
+public class RestClientController extends BaseController {
 
     private static final String URL_PREFIX = "/rest/service";
 

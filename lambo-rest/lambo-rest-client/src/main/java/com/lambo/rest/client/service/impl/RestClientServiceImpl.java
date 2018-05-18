@@ -71,7 +71,6 @@ public class RestClientServiceImpl implements RestClientService {
         DynamicDataSource.setDataSource(datasource);
         try{
             if(OprationTypeEnum.SELECT_LIST.getName().equals(operation_type)){
-                DynamicDataSource.setDataSource("slaveDataSource");
                 return  restClientCommonExcutorMapper.select(sql);
             }else if(OprationTypeEnum.SELECT_ONE.getName().equals(operation_type)){
                 List list = restClientCommonExcutorMapper.select(sql);
@@ -91,10 +90,9 @@ public class RestClientServiceImpl implements RestClientService {
             }
         }catch(Exception e){
             logger.error("sql执行出错",e);
+            throw new RuntimeException(e);
         }finally {
             DynamicDataSource.clearDataSource();
         }
-
-        return null;
     }
 }
