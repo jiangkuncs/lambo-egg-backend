@@ -3,6 +3,7 @@ package com.lambo.rest.client.controller;
 import com.lambo.common.base.BaseController;
 import com.lambo.common.base.BaseResult;
 import com.lambo.common.base.BaseResultConstant;
+import com.lambo.common.db.DynamicDataSource;
 import com.lambo.rest.client.model.RestSetting;
 import com.lambo.rest.client.model.RestSettingExample;
 import com.lambo.rest.client.model.RestSettingParam;
@@ -12,6 +13,8 @@ import com.lambo.rest.client.service.api.RestClientSettingParamService;
 import com.lambo.rest.client.service.api.RestClientSettingService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +37,16 @@ import java.util.Map;
 @Controller
 public class RestClientController extends BaseController {
 
+    private static Logger logger = LoggerFactory.getLogger(RestClientController.class);
+
     private static final String URL_PREFIX = "/rest/service";
 
+    private static final String REST_MANAGE_DATASOURCE = "restManageDataSource";
+
     @Autowired
-    RestClientSettingService restSettingService;
+    RestClientSettingService restClientSettingService;
     @Autowired
-    RestClientSettingParamService restSettingParamService;
+    RestClientSettingParamService restClientSettingParamService;
     @Autowired
     RestClientService restClientService;
 
@@ -118,7 +125,15 @@ public class RestClientController extends BaseController {
         url = url.replaceAll(".*" + URL_PREFIX,"");
         RestSettingExample restSettingExample = new RestSettingExample();
         restSettingExample.createCriteria().andUrlEqualTo(url.trim());
-        List<RestSetting> list = restSettingService.selectByExampleWithBLOBs(restSettingExample);
+        List<RestSetting> list = null;
+        try{
+            DynamicDataSource.setDataSource(REST_MANAGE_DATASOURCE);
+            list = restClientSettingService.selectByExampleWithBLOBs(restSettingExample);
+        }catch (Exception e){
+            logger.error("通过url获取服务设置出错",e);
+        }finally {
+            DynamicDataSource.clearDataSource();
+        }
         if(list == null || list.size() == 0){
             throw new RuntimeException("服务"+url+"不存在,请检查数据");
         }
@@ -136,14 +151,30 @@ public class RestClientController extends BaseController {
     private List<RestSettingParam> getRestSettingParamByRestId(String restId){
         RestSettingParamExample restSettingParamExample = new RestSettingParamExample();
         restSettingParamExample.createCriteria().andRestIdEqualTo(restId);
-        List<RestSettingParam> list = restSettingParamService.selectByExample(restSettingParamExample);
+        List<RestSettingParam> list = null;
+        try{
+            DynamicDataSource.setDataSource(REST_MANAGE_DATASOURCE);
+            list = restClientSettingParamService.selectByExample(restSettingParamExample);
+        }catch (Exception e){
+            logger.error("通过id获取服务设置出错",e);
+        }finally {
+            DynamicDataSource.clearDataSource();
+        }
         return list == null ? new ArrayList<RestSettingParam>() : list;
     }
 
     private RestSetting getRestSettingByRestId(String restId){
         RestSettingExample restSettingExample = new RestSettingExample();
         restSettingExample.createCriteria().andRestIdEqualTo(restId);
-        List<RestSetting> list =  restSettingService.selectByExampleWithBLOBs(restSettingExample);
+        List<RestSetting> list = null;
+        try{
+            DynamicDataSource.setDataSource(REST_MANAGE_DATASOURCE);
+            list = restClientSettingService.selectByExampleWithBLOBs(restSettingExample);
+        }catch (Exception e){
+            logger.error("通过restId获取服务设置出错",e);
+        }finally {
+            DynamicDataSource.clearDataSource();
+        }
         if(list == null){
             throw new RuntimeException("查询不到restId="+restId+"的服务");
         }
