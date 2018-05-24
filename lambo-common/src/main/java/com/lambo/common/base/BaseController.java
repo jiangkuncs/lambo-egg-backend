@@ -1,5 +1,6 @@
 package com.lambo.common.base;
 
+import com.lambo.common.utils.lang.ExceptionUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.slf4j.Logger;
@@ -36,15 +37,15 @@ public abstract class BaseController {
 		// shiro没有权限异常
 		if (exception instanceof UnauthorizedException) {
 			logger.error("403错误");
-			return new BaseResult(0,"没有权限访问此资源",exception);
+			return new BaseResult(0,"没有权限访问此资源", exception.toString());
 		}
 		// shiro会话已过期异常
 		if (exception instanceof InvalidSessionException) {
 			logger.error("会话已过期异常");
-			return new BaseResult(0,"会话已过期",exception);
+			return new BaseResult(0,"会话已过期",exception.toString());
 		}
 
-		return new BaseResult(0,"未捕获的异常",exception);
+		return new BaseResult(0,"未捕获的异常",ExceptionUtils.getStackTraceAsString(exception));
 	}
 
 
