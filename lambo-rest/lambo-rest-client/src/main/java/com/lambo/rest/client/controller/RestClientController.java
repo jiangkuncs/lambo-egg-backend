@@ -64,7 +64,7 @@ public class RestClientController extends BaseController {
             String paramKey = restSettingParam.getParamKey();
             String paramValue = request.getParameter(paramKey);
             boolean necessary = restSettingParam.getNecessary().equals(1);
-            if(StringUtils.isNotBlank(paramValue)){
+            if(StringUtils.isBlank(paramValue)){
                 if(necessary){
                     throw new RuntimeException("服务"+restId+"参数"+paramKey+"不允许为空");
                 }else{
