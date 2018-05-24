@@ -1,5 +1,6 @@
 package com.lambo.common.db;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -17,6 +18,9 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 	@Override
 	protected Object determineCurrentLookupKey() {
 		String dataSource = getDataSource();
+		if(StringUtils.isNotBlank(dataSource)){
+			logger.debug("当前数据源已切换至:"+dataSource);
+		}
 		return dataSource;
 	}
 
@@ -41,6 +45,9 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 	 * 清除数据源
 	 */
 	public static void clearDataSource() {
+		if(logger.isDebugEnabled()){
+			logger.debug("已清空数据源设置");
+		}
 		contextHolder.remove();
 	}
 
