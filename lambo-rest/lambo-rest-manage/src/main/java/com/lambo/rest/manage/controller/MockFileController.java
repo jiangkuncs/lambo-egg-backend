@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,11 +105,8 @@ public class MockFileController extends BaseController {
                             if(null == colType[1][j]){
                                 colType[1][j] = cell.getCellTypeEnum().toString();
                             }
-                            logger.info("fildArr[j]="+fildArr[j]);
-                            logger.info("colType[1][j]="+colType[1][j]+",colType[0][j]="+colType[0][j]);
                             if("STRING".equals(colType[1][j])){
                                 String value = cell.getStringCellValue();
-                                logger.info("value="+value);
                                 if(null != value){
                                     dataMap.put(fildArr[j],value);
                                 }
@@ -133,14 +131,32 @@ public class MockFileController extends BaseController {
                     }
                     dataList.add(dataMap);
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InvalidFormatException e) {
                 e.printStackTrace();
+            }finally{
+                try {
+                    workbook.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             //删除上传文件
-            FileUtils.deleteFile(filePath);//没删掉文件
+            logger.info("删除文件开始。。。");
+            try{
+                if (inputFile.delete()){
+                    logger.info("删除文件成功。。。");
+                }else{
+                    logger.info("删除文件失败。。。");
+                }
+            }catch(Exception e){
+                logger.info("删除文件异常e",e);
+            }
+
+            logger.info("删除文件结束。。。");
         }else{
             return new OssResult(OssResultConstant.FAILED,"文件上传出错");
         }
@@ -153,7 +169,6 @@ public class MockFileController extends BaseController {
         }else{
             returnJson = jsonMapper.toJsonString(dataList);
         }
-        logger.info("dataList="+dataList);
 
         return new OssResult(OssResultConstant.SUCCESS, returnJson);
 
