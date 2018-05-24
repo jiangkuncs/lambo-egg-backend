@@ -50,10 +50,10 @@ public class RestClientServiceImpl implements RestClientService {
         }else{
             sqlTemplate = restSetting.getRestSql();
             String sql = SqlFactory.generateSql(sqlTemplate,paramMap);
-            if(logger.isDebugEnabled()){
-                logger.debug("执行SQL为:"+sql);
-                logger.debug("操作类型为:"+restSetting.getOperationType());
-                logger.debug("数据源为:"+restSetting.getDatasource());
+            if(logger.isInfoEnabled()){
+                logger.info("执行SQL为:"+sql);
+                logger.info("操作类型为:"+restSetting.getOperationType());
+                logger.info("数据源为:"+restSetting.getDatasource());
             }
             return excutor(sql,restSetting.getOperationType(),restSetting.getDatasource());
         }
