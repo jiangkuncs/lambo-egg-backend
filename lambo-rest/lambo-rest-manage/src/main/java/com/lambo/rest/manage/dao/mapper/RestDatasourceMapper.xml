@@ -2,9 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lambo.rest.manage.dao.api.RestDatasourceMapper">
   <resultMap id="BaseResultMap" type="com.lambo.rest.manage.model.RestDatasource">
-    <result column="ds_id" jdbcType="VARCHAR" property="dsId" />
+    <id column="ds_id" jdbcType="VARCHAR" property="dsId" />
     <result column="ds_name" jdbcType="VARCHAR" property="dsName" />
     <result column="ds_type" jdbcType="VARCHAR" property="dsType" />
+    <result column="ds_ip" jdbcType="VARCHAR" property="dsIp" />
+    <result column="ds_port" jdbcType="INTEGER" property="dsPort" />
+    <result column="ds_database" jdbcType="VARCHAR" property="dsDatabase" />
+    <result column="ds_user" jdbcType="VARCHAR" property="dsUser" />
+    <result column="ds_password" jdbcType="VARCHAR" property="dsPassword" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ds_id, ds_name, ds_type
+    ds_id, ds_name, ds_type, ds_ip, ds_port, ds_database, ds_user, ds_password, note
   </sql>
   <select id="selectByExample" parameterType="com.lambo.rest.manage.model.RestDatasourceExample" resultMap="BaseResultMap">
     select
@@ -82,6 +88,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rest_datasource
+    where ds_id = #{dsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from rest_datasource
+    where ds_id = #{dsId,jdbcType=VARCHAR}
+  </delete>
   <delete id="deleteByExample" parameterType="com.lambo.rest.manage.model.RestDatasourceExample">
     delete from rest_datasource
     <if test="_parameter != null">
@@ -89,9 +105,13 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.lambo.rest.manage.model.RestDatasource">
-    insert into rest_datasource (ds_id, ds_name, ds_type
+    insert into rest_datasource (ds_id, ds_name, ds_type, 
+      ds_ip, ds_port, ds_database, 
+      ds_user, ds_password, note
       )
-    values (#{dsId,jdbcType=VARCHAR}, #{dsName,jdbcType=VARCHAR}, #{dsType,jdbcType=VARCHAR}
+    values (#{dsId,jdbcType=VARCHAR}, #{dsName,jdbcType=VARCHAR}, #{dsType,jdbcType=VARCHAR}, 
+      #{dsIp,jdbcType=VARCHAR}, #{dsPort,jdbcType=INTEGER}, #{dsDatabase,jdbcType=VARCHAR}, 
+      #{dsUser,jdbcType=VARCHAR}, #{dsPassword,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.lambo.rest.manage.model.RestDatasource">
@@ -106,6 +126,24 @@
       <if test="dsType != null">
         ds_type,
       </if>
+      <if test="dsIp != null">
+        ds_ip,
+      </if>
+      <if test="dsPort != null">
+        ds_port,
+      </if>
+      <if test="dsDatabase != null">
+        ds_database,
+      </if>
+      <if test="dsUser != null">
+        ds_user,
+      </if>
+      <if test="dsPassword != null">
+        ds_password,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="dsId != null">
@@ -116,6 +154,24 @@
       </if>
       <if test="dsType != null">
         #{dsType,jdbcType=VARCHAR},
+      </if>
+      <if test="dsIp != null">
+        #{dsIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dsPort != null">
+        #{dsPort,jdbcType=INTEGER},
+      </if>
+      <if test="dsDatabase != null">
+        #{dsDatabase,jdbcType=VARCHAR},
+      </if>
+      <if test="dsUser != null">
+        #{dsUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dsPassword != null">
+        #{dsPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -131,6 +187,24 @@
       <if test="record.dsType != null">
         ds_type = #{record.dsType,jdbcType=VARCHAR},
       </if>
+      <if test="record.dsIp != null">
+        ds_ip = #{record.dsIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dsPort != null">
+        ds_port = #{record.dsPort,jdbcType=INTEGER},
+      </if>
+      <if test="record.dsDatabase != null">
+        ds_database = #{record.dsDatabase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dsUser != null">
+        ds_user = #{record.dsUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dsPassword != null">
+        ds_password = #{record.dsPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null">
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -140,9 +214,57 @@
     update rest_datasource
     set ds_id = #{record.dsId,jdbcType=VARCHAR},
       ds_name = #{record.dsName,jdbcType=VARCHAR},
-      ds_type = #{record.dsType,jdbcType=VARCHAR}
+      ds_type = #{record.dsType,jdbcType=VARCHAR},
+      ds_ip = #{record.dsIp,jdbcType=VARCHAR},
+      ds_port = #{record.dsPort,jdbcType=INTEGER},
+      ds_database = #{record.dsDatabase,jdbcType=VARCHAR},
+      ds_user = #{record.dsUser,jdbcType=VARCHAR},
+      ds_password = #{record.dsPassword,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lambo.rest.manage.model.RestDatasource">
+    update rest_datasource
+    <set>
+      <if test="dsName != null">
+        ds_name = #{dsName,jdbcType=VARCHAR},
+      </if>
+      <if test="dsType != null">
+        ds_type = #{dsType,jdbcType=VARCHAR},
+      </if>
+      <if test="dsIp != null">
+        ds_ip = #{dsIp,jdbcType=VARCHAR},
+      </if>
+      <if test="dsPort != null">
+        ds_port = #{dsPort,jdbcType=INTEGER},
+      </if>
+      <if test="dsDatabase != null">
+        ds_database = #{dsDatabase,jdbcType=VARCHAR},
+      </if>
+      <if test="dsUser != null">
+        ds_user = #{dsUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dsPassword != null">
+        ds_password = #{dsPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ds_id = #{dsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lambo.rest.manage.model.RestDatasource">
+    update rest_datasource
+    set ds_name = #{dsName,jdbcType=VARCHAR},
+      ds_type = #{dsType,jdbcType=VARCHAR},
+      ds_ip = #{dsIp,jdbcType=VARCHAR},
+      ds_port = #{dsPort,jdbcType=INTEGER},
+      ds_database = #{dsDatabase,jdbcType=VARCHAR},
+      ds_user = #{dsUser,jdbcType=VARCHAR},
+      ds_password = #{dsPassword,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR}
+    where ds_id = #{dsId,jdbcType=VARCHAR}
   </update>
 </mapper>

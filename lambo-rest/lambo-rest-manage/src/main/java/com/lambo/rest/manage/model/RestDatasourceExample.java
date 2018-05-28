@@ -313,6 +313,416 @@ public class RestDatasourceExample {
             addCriterion("ds_type not between", value1, value2, "dsType");
             return (Criteria) this;
         }
+
+        public Criteria andDsIpIsNull() {
+            addCriterion("ds_ip is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpIsNotNull() {
+            addCriterion("ds_ip is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpEqualTo(String value) {
+            addCriterion("ds_ip =", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpNotEqualTo(String value) {
+            addCriterion("ds_ip <>", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpGreaterThan(String value) {
+            addCriterion("ds_ip >", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpGreaterThanOrEqualTo(String value) {
+            addCriterion("ds_ip >=", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpLessThan(String value) {
+            addCriterion("ds_ip <", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpLessThanOrEqualTo(String value) {
+            addCriterion("ds_ip <=", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpLike(String value) {
+            addCriterion("ds_ip like", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpNotLike(String value) {
+            addCriterion("ds_ip not like", value, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpIn(List<String> values) {
+            addCriterion("ds_ip in", values, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpNotIn(List<String> values) {
+            addCriterion("ds_ip not in", values, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpBetween(String value1, String value2) {
+            addCriterion("ds_ip between", value1, value2, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsIpNotBetween(String value1, String value2) {
+            addCriterion("ds_ip not between", value1, value2, "dsIp");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortIsNull() {
+            addCriterion("ds_port is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortIsNotNull() {
+            addCriterion("ds_port is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortEqualTo(Integer value) {
+            addCriterion("ds_port =", value, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortNotEqualTo(Integer value) {
+            addCriterion("ds_port <>", value, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortGreaterThan(Integer value) {
+            addCriterion("ds_port >", value, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortGreaterThanOrEqualTo(Integer value) {
+            addCriterion("ds_port >=", value, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortLessThan(Integer value) {
+            addCriterion("ds_port <", value, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortLessThanOrEqualTo(Integer value) {
+            addCriterion("ds_port <=", value, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortIn(List<Integer> values) {
+            addCriterion("ds_port in", values, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortNotIn(List<Integer> values) {
+            addCriterion("ds_port not in", values, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortBetween(Integer value1, Integer value2) {
+            addCriterion("ds_port between", value1, value2, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPortNotBetween(Integer value1, Integer value2) {
+            addCriterion("ds_port not between", value1, value2, "dsPort");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseIsNull() {
+            addCriterion("ds_database is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseIsNotNull() {
+            addCriterion("ds_database is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseEqualTo(String value) {
+            addCriterion("ds_database =", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseNotEqualTo(String value) {
+            addCriterion("ds_database <>", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseGreaterThan(String value) {
+            addCriterion("ds_database >", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseGreaterThanOrEqualTo(String value) {
+            addCriterion("ds_database >=", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseLessThan(String value) {
+            addCriterion("ds_database <", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseLessThanOrEqualTo(String value) {
+            addCriterion("ds_database <=", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseLike(String value) {
+            addCriterion("ds_database like", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseNotLike(String value) {
+            addCriterion("ds_database not like", value, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseIn(List<String> values) {
+            addCriterion("ds_database in", values, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseNotIn(List<String> values) {
+            addCriterion("ds_database not in", values, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseBetween(String value1, String value2) {
+            addCriterion("ds_database between", value1, value2, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsDatabaseNotBetween(String value1, String value2) {
+            addCriterion("ds_database not between", value1, value2, "dsDatabase");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserIsNull() {
+            addCriterion("ds_user is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserIsNotNull() {
+            addCriterion("ds_user is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserEqualTo(String value) {
+            addCriterion("ds_user =", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserNotEqualTo(String value) {
+            addCriterion("ds_user <>", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserGreaterThan(String value) {
+            addCriterion("ds_user >", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserGreaterThanOrEqualTo(String value) {
+            addCriterion("ds_user >=", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserLessThan(String value) {
+            addCriterion("ds_user <", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserLessThanOrEqualTo(String value) {
+            addCriterion("ds_user <=", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserLike(String value) {
+            addCriterion("ds_user like", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserNotLike(String value) {
+            addCriterion("ds_user not like", value, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserIn(List<String> values) {
+            addCriterion("ds_user in", values, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserNotIn(List<String> values) {
+            addCriterion("ds_user not in", values, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserBetween(String value1, String value2) {
+            addCriterion("ds_user between", value1, value2, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsUserNotBetween(String value1, String value2) {
+            addCriterion("ds_user not between", value1, value2, "dsUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordIsNull() {
+            addCriterion("ds_password is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordIsNotNull() {
+            addCriterion("ds_password is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordEqualTo(String value) {
+            addCriterion("ds_password =", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordNotEqualTo(String value) {
+            addCriterion("ds_password <>", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordGreaterThan(String value) {
+            addCriterion("ds_password >", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordGreaterThanOrEqualTo(String value) {
+            addCriterion("ds_password >=", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordLessThan(String value) {
+            addCriterion("ds_password <", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordLessThanOrEqualTo(String value) {
+            addCriterion("ds_password <=", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordLike(String value) {
+            addCriterion("ds_password like", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordNotLike(String value) {
+            addCriterion("ds_password not like", value, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordIn(List<String> values) {
+            addCriterion("ds_password in", values, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordNotIn(List<String> values) {
+            addCriterion("ds_password not in", values, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordBetween(String value1, String value2) {
+            addCriterion("ds_password between", value1, value2, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andDsPasswordNotBetween(String value1, String value2) {
+            addCriterion("ds_password not between", value1, value2, "dsPassword");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteIsNull() {
+            addCriterion("note is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteIsNotNull() {
+            addCriterion("note is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteEqualTo(String value) {
+            addCriterion("note =", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteNotEqualTo(String value) {
+            addCriterion("note <>", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteGreaterThan(String value) {
+            addCriterion("note >", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteGreaterThanOrEqualTo(String value) {
+            addCriterion("note >=", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteLessThan(String value) {
+            addCriterion("note <", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteLessThanOrEqualTo(String value) {
+            addCriterion("note <=", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteLike(String value) {
+            addCriterion("note like", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteNotLike(String value) {
+            addCriterion("note not like", value, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteIn(List<String> values) {
+            addCriterion("note in", values, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteNotIn(List<String> values) {
+            addCriterion("note not in", values, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteBetween(String value1, String value2) {
+            addCriterion("note between", value1, value2, "note");
+            return (Criteria) this;
+        }
+
+        public Criteria andNoteNotBetween(String value1, String value2) {
+            addCriterion("note not between", value1, value2, "note");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
