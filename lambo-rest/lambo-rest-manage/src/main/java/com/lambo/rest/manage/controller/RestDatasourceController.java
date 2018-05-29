@@ -6,22 +6,19 @@ import com.lambo.common.annotation.EnableExportTable;
 import com.lambo.common.annotation.LogAround;
 import com.lambo.common.base.BaseResult;
 import com.lambo.common.base.BaseResultConstant;
+import com.lambo.common.db.DatasourceUtil;
+import com.lambo.common.utils.codec.AesUtils;
 import com.lambo.common.utils.lang.StringUtils;
 import com.lambo.rest.manage.model.RestDatasource;
 import com.lambo.rest.manage.model.RestDatasourceExample;
-import com.lambo.rest.manage.model.RestSetting;
-import com.lambo.rest.manage.model.RestSettingParams;
 import com.lambo.rest.manage.service.api.RestDatasourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,22 +30,18 @@ import static com.lambo.common.base.BaseController.RESULT_TOTLAL;
 @Api(value = "rest数据源管理", description = "rest数据源管理")
 @RequestMapping("/manage/rest/datasource")
 public class RestDatasourceController {
-
+    private static Logger logger = LoggerFactory.getLogger(RestDatasourceController.class);
     @Autowired
     RestDatasourceService restDatasourceService;
 
     @ApiOperation(value = "查询数据源")
-    @RequestMapping(value = "/query",method = RequestMethod.GET)
+    @RequestMapping(value = "/query/{dsId}",method = RequestMethod.GET)
     @ResponseBody
     @LogAround("查询rest数据源")
-    public Object query(
-            @RequestParam(required = false, value = "dsId") String dsId) {
+    public Object query(@PathVariable("dsId") String dsId) {
 
         RestDatasourceExample restDatasourceExample =  new RestDatasourceExample();
-        if(null!=dsId && !("").endsWith(dsId)) {
-            restDatasourceExample.createCriteria().andDsIdEqualTo(dsId);
-        }
-
+        restDatasourceExample.createCriteria().andDsIdEqualTo(dsId);
         RestDatasource restDatasource = restDatasourceService.selectFirstByExample(restDatasourceExample);
 
         return new BaseResult(BaseResultConstant.SUCCESS,restDatasource);
@@ -114,10 +107,13 @@ public class RestDatasourceController {
     }
 
     @ApiOperation(value = "删除数据源")
-    @RequestMapping(value = "/delete/{ids}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{dsId}", method = RequestMethod.GET)
     @ResponseBody
-    public Object delete(@PathVariable("ids") String ids) {
-        int count = restDatasourceService.deleteByPrimaryKeys(ids);
+    public Object delete(@PathVariable("dsId") String dsId) {
+
+        RestDatasourceExample restDatasourceExample =  new RestDatasourceExample();
+        restDatasourceExample.createCriteria().andDsIdEqualTo(dsId);
+        int count = restDatasourceService.deleteByExample(restDatasourceExample);
         return new BaseResult(BaseResultConstant.SUCCESS, count);
     }
 
@@ -135,26 +131,29 @@ public class RestDatasourceController {
                          @RequestParam(required = false, value = "dsPassword") String dsPassword,
                          @RequestParam(required = false, value = "note") String note) {
 
-        RestDatasource restDatasource = new RestDatasource();
+        RestDatasourceExample restDatasourceExample =  new RestDatasourceExample();
+        restDatasourceExample.createCriteria().andDsIdEqualTo(dsId);
+        List list = restDatasourceService.selectByExample(restDatasourceExample);
+        if(list !=null && list.size() > 0) {
+            return new BaseResult(9,"数据源ID重复请检查",null);
+        }
 
+        RestDatasource restDatasource = new RestDatasource();
         restDatasource.setDsId(dsId);
         restDatasource.setDsName(dsName);
         restDatasource.setDsType(dsType);
-        restDatasource.setDsId(dsIp);
+        restDatasource.setDsIp(dsIp);
         restDatasource.setDsPort(dsPort);
         restDatasource.setDsDatabase(dsDatabase);
         restDatasource.setDsUser(dsUser);
-        restDatasource.setDsPassword(dsPassword);
+        restDatasource.setDsPassword(AesUtils.encode(dsPassword));
         restDatasource.setNote(note);
-
-
-        int count = restDatasourceService.insert(restDatasource);
-
-        return new BaseResult(BaseResultConstant.SUCCESS,count);
+        restDatasourceService.insert(restDatasource);
+        return new BaseResult(BaseResultConstant.SUCCESS,restDatasource);
     }
 
     @ApiOperation(value = "更新数据源")
-    @RequestMapping(value = "/update/{restId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/update/{dsId}",method = RequestMethod.POST)
     @ResponseBody
     @LogAround("更新数据源")
     public Object update(@PathVariable("dsId") String dsId,
@@ -172,15 +171,44 @@ public class RestDatasourceController {
         restDatasource.setDsId(dsId);
         restDatasource.setDsName(dsName);
         restDatasource.setDsType(dsType);
-        restDatasource.setDsId(dsIp);
+        restDatasource.setDsIp(dsIp);
         restDatasource.setDsPort(dsPort);
         restDatasource.setDsDatabase(dsDatabase);
         restDatasource.setDsUser(dsUser);
-        restDatasource.setDsPassword(dsPassword);
+        restDatasource.setDsPassword(AesUtils.encode(dsPassword));
         restDatasource.setNote(note);
 
         int count = restDatasourceService.updateByPrimaryKey(restDatasource);
 
         return new BaseResult(BaseResultConstant.SUCCESS,count);
+    }
+
+    @ApiOperation(value = "测试数据源")
+    @RequestMapping(value = "/test/{dsId}",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("测试数据源")
+    public Object test(@PathVariable("dsId") String dsId) {
+        RestDatasourceExample restDatasourceExample =  new RestDatasourceExample();
+        restDatasourceExample.createCriteria().andDsIdEqualTo(dsId);
+        RestDatasource restDatasource = restDatasourceService.selectFirstByExample(restDatasourceExample);
+        if(restDatasource == null){
+            throw new RuntimeException("没有id为:"+dsId+"的数据源");
+        }
+        String password ;
+        try{
+            password = AesUtils.decode(restDatasource.getDsPassword());
+        }catch(Exception e){
+            logger.error("密码解码异常",e);
+            return new BaseResult(0,"数据源测试失败","密码解码异常");
+        }
+        DatasourceUtil datasourceUtil = new DatasourceUtil(
+                restDatasource.getDsType(),
+                restDatasource.getDsIp(),
+                restDatasource.getDsPort(),
+                restDatasource.getDsDatabase(),
+                restDatasource.getDsUser(),
+                password
+        );
+        return new BaseResult(BaseResultConstant.SUCCESS,datasourceUtil.testConnection());
     }
 }

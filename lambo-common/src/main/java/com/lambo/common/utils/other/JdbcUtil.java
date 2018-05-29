@@ -1,5 +1,8 @@
 package com.lambo.common.utils.other;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,25 +15,44 @@ import java.util.Map;
  */
 public class JdbcUtil {
 
-	// 定义数据库的链接
+	private static Logger logger = LoggerFactory.getLogger(JdbcUtil.class);
+
+	/**
+	 * 定义数据库的链接
+	 */
 	private Connection conn;
-	// 定义sql语句的执行对象
+	/**
+	 * 定义sql语句的执行对象
+	 */
 	private PreparedStatement pstmt;
-	// 定义查询返回的结果集合
+	/**
+	 * 定义查询返回的结果集合
+	 */
 	private ResultSet rs;
 
-	// 初始化
+	/**
+	 * 初始化
+	 * @param driver
+	 * @param url
+	 * @param username
+	 * @param password
+	 */
 	public JdbcUtil(String driver, String url, String username, String password) {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, username, password);
-			System.out.println("数据库连接成功");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("数据库连接失败",e);
 		}
 	}
 
-	// 更新数据
+	/**
+	 * 更新数据
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean updateByParams(String sql, List params) throws SQLException {
 		// 影响行数
 		int result = -1;
@@ -46,7 +68,13 @@ public class JdbcUtil {
 		return result > 0 ? true : false;
 	}
 
-	// 查询多条记录
+	/**
+	 * 查询多条记录
+	 * @param sql
+	 * @param params
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Map> selectByParams(String sql, List params) throws SQLException {
 		List<Map> list = new ArrayList<> ();
 		int index = 1;
@@ -74,7 +102,9 @@ public class JdbcUtil {
 		return list;
 	}
 
-	// 释放连接
+	/**
+	 * 释放连接
+	 */
 	public void release() {
 		try {
 			if (null != rs) {rs.close();};
