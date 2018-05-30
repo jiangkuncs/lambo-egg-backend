@@ -41,6 +41,7 @@ public class JdbcUtil {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, username, password);
+			logger.info("数据库连接成功："+url);
 		} catch (Exception e) {
 			logger.error("数据库连接失败",e);
 		}
