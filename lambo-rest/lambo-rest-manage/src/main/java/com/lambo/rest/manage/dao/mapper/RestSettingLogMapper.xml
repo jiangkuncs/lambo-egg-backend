@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lambo.rest.manage.dao.api.RestSettingLogMapper">
+
+  <insert id="insertRestSetLog" parameterType="map">
+    insert into rest_setting_log
+    values (#{logId,jdbcType=VARCHAR}, #{restId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{dataSource,jdbcType=VARCHAR}, #{restSql,jdbcType=VARCHAR}, #{mockData,jdbcType=LONGVARCHAR},
+      #{note,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
+      #{userAgent ,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertRestSetParamsLog" parameterType="map">
+    insert into rest_setting_params_log
+    values (#{logId,jdbcType=VARCHAR}, #{restId,jdbcType=VARCHAR}, #{paramKey,jdbcType=VARCHAR},
+    #{paramName,jdbcType=VARCHAR}, #{necessary,jdbcType=VARCHAR}, #{defaultValue,jdbcType=VARCHAR},
+    #{time,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
+    #{userAgent ,jdbcType=VARCHAR})
+  </insert>
+</mapper>
