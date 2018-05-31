@@ -19,6 +19,4 @@ public interface RestClientService {
     Object getResult(RestSetting restSetting, Map paramMap, Boolean mock);
 
 
-    Object excutor(String sql,String operation_type,String datasource);
-
 }

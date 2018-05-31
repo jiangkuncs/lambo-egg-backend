@@ -209,6 +209,8 @@ public class RestDatasourceController {
                 restDatasource.getDsUser(),
                 password
         );
-        return new BaseResult(BaseResultConstant.SUCCESS,datasourceUtil.testConnection());
+        boolean result = datasourceUtil.testConnection();
+        datasourceUtil.release();
+        return new BaseResult(BaseResultConstant.SUCCESS,result);
     }
 }

@@ -4,8 +4,12 @@ import com.lambo.common.utils.other.JdbcUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName DatasourceUtil
@@ -69,6 +73,35 @@ public class DatasourceUtil {
             logger.error("数据源测试失败", e);
         }
         return false;
+    }
+
+    /**
+     * 更新数据
+     * @param sql
+     * @param params
+     * @return
+     * @throws SQLException
+     */
+    public boolean updateByParams(String sql, List params) throws SQLException {
+        return jdbcUtil.updateByParams(sql,params);
+    }
+
+    /**
+     * 查询多条记录
+     * @param sql
+     * @param params
+     * @return
+     * @throws SQLException
+     */
+    public List<Map> selectByParams(String sql, List params) throws SQLException {
+        return jdbcUtil.selectByParams(sql,params);
+    }
+
+    /**
+     * 释放连接
+     */
+    public void release() {
+        jdbcUtil.release();
     }
 
 }
