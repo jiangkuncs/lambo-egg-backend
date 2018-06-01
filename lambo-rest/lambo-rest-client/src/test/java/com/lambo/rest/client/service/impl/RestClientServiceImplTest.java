@@ -38,7 +38,7 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
     @Test
     public void excutor1() throws Exception {
         String sql = "select * from test_data_table";
-        List list = (List)restClientService.excutor(sql, OprationTypeEnum.SELECT_LIST.getName(),"masterDataSource");
+        List list = (List)restClientService.excutor1(sql, OprationTypeEnum.SELECT_LIST.getName(),"masterDataSource");
         Assert.assertTrue(list.size() > 0);
     }
 
@@ -49,7 +49,7 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
     @Test
     public void excutor2() throws Exception {
         String sql = "select * from test_data_table where id = '1'";
-        Map map = (Map)restClientService.excutor(sql, OprationTypeEnum.SELECT_ONE.getName(),"masterDataSource");
+        Map map = (Map)restClientService.excutor1(sql, OprationTypeEnum.SELECT_ONE.getName(),"masterDataSource");
         Assert.assertEquals(map.get("ID"),"1");
     }
 
@@ -60,7 +60,7 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
     @Test
     public void excutor3() throws Exception {
         String sql = "INSERT INTO `test_data_table` VALUES ('4', 'sun', '1')";
-        int count = (int)restClientService.excutor(sql, OprationTypeEnum.INSERT.getName(),"masterDataSource");
+        int count = (int)restClientService.excutor1(sql, OprationTypeEnum.INSERT.getName(),"masterDataSource");
         Assert.assertEquals(count,1);
     }
 
@@ -71,7 +71,7 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
     @Test
     public void excutor4() throws Exception {
         String sql = "update test_data_table set name ='123' where id ='1'";
-        int count = (int)restClientService.excutor(sql, OprationTypeEnum.UPDATE.getName(),"masterDataSource");
+        int count = (int)restClientService.excutor1(sql, OprationTypeEnum.UPDATE.getName(),"masterDataSource");
         Assert.assertEquals(count,1);
     }
 
@@ -82,7 +82,7 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
     @Test
     public void excutor5() throws Exception {
         String sql = "delete from test_data_table where id ='1'";
-        int count = (int)restClientService.excutor(sql, OprationTypeEnum.DELETE.getName(),"masterDataSource");
+        int count = (int)restClientService.excutor1(sql, OprationTypeEnum.DELETE.getName(),"masterDataSource");
         Assert.assertEquals(count,1);
     }
 
@@ -93,7 +93,7 @@ public class RestClientServiceImplTest extends BaseJunit4Test {
     @Test
     public void excutor6() throws Exception {
         String sql = "explain select * from test_data_table";
-        Object object = restClientService.excutor(sql, OprationTypeEnum.SELECT_LIST.getName(),"masterDataSource");
+        Object object = restClientService.excutor1(sql, OprationTypeEnum.SELECT_LIST.getName(),"masterDataSource");
         System.out.println(object);
     }
 

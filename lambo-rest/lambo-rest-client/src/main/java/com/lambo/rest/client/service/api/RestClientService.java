@@ -16,7 +16,11 @@ public interface RestClientService {
      * @param mock
      * @return
      */
-    Object getResult(RestSetting restSetting, Map paramMap, Boolean mock);
+    public Object getResult(RestSetting restSetting, Map paramMap, Boolean mock);
+
+    public Object excutor1(String sql, String operation_type, String datasource);
+
+    public Object excutor2(String sql, String operation_type, String datasource);
 
 
 }

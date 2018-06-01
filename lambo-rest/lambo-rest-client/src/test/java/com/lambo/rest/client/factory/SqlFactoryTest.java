@@ -1,8 +1,10 @@
 package com.lambo.rest.client.factory;
 
+import com.lambo.common.utils.lang.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +91,7 @@ public class SqlFactoryTest {
 
 
         String result = SqlFactory.generateSql(sqlTemplate,new HashMap());
-        Assert.assertEquals(result.trim(),"select a from b where month =  '201805'");
+        Assert.assertEquals(result.trim(),"select a from b where month =  '"+ DateUtils.formatDate(new Date(),"yyyyMM")+"'");
     }
 
 
