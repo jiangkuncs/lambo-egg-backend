@@ -20,6 +20,11 @@
             <artifactId>lambo-mq-client</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.lambo</groupId>
+            <artifactId>lambo-upms-client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
