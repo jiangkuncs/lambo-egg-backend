@@ -52,20 +52,18 @@
         <javaModelGenerator targetPackage="${generator_javaModelGenerator_targetPackage}" targetProject="${targetProject}/src/main/java" />
 
         <!-- MapperXML生成 -->
-        <sqlMapGenerator targetPackage="${generator_sqlMapGenerator_targetPackage}" targetProject="${targetProject_sqlMap}/src/main/java" />
+        <sqlMapGenerator targetPackage="${generator_sqlMapGenerator_targetPackage}" targetProject="${targetProject}/src/main/java" />
 
         <!-- Mapper接口生成 -->
         <javaClientGenerator targetPackage="${generator_javaClientGenerator_targetPackage}" targetProject="${targetProject}/src/main/java" type="XMLMAPPER" />
 
         <!-- 需要映射的表 -->
         #foreach($table in $tables)
-            #if($last_insert_id_tables.containsKey($!table.table_name) == true)
-                <table tableName="$!table.table_name" domainObjectName="$!table.model_name">
-                    <generatedKey column="$!last_insert_id_tables.get($!table.table_name)" sqlStatement="MySql" identity="true"/>
-                </table>
-            #else
-                <table tableName="$!table.table_name" domainObjectName="$!table.model_name"></table>
-            #end
+            <table tableName="$!table.table_name" domainObjectName="$!table.model_name">
+                #if($!table.table_key)
+                    <generatedKey column="$!table.table_key" sqlStatement="MySql" identity="true"/>
+                #end
+            </table>
         #end
     </context>
 </generatorConfiguration>

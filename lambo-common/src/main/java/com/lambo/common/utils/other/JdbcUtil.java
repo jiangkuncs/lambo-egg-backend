@@ -114,7 +114,6 @@ public class JdbcUtil {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("释放数据库连接");
 	}
 
 }
