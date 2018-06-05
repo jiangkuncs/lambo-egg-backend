@@ -30,7 +30,7 @@ public class MQProducterUtil {
 
     private static MqCompensateService mqCompensateService = (MqCompensateService) SpringContextUtil.getBean("mqCompensateService");
 
-    private static Boolean mqUse = null;
+    private static Boolean mqUse = false;
 
     private static DefaultMQProducer producer = null;
 
@@ -40,7 +40,7 @@ public class MQProducterUtil {
             try {
                 mqUse = Boolean.valueOf(PropertiesFileUtil.getInstance("MQproductor").get("mq.use"));
             } catch (Exception e) {
-                logger.error("获取MQproductor配置文件异常", e);
+                logger.info("获取MQproductor配置文件异常,将不启用MQ");
             }
         }
         return mqUse;
