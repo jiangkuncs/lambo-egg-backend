@@ -45,8 +45,35 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <finalName>lambo-test</finalName>
+        <filters>
+            <filter>src/main/resources/profiles/${env}.properties</filter>
+        </filters>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -70,7 +97,7 @@
                 <version>9.2.7.v20150116</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/rest-manage-server</contextPath>
+                        <contextPath>/test-server</contextPath>
                     </webApp>
                     <httpConnector>
                         <port>9620</port>
