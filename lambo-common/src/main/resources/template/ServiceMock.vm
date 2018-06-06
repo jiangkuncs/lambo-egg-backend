@@ -1,6 +1,6 @@
-package ${package_name}.rpc.api;
+package ${package_name}.service.api;
 
-import BaseServiceMock;
+import com.lambo.common.base.BaseServiceMock;
 import ${package_name}.dao.mapper.${model}Mapper;
 import ${package_name}.dao.model.${model};
 import ${package_name}.dao.model.${model}Example;

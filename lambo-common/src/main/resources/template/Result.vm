@@ -1,0 +1,15 @@
+package ${package_name}.constant;
+
+import com.lambo.common.base.BaseResult;
+
+/**
+ * 系统常量枚举类
+ * Created by lambo on ${ctime}.
+ */
+public class ${module}Result extends BaseResult {
+
+    public ${module}Result(${module}ResultConstant ${moduleV}ResultConstant, Object data) {
+        super(${moduleV}ResultConstant.getCode(), ${moduleV}ResultConstant.getMessage(), data);
+    }
+
+}

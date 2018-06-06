@@ -1,25 +1,174 @@
-package ${groupId}.${module}.${layer}.controller;
+package ${package_name}.controller;
 
-import ${groupId}.common.base.BaseController;
+import com.lambo.common.annotation.EnableExportTable;
+import com.lambo.common.annotation.LogAround;
+import com.lambo.common.base.BaseController;
+import com.lambo.common.utils.lang.StringUtils;
+import ${package_name}.constant.${module}Result;
+import ${package_name}.constant.${module}ResultConstant;
+import ${package_name}.dao.model.${model};
+import ${package_name}.dao.model.${model}Example;
+import ${package_name}.service.api.${model}Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * ${modelname}controller
+ * ${model}controller
  * Created by lambo on ${ctime}.
  */
 @Controller
-@RequestMapping("/manage")
-@Api(value = "${modelname}控制器", description = "${modelname}管理")
+@RequestMapping("/manage/${modelV}")
+@Api(value = "${model}控制器", description = "${model}管理")
 public class ${model}Controller extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(${model}Controller.class);
 
+    @Autowired
+    private ${model}Service ${modelV}Service;
 
+    @ApiOperation(value = "${model}列表")
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("${model}分页数据")
+    public Object list(
+        @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+        @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+        @RequestParam(required = false, value = "sort") String sort,
+        @RequestParam(required = false, value = "order") String order,
+        @RequestParam(required = false, defaultValue = "", value = "search") String search) {
 
+        ${model}Example ${modelV}Example = new ${model}Example();
+        if (!StringUtils.isBlank(sort) && !StringUtils.isBlank(order)) {
+            ${modelV}Example.setOrderByClause(sort + " " + order);
+        }
+        if (StringUtils.isNotBlank(search)) {
+            ${modelV}Example.or().and${search}EqualTo(Integer.parseInt(search));
+        }
+        List<${model}> rows = ${modelV}Service.selectByExampleForOffsetPage(${modelV}Example, offset, limit);
+        int total = ${modelV}Service.countByExample(${modelV}Example);
+        Map<String, Object> result = new HashMap<>();
+        result.put("rows", rows);
+        result.put("total", total);
+        return new ${module}Result(${module}ResultConstant.SUCCESS,result);
+    }
+
+    @ApiOperation(value = "${model}导出表格")
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    @ResponseBody
+    @EnableExportTable
+    @LogAround("${model}导出表格")
+    public Object listExport(
+        @RequestParam(required = false, defaultValue = "0", value = "offset") int offset,
+        @RequestParam(required = false, defaultValue = "10", value = "limit") int limit,
+        @RequestParam(required = false, value = "sort") String sort,
+        @RequestParam(required = false, value = "order") String order,
+        @RequestParam(required = false, defaultValue = "", value = "search") String search) {
+        return ((${module}Result)list(offset,limit,sort,order,search)).data;
+    }
+
+    @ApiOperation(value = "根据${model}主键查询数据")
+    @RequestMapping(value = "/get/{${pk}}", method = RequestMethod.GET)
+    @ResponseBody
+    public Object get(@PathVariable("${pk}") int ${pk}) {
+        return ${modelV}Service.selectByPrimaryKey(${pk});
+    }
+
+    @ApiOperation(value = "新增${model}数据")
+    @ResponseBody
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public Object create(
+        #set($columnLength = $columns.size())
+        #set($count = 0)
+        #foreach($column in $columns)
+            #set($count = $count + 1)
+            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != ${pk})
+                #set($required = false)
+                #if($column.IS_NULLABLE == 'NO')
+                    #set($required = true)
+                #end
+                #set($dataType = 'String')
+                #if($column.DATA_TYPE == 'int')
+                    #set($dataType = 'int')
+                #end
+                #set($endPoint = ',')
+                #if($count == $columnLength)
+                    #set($endPoint = '')
+                #end
+                @RequestParam(required = ${required}, defaultValue = "${column.COLUMN_DEFAULT}", value = "${column.COLUMN_NAME_HUMP}") ${dataType} ${column.COLUMN_NAME_HUMP} ${endPoint}
+            #end
+        #end) {
+
+        ${model} ${modelV} = new ${model}();
+        #foreach($column in $columns)
+            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP_ALL && $column.COLUMN_NAME_HUMP != ${pk})
+                ${modelV}.set${column.COLUMN_NAME_HUMP_ALL}(${column.COLUMN_NAME_HUMP});
+            #end
+        #end
+        int count = ${modelV}Service.insertSelective(${modelV});
+        if (count <= 0) {
+            return new ${module}Result(${module}ResultConstant.FAILED, 0);
+        }
+        return new ${module}Result(${module}ResultConstant.SUCCESS, 1);
+    }
+
+    @ApiOperation(value = "更新${model}数据")
+    @ResponseBody
+    @RequestMapping(value = "/update/{${pk}}", method = RequestMethod.POST)
+    public Object update(
+        @PathVariable("${pk}") int ${pk},
+        #set($columnLength = $columns.size)
+        #set($count = 0)
+        #foreach($column in $columns)
+            #set($count = $count + 1)
+            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != ${pk})
+                #set($required = false)
+                #if($column.IS_NULLABLE == 'NO')
+                    #set($required = true)
+                #end
+                #set($dataType = 'String')
+                #if($column.DATA_TYPE == 'int')
+                    #set($dataType = 'int')
+                #end
+                #set($endPoint = ',')
+                #if($count == $columnLength)
+                    #set($endPoint = '')
+                #end
+            @RequestParam(required = ${required}, defaultValue = "${column.COLUMN_DEFAULT}", value = "${column.COLUMN_NAME_HUMP}") ${dataType} ${column.COLUMN_NAME_HUMP} ${endPoint}
+            #end
+        #end) {
+
+        ${model} ${modelV} = new ${model}();
+        ${modelV}.set${search}(${pk});
+        #foreach($column in $columns)
+            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP_ALL && $column.COLUMN_NAME_HUMP != ${pk})
+                #if($column.DATA_TYPE == 'int')
+                    ${modelV}.set${column.COLUMN_NAME_HUMP_ALL}(${column.COLUMN_NAME_HUMP});
+                #else
+                    if(!StringUtils.isBlank(${column.COLUMN_NAME_HUMP})){
+                        ${modelV}.set${column.COLUMN_NAME_HUMP_ALL}(${column.COLUMN_NAME_HUMP});
+                    }
+                #end
+            #end
+        #end
+        int count = ${modelV}Service.updateByPrimaryKeySelective(${modelV});
+        return new ${module}Result(${module}ResultConstant.SUCCESS, count);
+    }
+
+    @ApiOperation(value = "删除${model}数据")
+    @RequestMapping(value = "/delete/{${pk}s}",method = RequestMethod.GET)
+    @ResponseBody
+    @LogAround("删除${model}数据")
+    public Object delete(@PathVariable("${pk}s") String ${pk}s) {
+        int count = ${modelV}Service.deleteByPrimaryKeys(${pk}s);
+        return new ${module}Result(${module}ResultConstant.SUCCESS,count);
+    }
 }
