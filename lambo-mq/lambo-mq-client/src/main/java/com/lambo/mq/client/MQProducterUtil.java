@@ -166,6 +166,25 @@ public class MQProducterUtil {
     }
 
     /**
+     * 消息创建工具
+     *
+     * @param tag
+     * @param keys
+     * @param message
+     * @return
+     */
+    public static Message geneMessage(String topic, String tag, String keys, String message) {
+        byte[] msgByte = null;
+        try {
+            msgByte = message.getBytes(RemotingHelper.DEFAULT_CHARSET);
+        } catch (Exception e) {
+            logger.error("message=" + message);
+            logger.error("组织MQproductor信息体异常", e);
+        }
+        return new Message(topic, tag, keys, msgByte);
+    }
+
+    /**
      * 持久化消息以便之后补偿
      *
      * @param msg
