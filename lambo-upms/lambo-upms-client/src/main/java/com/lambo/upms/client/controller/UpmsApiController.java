@@ -1,7 +1,7 @@
 package com.lambo.upms.client.controller;
 
-import com.lambo.common.base.BaseController;
 import com.lambo.upms.client.dao.model.UpmsUser;
+import com.lambo.common.base.BaseController;
 import com.lambo.upms.client.service.api.UpmsClientApiService;
 import com.lambo.upms.common.constant.UpmsResult;
 import com.lambo.upms.common.constant.UpmsResultConstant;

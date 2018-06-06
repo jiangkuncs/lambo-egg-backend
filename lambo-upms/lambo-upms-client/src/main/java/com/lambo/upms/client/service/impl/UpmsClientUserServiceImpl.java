@@ -1,10 +1,10 @@
 package com.lambo.upms.client.service.impl;
 
+import com.lambo.upms.client.dao.model.UpmsUserExample;
 import com.lambo.common.annotation.BaseService;
 import com.lambo.common.base.BaseServiceImpl;
 import com.lambo.upms.client.dao.api.UpmsClientUserMapper;
 import com.lambo.upms.client.dao.model.UpmsUser;
-import com.lambo.upms.client.dao.model.UpmsUserExample;
 import com.lambo.upms.client.service.api.UpmsClientUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

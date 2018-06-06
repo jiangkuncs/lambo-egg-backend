@@ -9,7 +9,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <!-- 日志记录AOP实现 -->
-    <bean class="com.lambo.upms.client.interceptor.LogAspect"/>
+    <!-- <bean class="com.lambo.upms.client.interceptor.LogAspect"/> -->
 
 
 </beans>

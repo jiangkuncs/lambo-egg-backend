@@ -85,7 +85,7 @@
     <bean id="sessionListener" class="com.lambo.upms.client.shiro.listener.UpmsSessionListener"/>
 
     <!-- session工厂 -->
-    <bean id="sessionFactory" class="com.lambo.upms.client.shiro.session.UpmsSessionFactory"/>
+    <bean id="sessionFactory" class="com.lambo.upms.client.shiro.session.AuthSessionFactory"/>
 
     <!-- rememberMe管理器 -->
     <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">

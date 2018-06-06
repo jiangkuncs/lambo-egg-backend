@@ -34,6 +34,11 @@
         </dependency>
         <dependency>
             <groupId>com.lambo</groupId>
+            <artifactId>lambo-auth-sample-client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lambo</groupId>
             <artifactId>lambo-upms-client</artifactId>
             <version>1.0.0</version>
         </dependency>

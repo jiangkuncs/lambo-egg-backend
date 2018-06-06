@@ -25,5 +25,6 @@
         <module>lambo-oss</module>
         <module>lambo-rest</module>
         <module>lambo-mq</module>
+        <module>lambo-auth</module>
     </modules>
 </project>

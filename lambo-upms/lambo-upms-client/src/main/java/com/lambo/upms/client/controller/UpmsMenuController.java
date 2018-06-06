@@ -2,12 +2,12 @@ package com.lambo.upms.client.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.lambo.common.base.BaseController;
-import com.lambo.common.utils.io.PropertiesFileUtil;
 import com.lambo.upms.client.dao.model.UpmsPermission;
 import com.lambo.upms.client.dao.model.UpmsSystem;
 import com.lambo.upms.client.dao.model.UpmsSystemExample;
 import com.lambo.upms.client.dao.model.UpmsUser;
+import com.lambo.common.base.BaseController;
+import com.lambo.common.utils.io.PropertiesFileUtil;
 import com.lambo.upms.client.service.api.UpmsClientApiService;
 import com.lambo.upms.common.constant.UpmsResult;
 import com.lambo.upms.common.constant.UpmsResultConstant;
@@ -34,7 +34,7 @@ import java.util.List;
 @Api(value = "菜单接口", description = "其他接口")
 public class UpmsMenuController extends BaseController {
 
-    private final static Logger logger = LoggerFactory.getLogger(UpmsAuthController.class);
+    private final static Logger logger = LoggerFactory.getLogger(UpmsMenuController.class);
 
     private static String SYSTEM_ID = PropertiesFileUtil.getInstance("config").get("upms.system.id");
 

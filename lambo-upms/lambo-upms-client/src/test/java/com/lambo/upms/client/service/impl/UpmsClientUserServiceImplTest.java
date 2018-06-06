@@ -1,8 +1,8 @@
 package com.lambo.upms.client.service.impl;
 
+import com.lambo.upms.client.dao.model.UpmsUserExample;
 import com.lambo.common.base.BaseJunit4Test;
 import com.lambo.upms.client.dao.model.UpmsUser;
-import com.lambo.upms.client.dao.model.UpmsUserExample;
 import com.lambo.upms.client.service.api.UpmsClientUserService;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,8 +1,8 @@
 package com.lambo.upms.client.service.api;
 
-import com.lambo.common.base.BaseService;
 import com.lambo.upms.client.dao.model.UpmsUser;
 import com.lambo.upms.client.dao.model.UpmsUserExample;
+import com.lambo.common.base.BaseService;
 
 /**
 * UpmsUserService接口
