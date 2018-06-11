@@ -49,6 +49,15 @@ public class MybatisGeneratorUtil {
 	private static String resultConstant_vm = "/template/ResultConstant.vm";
 
 	/**
+	 * queryVue模板路径
+	 */
+	private static String queryVue_vm = "/template/queryVue.vm";
+	/**
+	 * editVue模板路径
+	 */
+	private static String editVue_vm = "/template/editVue.vm";
+
+	/**
 	 * 根据模板生成generatorConfig.xml文件
 	 * @param jdbc_driver   驱动路径
 	 * @param jdbc_url      链接
@@ -78,6 +87,9 @@ public class MybatisGeneratorUtil {
 			controller_vm = MybatisGeneratorUtil.class.getResource(controller_vm).getPath().replaceFirst("/", "");
 			result_vm = MybatisGeneratorUtil.class.getResource(result_vm).getPath().replaceFirst("/", "");
 			resultConstant_vm = MybatisGeneratorUtil.class.getResource(resultConstant_vm).getPath().replaceFirst("/", "");
+
+			queryVue_vm = MybatisGeneratorUtil.class.getResource(queryVue_vm).getPath().replaceFirst("/", "");
+			editVue_vm = MybatisGeneratorUtil.class.getResource(editVue_vm).getPath().replaceFirst("/", "");
 		} else {
 			generatorConfig_vm = MybatisGeneratorUtil.class.getResource(generatorConfig_vm).getPath();
 			service_vm = MybatisGeneratorUtil.class.getResource(service_vm).getPath();
@@ -86,7 +98,12 @@ public class MybatisGeneratorUtil {
 			controller_vm = MybatisGeneratorUtil.class.getResource(controller_vm).getPath();
 			result_vm = MybatisGeneratorUtil.class.getResource(result_vm).getPath();
 			resultConstant_vm = MybatisGeneratorUtil.class.getResource(resultConstant_vm).getPath();
+
+			queryVue_vm = MybatisGeneratorUtil.class.getResource(queryVue_vm).getPath();
+			editVue_vm = MybatisGeneratorUtil.class.getResource(editVue_vm).getPath();
 		}
+		System.out.println("resultConstant_vm="+resultConstant_vm);
+		System.out.println("queryVue_vm="+queryVue_vm);
 
 		String basePath = MybatisGeneratorUtil.class.getResource("/").getPath().replace("/target/classes/", "").replaceFirst("/", "");
 		System.out.println("basePath="+basePath);
@@ -157,17 +174,52 @@ public class MybatisGeneratorUtil {
 		}
 		System.out.println("========== 结束运行MybatisGenerator ==========");
 
-		System.out.println("========== 开始生成Service,Controller ==========");
+		System.out.println("========== 开始生成Constant ==========");
 		String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
+		String resultPatch = basePath  + "/src/main/java/" + package_name.replaceAll("\\.", "/") + "/constant";
+
+		String result = resultPatch + "/" + module + "Result.java";
+		String resultConstant = resultPatch + "/" + module + "ResultConstant.java";
+		// 生成result
+		File resultFile = new File(result);
+		if (!resultFile.exists()) {
+			VelocityContext context = new VelocityContext();
+			context.put("package_name", package_name);
+			context.put("module", module);
+			context.put("moduleV", StringUtils.toLowerCaseFirstOne(module));
+			context.put("ctime", ctime);
+			VelocityUtil.generate(result_vm, result, context);
+			System.out.println(result);
+		}
+
+		// 生成resultConstant
+		File resultConstantFile = new File(resultConstant);
+		if (!resultConstantFile.exists()) {
+			VelocityContext context = new VelocityContext();
+			context.put("package_name", package_name);
+			context.put("module", module);
+			context.put("ctime", ctime);
+			VelocityUtil.generate(resultConstant_vm, resultConstant, context);
+			System.out.println(resultConstant);
+		}
+		System.out.println("========== 结束生成Constant ==========");
+
+		System.out.println("========== 开始生成Service,Controller,Vue ==========");
 		String servicePath = basePath + "/src/main/java/" + package_name.replaceAll("\\.", "/") + "/service/api";
 		String serviceImplPath = basePath  + "/src/main/java/" + package_name.replaceAll("\\.", "/") + "/service/impl";
 		String controllerPath = basePath  + "/src/main/java/" + package_name.replaceAll("\\.", "/") + "/controller";
+		String vuePath = basePath  + "/src/main/java/" + package_name.replaceAll("\\.", "/") + "/vue";
+		System.out.println("vuePath="+vuePath);
 		for (int i = 0; i < tables.size(); i++) {
 			String model = StringUtils.lineToHump(ObjectUtils.toString(tables.get(i).get("table_name")));
 			String service = servicePath + "/" + model + "Service.java";
 			//String serviceMock = servicePath + "/" + model + "ServiceMock.java";
 			String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
 			String controller = controllerPath + "/" + model + "Controller.java";
+			String queryVue = vuePath + "/" + model + "Query.vue";
+			System.out.println("queryVue="+queryVue);
+			String editVue = vuePath + "/" + model + "Edit.vue";
+
 			// 生成service
 			File serviceFile = new File(service);
 			if (!serviceFile.exists()) {
@@ -214,37 +266,54 @@ public class MybatisGeneratorUtil {
 				VelocityUtil.generate(controller_vm, controller, context);
 				System.out.println(controller);
 			}
-		}
-		System.out.println("========== 结束生成Service,Controller ==========");
 
-		System.out.println("========== 开始生成Constant ==========");
-		String resultPatch = basePath  + "/src/main/java/" + package_name.replaceAll("\\.", "/") + "/constant";
 
-		String result = resultPatch + "/" + module + "Result.java";
-		String resultConstant = resultPatch + "/" + module + "ResultConstant.java";
-		// 生成result
-		File resultFile = new File(result);
-		if (!resultFile.exists()) {
-			VelocityContext context = new VelocityContext();
-			context.put("package_name", package_name);
-			context.put("module", module);
-			context.put("moduleV", StringUtils.toLowerCaseFirstOne(module));
-			context.put("ctime", ctime);
-			VelocityUtil.generate(result_vm, result, context);
-			System.out.println(result);
-		}
+			// 生成queryVue
+			File queryVueFile = new File(queryVue);
+			if (!queryVueFile.exists()) {
+				VelocityContext context = new VelocityContext();
+				context.put("modelV", StringUtils.toLowerCaseFirstOne(model));
+				context.put("pk",StringUtils.toLowerCaseFirstOne(StringUtils.lineToHump(table_key)));
+				context.put("columns",tables.get(i).get("columns"));
+				VelocityUtil.generate(queryVue_vm, queryVue, context);
+				System.out.println(queryVue);
+			}
 
-		// 生成resultConstant
-		File resultConstantFile = new File(resultConstant);
-		if (!resultConstantFile.exists()) {
-			VelocityContext context = new VelocityContext();
-			context.put("package_name", package_name);
-			context.put("module", module);
-			context.put("ctime", ctime);
-			VelocityUtil.generate(resultConstant_vm, resultConstant, context);
-			System.out.println(resultConstant);
+			// 生成editVue
+			File editFile = new File(editVue);
+			if (!editFile.exists()) {
+				VelocityContext context = new VelocityContext();
+				context.put("title", table_name);
+				context.put("modelV", StringUtils.toLowerCaseFirstOne(model));
+				context.put("pk",StringUtils.toLowerCaseFirstOne(StringUtils.lineToHump(table_key)));
+				context.put("columns",tables.get(i).get("columns"));
+
+				VelocityUtil.generate(editVue_vm, editVue, context);
+				System.out.println(editVue);
+			}
 		}
-		System.out.println("========== 结束生成Constant ==========");
+		System.out.println("========== 结束生成Service,Controller,Vue ==========");
+		String str = "import testUserQuery from '@/components/testUser/TestUserQuery';\n";
+		str += "import testUserEdit from '@/components/testUser/TestUserEdit';\n\n";
+		str += "{ \n";
+		str += "	path: 'manage/testUser/query',\n";
+		str += "	meta:{\n";
+		str += "		title: 'testUserQuery',\n";
+		str += "	},\n";
+		str += "	name:'testUserQuery',\n";
+		str += "	component: testUserQuery\n";
+		str += "},\n";
+		str += "{\n";
+		str += "	path: 'manage/testUser/edit',\n";
+		str += "	meta:{\n";
+		str += "		title: 'testUserEdit',\n";
+		str += "	},\n";
+		str += "	name:'testUserEdit',\n";
+		str += "	component: testUserEdit\n";
+		str += "}";
+
+		System.out.println("拷贝vue到自己前台目录，配置vue的router,其中注意路由的name属性，参考如下：\n"+str);
+
 	}
 
 	// 递归删除非空文件夹

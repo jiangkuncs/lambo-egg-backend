@@ -1,0 +1,97 @@
+<template>
+    <div>
+        <Card>
+            <p slot="title">
+                ${title}修改
+            </p>
+            <div slot="extra">
+                <Button type="primary" @click="formSubmit">保存</Button>
+                <a href="#" @click="pageGoBack">
+                    <Icon type="android-arrow-back"></Icon> 返回</a>
+            </div>
+            <Form  ref="formData" :model="formData" :label-width="80" :rules="ruleValidate">
+                #foreach($column in $columns)
+                    #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != $pk)
+                        <FormItem label="${column.COLUMN_NAME}" prop="userName">
+                            <Input v-model="formData.${column.COLUMN_NAME_HUMP}" placeholder="请输入${column.COLUMN_NAME}"></Input>
+                        </FormItem>
+                    #end
+                #end
+            </Form>
+        </Card>
+    </div>
+</template>
+
+<script>
+    #set($common='$')
+    import util from '@/libs/util.js';
+    export default {
+        name: 'testUserEdit',
+        data () {
+            return {
+                formData: {
+                    #foreach($column in $columns)
+                        #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != $pk)
+                            ${column.COLUMN_NAME_HUMP}:"",
+                        #end
+                    #end
+                },
+                ruleValidate: {
+
+                }
+            };
+        },
+        computed: {
+            ${pk}: function() {
+                return this.${common}route.query.${pk};
+            }
+        },
+        watch:{
+
+        },
+        methods: {
+            pageGoBack(){
+                this.${common}router.go(-1);
+            },
+            formSubmit(){
+                var self = this;
+                var params = {
+                    #foreach($column in $columns)
+                        #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != $pk)
+                            ${column.COLUMN_NAME_HUMP}:self.formData.${column.COLUMN_NAME_HUMP},
+                        #end
+                    #end
+                };
+                if(self.${pk}) {  //修改
+                    util.ajax.post("/manage/${modelV}/update/" + self.${pk}, params).then(function(resp) {
+                        self.${common}Message.success('保存成功');
+                        self.pageGoBack();
+                    })
+                } else { //新增
+                    util.ajax.post("/manage/${modelV}/create", params).then(function(resp) {
+                        self.${common}Message.success('新增成功');
+                        self.pageGoBack();
+                    })
+                }
+            },
+            initData:function(){
+                var self = this;
+                //初始化数据
+                if(self.${pk}) { //修改
+                    util.ajax.get("/manage/${modelV}/get/" + self.${pk}).then(function(resp) {
+                        var result = resp.data;
+                        #foreach($column in $columns)
+                            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != $pk)
+                                self.formData.${column.COLUMN_NAME_HUMP} = result.${column.COLUMN_NAME_HUMP};
+                            #end
+                        #end
+                    });
+                }
+            }
+        },
+        mounted(){
+            this.initData();
+        }
+
+    };
+</script>

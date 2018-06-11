@@ -1,0 +1,120 @@
+<template>
+    <div>
+        <Card>
+            <div slot="extra"></div>
+            <LamboTable ref="table" dataUrl="/manage/${modelV}/list" :columns="tableColumn" :searchParams="tableSearchParams">
+                <div slot="search">
+                    <Input v-model="search" placeholder="搜索" style="width: 200px" />
+                    <Button type="primary" icon="ios-search" @click="doSearch">查询</Button>
+                    <Button type="ghost" icon="plus-round" @click="forInsert">新增</Button>
+                </div>
+            </LamboTable>
+        </Card>
+    </div>
+</template>
+<script>
+    #set($common='$');
+    import util from '@/libs/util.js';
+    //编辑按钮
+    const editButton = (vm, h, currentRow, index) => {
+        return h('Button', {
+            props: {
+                type: "primary",
+                size: "small"
+            },
+            style: {
+                margin: '0 5px'
+            },
+            on: {
+                'click': function() {
+                    vm.goUpdatePage(currentRow.${pk});
+                }
+            }
+        }, '编辑');
+    };
+
+    //删除按钮
+    const deleteButton = (vm, h, currentRow, index) => {
+        return h('Button', {
+            props: {
+                type: "error",
+                size: "small"
+            },
+            style: {
+                margin: '0 5px'
+            },
+            on: {
+                'click': () => {
+                    vm.doDelete(currentRow.${pk});
+                }
+            }
+        }, '删除');
+    };
+    export default {
+        data:function(){
+            return {
+                search:"",
+                tableSearchParams:{}
+            }
+        },
+        computed: {
+            tableColumn() {
+                let columns = [];
+                let self = this;
+                #foreach($column in $columns)
+                    #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP)
+                        columns.push({
+                            title: '${column.COLUMN_NAME}',
+                            key: '${column.COLUMN_NAME_HUMP}',
+                            align:"center"
+                        });
+                    #end
+                #end
+                columns.push({
+                    title: '操作',
+                    align: "center",
+                    render: function(h, param) {
+                        return h('div', [
+                            editButton(self, h, param.row, param.index),
+                            deleteButton(self, h, param.row, param.index)
+                        ]);
+                    }
+                });
+                return columns;
+            }
+        },
+        methods:{
+            doSearch:function(){
+                this.tableSearchParams = {
+                    search:this.search
+                }
+            },
+            forInsert: function() {
+                this.${common}router.push({
+                    name: '${modelV}Edit'
+                });
+            },
+            goUpdatePage: function(${pk}) {
+                this.${common}router.push({
+                    name: '${modelV}Edit',
+                    query: {
+                        ${pk}:${pk}
+                    }
+                });
+            },
+            doDelete: function(${pk}) {
+                var self = this;
+                this.${common}Modal.confirm({
+                    title: '提示',
+                    content: '<p>确定要删除吗?</p>',
+                    onOk:() => {
+                        util.ajax.get("/manage/${modelV}/delete/"+ ${pk}).then(function(resp) {
+                            self.${common}Message.success('删除成功');
+                            self.doSearch();
+                        })
+                    }
+                });
+            }
+        }
+    };
+</script>

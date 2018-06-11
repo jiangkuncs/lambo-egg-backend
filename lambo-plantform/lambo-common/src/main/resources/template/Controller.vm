@@ -90,7 +90,7 @@ public class ${model}Controller extends BaseController {
         #set($count = 0)
         #foreach($column in $columns)
             #set($count = $count + 1)
-            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != ${pk})
+            #if($column.COLUMN_NAME && $column.COLUMN_NAME_HUMP && $column.COLUMN_NAME_HUMP != $pk)
                 #set($required = false)
                 #if($column.IS_NULLABLE == 'NO')
                     #set($required = true)
