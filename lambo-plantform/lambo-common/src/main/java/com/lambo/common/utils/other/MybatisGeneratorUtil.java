@@ -293,6 +293,7 @@ public class MybatisGeneratorUtil {
 			}
 		}
 		System.out.println("========== 结束生成Service,Controller,Vue ==========");
+
 		String str = "import testUserQuery from '@/components/testUser/TestUserQuery';\n";
 		str += "import testUserEdit from '@/components/testUser/TestUserEdit';\n\n";
 		str += "{ \n";
