@@ -66,7 +66,7 @@
     </profiles>
 
     <build>
-        <finalName>lambo-auth-server</finalName>
+        <finalName>lambo-auth-redis-server</finalName>
         <filters>
             <filter>src/main/resources/profiles/${env}.properties</filter>
         </filters>
