@@ -9,6 +9,8 @@ import com.lambo.oss.client.constant.OssConstant;
 import com.lambo.oss.client.constant.OssResult;
 import com.lambo.oss.client.constant.OssResultConstant;
 import com.lambo.oss.client.service.api.OssClientApiService;
+import com.lambo.rest.manage.dao.api.RestSettingMapper;
+import com.lambo.rest.manage.model.RestSetting;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -47,6 +49,9 @@ public class MockFileController extends BaseController {
 
     @Autowired
     OssClientApiService ossClientApiService;
+
+    @Autowired
+    RestSettingMapper restSettingMapper;
 
     @ApiOperation(value = "保存文件" ,notes = "保存文件")
     @RequestMapping(value = "/put", method = RequestMethod.POST)
@@ -179,15 +184,20 @@ public class MockFileController extends BaseController {
     }
 
     @ApiOperation(value = "下载文件" ,notes = "下载文件")
-    @RequestMapping(value = "/get/{name:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{restId:.+}", method = RequestMethod.GET)
     @ResponseBody
-    public void get(@PathVariable("name") String name,
-                    @RequestParam(required = true, value = "mockData") String mockData,
+    public void get(@PathVariable("restId") String restId,
                     HttpServletRequest request, HttpServletResponse response) {
         logger.info("下载文件开始。。。");
+
+        //根据restId获取rest数据
+        RestSetting restSetting = restSettingMapper.selectByPrimaryKey(restId);
+        String restName = restSetting.getRestName();
+        String mockData = restSetting.getMockData();
+
         String filePath = FileUtils.path(FileUtils.getWebappPath()
                 + OssConstant.UPLOAD_TEMP_PATH)
-                + name + ".xlsx";
+                + restName + ".xlsx";
 
         logger.info("filePath=" + filePath);
         logger.info("mockData=" + mockData);
