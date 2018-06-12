@@ -2,9 +2,8 @@ package com.lambo.rest.manage.dao.api;
 
 import com.lambo.rest.manage.model.RestSettingParams;
 import com.lambo.rest.manage.model.RestSettingParamsExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface RestSettingParamsMapper {
     int deleteByExample(RestSettingParamsExample example);

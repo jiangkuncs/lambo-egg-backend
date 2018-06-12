@@ -88,10 +88,10 @@ public class MockFileController extends BaseController {
                     String value = fildRow.getCell(i).getStringCellValue();
                     if(value.indexOf("|") != -1){
                         String[] valueArr = value.split("\\|");
-                        fildArr[i] = valueArr[0].trim();
+                        fildArr[i] = valueArr[0].toLowerCase().trim();
                         colType[0][i] = valueArr[1].trim();
                     }else{
-                        fildArr[i] = value.trim();
+                        fildArr[i] = value.toLowerCase().trim();
                         colType[0][i] = "";
                     }
                 }

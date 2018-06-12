@@ -3,14 +3,14 @@ package com.lambo.rest.manage.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestSettingParamsExample {
+public class RestSettingParamsLogExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public RestSettingParamsExample() {
+    public RestSettingParamsLogExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -102,6 +102,76 @@ public class RestSettingParamsExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        public Criteria andLogIdIsNull() {
+            addCriterion("log_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdIsNotNull() {
+            addCriterion("log_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdEqualTo(String value) {
+            addCriterion("log_id =", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotEqualTo(String value) {
+            addCriterion("log_id <>", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdGreaterThan(String value) {
+            addCriterion("log_id >", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdGreaterThanOrEqualTo(String value) {
+            addCriterion("log_id >=", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdLessThan(String value) {
+            addCriterion("log_id <", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdLessThanOrEqualTo(String value) {
+            addCriterion("log_id <=", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdLike(String value) {
+            addCriterion("log_id like", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotLike(String value) {
+            addCriterion("log_id not like", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdIn(List<String> values) {
+            addCriterion("log_id in", values, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotIn(List<String> values) {
+            addCriterion("log_id not in", values, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdBetween(String value1, String value2) {
+            addCriterion("log_id between", value1, value2, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotBetween(String value1, String value2) {
+            addCriterion("log_id not between", value1, value2, "logId");
+            return (Criteria) this;
         }
 
         public Criteria andRestIdIsNull() {
