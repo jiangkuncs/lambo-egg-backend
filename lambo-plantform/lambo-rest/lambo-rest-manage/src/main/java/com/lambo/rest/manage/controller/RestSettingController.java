@@ -46,6 +46,8 @@ public class RestSettingController {
                          @RequestParam(required = false, value = "mockData") String mockData,
                          @RequestParam(required = false, value = "settingParams") String settingParams) {
 
+        logger.info("settingParams="+settingParams);
+
         //REST_SETTING
         RestSetting restSetting = new RestSetting();
 
@@ -72,10 +74,11 @@ public class RestSettingController {
         //REST_SETTING_PARAMS
         List<RestSettingParams> paramsList = getParamsList(restId,settingParams);
 
+logger.info("paramsList="+paramsList);
 
         int count = restSettingService.insert(restSetting,paramsList);
 
-        return new BaseResult(BaseResultConstant.SUCCESS,count);
+        return new BaseResult(BaseResultConstant.SUCCESS,restId);
     }
 
     @ApiOperation(value = "更新rest服务")
@@ -148,6 +151,7 @@ public class RestSettingController {
                     restSettingParams.setParamName((String)json.get("paramName"));
                     restSettingParams.setNecessary((String)json.get("necessary"));
                     restSettingParams.setDefaultValue((String)json.get("defaultValue"));
+                    restSettingParams.setNote((String)json.get("note"));
                     restSettingParams.setOrderSeq(i+1);
 
                     paramsList.add(restSettingParams);
@@ -157,4 +161,5 @@ public class RestSettingController {
 
         return paramsList;
     }
+
 }

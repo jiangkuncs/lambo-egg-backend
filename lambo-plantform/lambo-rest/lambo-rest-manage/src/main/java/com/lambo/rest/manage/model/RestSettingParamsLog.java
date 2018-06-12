@@ -1,6 +1,8 @@
 package com.lambo.rest.manage.model;
 
-public class RestSettingParams {
+public class RestSettingParamsLog {
+    private String logId;
+
     private String restId;
 
     private String paramKey;
@@ -14,6 +16,14 @@ public class RestSettingParams {
     private String note;
 
     private Integer orderSeq;
+
+    public String getLogId() {
+        return logId;
+    }
+
+    public void setLogId(String logId) {
+        this.logId = logId == null ? null : logId.trim();
+    }
 
     public String getRestId() {
         return restId;
@@ -77,6 +87,7 @@ public class RestSettingParams {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", logId=").append(logId);
         sb.append(", restId=").append(restId);
         sb.append(", paramKey=").append(paramKey);
         sb.append(", paramName=").append(paramName);
