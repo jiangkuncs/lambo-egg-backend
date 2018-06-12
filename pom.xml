@@ -20,5 +20,6 @@
 
     <modules>
         <module>lambo-plantform</module>
+        <module>lambo-test</module>
     </modules>
 </project>
