@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,7 +201,7 @@ public class MockFileController extends BaseController {
         logger.info("filePath=" + filePath);
         logger.info("mockData=" + mockData);
 
-        SXSSFWorkbook workbook = writeExcel(mockData);
+        Workbook workbook = writeExcel(mockData);
 
         File file = new File(filePath);
         file.deleteOnExit();
@@ -228,11 +227,11 @@ public class MockFileController extends BaseController {
 
     }
 
-    private SXSSFWorkbook writeExcel(String mockData) {
+    private Workbook writeExcel(String mockData) {
         logger.info("生成EXCEL开始。。。");
 
         // 创建Excel
-        SXSSFWorkbook workbook = new SXSSFWorkbook();
+        Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
 
         if(null!=mockData && !"".endsWith(mockData)){
@@ -288,27 +287,6 @@ public class MockFileController extends BaseController {
 
         logger.info("生成EXCEL结束。。。");
         return workbook;
-    }
-
-    //根据对象获取key及数据类型
-    private String[][] getFieldByJson(JSONObject json){
-
-        int colNum = json.size();
-        String[][] field = new String[colNum][2];
-
-        int k = 0;
-        for (Map.Entry<String, Object> entry : json.entrySet()) {
-            field[k][0] = entry.getKey();
-
-            //数据类型
-            String typeName=entry.getValue().getClass().getName();
-            int length= typeName.lastIndexOf(".");
-            field[k][1] =typeName.substring(length+1);
-
-            k++;
-        }
-
-        return field;
     }
 
 }
