@@ -22,5 +22,6 @@
         <module>lambo-auth-redis-client</module>
         <module>lambo-auth-redis-server</module>
         <module>lambo-auth-sample-client</module>
+        <module>lambo-sso-v6-client</module>
     </modules>
 </project>

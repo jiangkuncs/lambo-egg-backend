@@ -101,7 +101,7 @@
     </profiles>
 
     <build>
-        <finalName>lambo-rest-manage</finalName>
+        <finalName>rest-manage-server</finalName>
         <filters>
             <filter>src/main/resources/profiles/${env}.properties</filter>
         </filters>
