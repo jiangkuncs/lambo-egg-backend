@@ -11,6 +11,7 @@ import com.lambo.demo.constant.DemoResultConstant;
 import com.lambo.demo.model.DemoLogExample;
 import com.lambo.demo.model.DemoLog;
 import com.lambo.demo.service.api.DemoLogService;
+import com.lambo.demo.service.api.RpcTestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class DemoDataController extends BaseController {
 
     @Autowired
     private DemoLogService demoLogService;
+
+    @Autowired
+    private RpcTestService rpcTestService;
 
     @ApiOperation(value = "列表数据")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
@@ -95,4 +99,10 @@ public class DemoDataController extends BaseController {
         return new DemoResult(DemoResultConstant.SUCCESS, count);
     }
 
+    @ApiOperation(value = "测试服务")
+    @RequestMapping(value = "/sayHello/{name}", method = RequestMethod.GET)
+    @ResponseBody
+    public Object sayHello(@PathVariable("name") String name) {
+        return new DemoResult(DemoResultConstant.SUCCESS, rpcTestService.sayHello(name));
+    }
 }

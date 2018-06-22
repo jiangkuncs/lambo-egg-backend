@@ -76,7 +76,6 @@ public class AuthClientApiServiceImpl implements AuthClientApiService {
      * @return
      */
     @Override
-    @Cacheable
     @LogAround("获取用户信息")
     public UpmsUser selectUpmsUserByUsername(String username) {
         UpmsUserExample upmsUserExample = new UpmsUserExample();
