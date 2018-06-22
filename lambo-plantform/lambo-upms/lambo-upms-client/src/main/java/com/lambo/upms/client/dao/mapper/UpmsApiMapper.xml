@@ -64,6 +64,5 @@
 		)
 	</select>
 
-	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 
 </mapper>

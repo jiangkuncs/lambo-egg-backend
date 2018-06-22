@@ -7,10 +7,12 @@ import com.lambo.auth.client.dao.model.UpmsRole;
 import com.lambo.auth.client.dao.model.UpmsUser;
 import com.lambo.auth.client.dao.model.UpmsUserExample;
 import com.lambo.auth.client.service.api.AuthClientApiService;
+import com.lambo.common.annotation.LogAround;
 import com.lambo.common.utils.io.PropertiesFileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,6 @@ import java.util.List;
  * Created by lambo on 2016/01/19.
  */
 @Service
-@Transactional
 public class AuthClientApiServiceImpl implements AuthClientApiService {
 
     private static Logger logger = LoggerFactory.getLogger(AuthClientApiServiceImpl.class);
@@ -75,6 +76,8 @@ public class AuthClientApiServiceImpl implements AuthClientApiService {
      * @return
      */
     @Override
+    @Cacheable
+    @LogAround("获取用户信息")
     public UpmsUser selectUpmsUserByUsername(String username) {
         UpmsUserExample upmsUserExample = new UpmsUserExample();
         upmsUserExample.createCriteria().andUsernameEqualTo(username);

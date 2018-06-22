@@ -303,5 +303,4 @@
       orders = #{orders,jdbcType=BIGINT}
     where system_id = #{systemId,jdbcType=INTEGER}
   </update>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 </mapper>

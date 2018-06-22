@@ -37,6 +37,9 @@ public class AuthClientRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        if(logger.isInfoEnabled()){
+            logger.info("获取用户权限开始...");
+        }
         String username = (String) principalCollection.getPrimaryPrincipal();
         UpmsUser upmsUser = authClientApiService.selectUpmsUserByUsername(username);
 
@@ -61,6 +64,9 @@ public class AuthClientRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setStringPermissions(permissions);
         simpleAuthorizationInfo.setRoles(roles);
+        if(logger.isInfoEnabled()){
+            logger.info("获取用户权限结束");
+        }
         return simpleAuthorizationInfo;
     }
 

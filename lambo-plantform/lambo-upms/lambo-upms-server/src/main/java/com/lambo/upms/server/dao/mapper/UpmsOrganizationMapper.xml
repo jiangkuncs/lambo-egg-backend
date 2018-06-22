@@ -208,5 +208,4 @@
       ctime = #{ctime,jdbcType=BIGINT}
     where organization_id = #{organizationId,jdbcType=INTEGER}
   </update>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 </mapper>

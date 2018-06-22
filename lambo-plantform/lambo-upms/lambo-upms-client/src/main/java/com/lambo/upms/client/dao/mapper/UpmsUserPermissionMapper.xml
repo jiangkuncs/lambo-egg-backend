@@ -193,5 +193,4 @@
       type = #{type,jdbcType=TINYINT}
     where user_permission_id = #{userPermissionId,jdbcType=INTEGER}
   </update>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 </mapper>

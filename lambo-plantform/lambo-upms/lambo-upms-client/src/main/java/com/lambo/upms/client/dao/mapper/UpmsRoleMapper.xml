@@ -225,5 +225,4 @@
       orders = #{orders,jdbcType=BIGINT}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 </mapper>

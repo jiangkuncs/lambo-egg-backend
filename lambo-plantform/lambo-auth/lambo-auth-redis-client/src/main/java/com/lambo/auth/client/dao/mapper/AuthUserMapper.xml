@@ -101,5 +101,4 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
 </mapper>

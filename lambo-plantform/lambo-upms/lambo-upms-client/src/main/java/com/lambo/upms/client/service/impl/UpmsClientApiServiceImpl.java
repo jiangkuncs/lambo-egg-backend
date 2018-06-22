@@ -87,7 +87,6 @@ public class UpmsClientApiServiceImpl implements UpmsClientApiService {
      * @return
      */
     @Override
-    @Cacheable(value = "lambo-upms-rpc-service-ehcache", key = "'selectUpmsRoleByUpmsUserId_' + #upmsUserId")
     public List<UpmsRole> selectUpmsRoleByUpmsUserIdByCache(Integer upmsUserId) {
         return selectUpmsRoleByUpmsUserId(upmsUserId);
     }

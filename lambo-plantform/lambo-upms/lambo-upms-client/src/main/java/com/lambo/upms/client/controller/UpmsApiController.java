@@ -42,7 +42,6 @@ public class UpmsApiController extends BaseController {
     @RequestMapping(value = "/user/get", method = RequestMethod.GET)
     @ResponseBody
     public Object get() {
-
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
         UpmsUser upmsUser = upmsClientApiService.selectUpmsUserByUsername(username);
