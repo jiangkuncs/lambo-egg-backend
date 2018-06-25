@@ -1,4 +1,4 @@
-package com.lambo.common.utils.other;
+package com.lambo.cache;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;

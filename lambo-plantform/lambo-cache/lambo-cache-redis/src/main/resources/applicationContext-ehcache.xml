@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+		  http://www.springframework.org/schema/cache
+          http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<!-- 注解声明 -->
+	<cache:annotation-driven cache-manager="ehRedisCacheManager" proxy-target-class="true" />
+
+	<bean id="ehRedisCacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<bean id="cacheForEver" class="com.lambo.cache.EhRedisCache">
+					<property name="ehCache" ref="cacheForEver" />
+					<property name="name" value="CacheForEver" />
+					<property name="liveTime" value="-1"/>
+				</bean>
+				<bean id="cache10Seconds" class="com.lambo.cache.EhRedisCache">
+					<property name="ehCache" ref="cache10Seconds" />
+					<property name="name" value="Cache10Seconds" />
+					<property name="liveTime" value="10"/>
+				</bean>
+				<bean id="cache60Seconds" class="com.lambo.cache.EhRedisCache">
+					<property name="ehCache" ref="cache60Seconds" />
+					<property name="name" value="Cache60Seconds" />
+					<property name="liveTime" value="60"/>
+				</bean>
+				<bean id="cache600Seconds" class="com.lambo.cache.EhRedisCache">
+					<property name="ehCache" ref="cache600Seconds" />
+					<property name="name" value="Cache600Seconds" />
+					<property name="liveTime" value="600"/>
+				</bean>
+				<bean id="cache6000Seconds" class="com.lambo.cache.EhRedisCache">
+					<property name="ehCache" ref="cache6000Seconds" />
+					<property name="name" value="Cache6000Seconds" />
+					<property name="liveTime" value="6000"/>
+				</bean>
+				<bean id="cache30000Seconds" class="com.lambo.cache.EhRedisCache">
+					<property name="ehCache" ref="cache30000Seconds" />
+					<property name="name" value="Cache30000Seconds" />
+					<property name="liveTime" value="30000"/>
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="cacheForEver" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<!--cacheName对应ehcache.xml中的cache name -->
+		<property name="cacheName" value="CacheForEver" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+
+	<bean id="cache10Seconds" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<!--cacheName对应ehcache.xml中的cache name -->
+		<property name="cacheName" value="Cache10Seconds" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+
+	<bean id="cache60Seconds" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<!--cacheName对应ehcache.xml中的cache name -->
+		<property name="cacheName" value="Cache60Seconds" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+
+	<bean id="cache600Seconds" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<!--cacheName对应ehcache.xml中的cache name -->
+		<property name="cacheName" value="Cache600Seconds" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+
+	<bean id="cache6000Seconds" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<!--cacheName对应ehcache.xml中的cache name -->
+		<property name="cacheName" value="Cache6000Seconds" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+
+	<bean id="cache30000Seconds" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<!--cacheName对应ehcache.xml中的cache name -->
+		<property name="cacheName" value="Cache30000Seconds" />
+		<property name="cacheManager" ref="cacheManagerFactory" />
+	</bean>
+
+	<bean id="cacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+		<!--true:单例，一个cacheManager对象共享；false：多个对象独立 -->
+		<property name="shared" value="true" />
+		<property name="cacheManagerName" value="cacheManagerFactory" />
+	</bean>
+
+</beans>

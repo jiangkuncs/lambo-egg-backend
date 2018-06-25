@@ -18,6 +18,13 @@
            maxElementsInMemory="10000"
     />
 
+    <cache name="Cache10Seconds"
+           eternal="false"
+           maxElementsInMemory="10000"
+           timeToIdleSeconds="10"
+           timeToLiveSeconds="10"
+    />
+
     <cache name="Cache60Seconds"
            eternal="false"
            maxElementsInMemory="10000"
@@ -37,5 +44,12 @@
            maxElementsInMemory="10000"
            timeToIdleSeconds="6000"
            timeToLiveSeconds="6000"
+    />
+
+    <cache name="Cache30000Seconds"
+           eternal="false"
+           maxElementsInMemory="10000"
+           timeToIdleSeconds="30000"
+           timeToLiveSeconds="30000"
     />
 </ehcache>

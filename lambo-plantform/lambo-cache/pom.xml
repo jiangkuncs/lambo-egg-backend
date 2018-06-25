@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lambo</groupId>
-    <artifactId>lambo-plantform</artifactId>
+    <artifactId>lambo-cache</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>lambo-plantform</name>
+    <name>lambo-cache</name>
     <url>http://stomz.top</url>
 
     <properties>
@@ -19,13 +19,7 @@
     </properties>
 
     <modules>
-        <module>lambo-common</module>
-        <module>lambo-upms</module>
-        <module>lambo-demo</module>
-        <module>lambo-oss</module>
-        <module>lambo-rest</module>
-        <module>lambo-mq</module>
-        <module>lambo-auth</module>
-        <module>lambo-cache</module>
+        <module>lambo-cache-sample</module>
+        <module>lambo-cache-redis</module>
     </modules>
 </project>
