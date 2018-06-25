@@ -34,7 +34,7 @@
         </dependency>
         <dependency>
             <groupId>com.lambo</groupId>
-            <artifactId>lambo-auth-sample-client</artifactId>
+            <artifactId>lambo-auth-redis-client</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>

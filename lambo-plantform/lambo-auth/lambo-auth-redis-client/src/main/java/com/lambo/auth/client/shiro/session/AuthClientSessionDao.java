@@ -7,10 +7,13 @@ import org.apache.shiro.session.mgt.ValidatingSession;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * 基于redis的sessionDao，缓存共享session
@@ -37,7 +40,7 @@ public class AuthClientSessionDao extends CachingSessionDAO {
     private final static String LAMBO_SSO_CODE_USERNAME = "lambo-sso-code-username";
 
 
-    private static Map<String, Session> sessionMap = new HashMap<String, Session>();
+    private static Map<String, Session> sessionCacheMap = new HashMap<String, Session>();
 
     @Override
     protected Serializable doCreate(Session session) {
@@ -52,12 +55,18 @@ public class AuthClientSessionDao extends CachingSessionDAO {
     }
 
     @Override
-    protected Session doReadSession(Serializable sessionId) {
-        String session = RedisUtil.get(LAMBO_SSO_SHIRO_SESSION_ID + "_" + sessionId);
-        if (logger.isInfoEnabled()) {
-            logger.info("doReadSession >>>>> sessionId={}", sessionId);
+    public Session doReadSession(Serializable sessionId) {
+
+        Session session = sessionCacheMap.get(sessionId.toString());
+        if(session == null){
+            String sessionStr = RedisUtil.get(LAMBO_SSO_SHIRO_SESSION_ID + "_" + sessionId);
+            if (logger.isInfoEnabled()) {
+                logger.info("doReadSession >>>>> sessionId={}", sessionId);
+            }
+            session = SerializableUtil.deserialize(sessionStr);
+            sessionCacheMap.put(sessionId.toString(),session);
         }
-        return SerializableUtil.deserialize(session);
+        return session;
     }
 
     @Override
@@ -67,6 +76,13 @@ public class AuthClientSessionDao extends CachingSessionDAO {
             return;
         }
         String sessionId = session.getId().toString();
+        if (logger.isInfoEnabled()) {
+            logger.info("doUpdateSession >>>>> sessionId={}", sessionId);
+        }
+        //清除缓存
+        if(sessionCacheMap.get(sessionId) != null){
+            sessionCacheMap.remove(sessionId);
+        }
         String code = RedisUtil.get(LAMBO_SSO_CODE + "_" + sessionId);
         int timeout = (int) session.getTimeout() / 1000;
         RedisUtil.set(LAMBO_SSO_SHIRO_SESSION_ID + "_" + sessionId, SerializableUtil.serialize(session), timeout);
@@ -80,6 +96,10 @@ public class AuthClientSessionDao extends CachingSessionDAO {
     protected void doDelete(Session session) {
         Jedis jedis = RedisUtil.getJedis();
         String sessionId = session.getId().toString();
+        //清除缓存
+        if(sessionCacheMap.get(sessionId) != null){
+            sessionCacheMap.remove(sessionId);
+        }
         // 当前会话code
         String code = RedisUtil.get(LAMBO_SSO_CODE + "_" + sessionId);
         // 清除code校验值
